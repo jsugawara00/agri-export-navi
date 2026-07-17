@@ -1,5 +1,6 @@
 import { COUNTRIES, ITEMS } from "./catalog";
 import {
+  guideExists,
   loadCountry,
   loadCriteriaSet,
   loadProcedure,
@@ -46,6 +47,12 @@ export function validateAll(): string[] {
         if (step.tool && !["contract", "invoice", "logistics", "bank"].includes(step.tool)) {
           errors.push(
             `procedures/${comboName}.md: ステップ ${step.id} の tool "${step.tool}" は未定義のツールです`,
+          );
+        }
+        // 全ステップにツール（専用tool or guides/{id}.md）を必ず用意する
+        if (!step.tool && !guideExists(step.id)) {
+          errors.push(
+            `procedures/${comboName}.md: ステップ ${step.id} に tool がなく content/guides/${step.id}.md もありません`,
           );
         }
         if (step.gate && step.questions.length === 0) {

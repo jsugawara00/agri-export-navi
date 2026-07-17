@@ -179,6 +179,20 @@ export function loadChecklist(name: string): ChecklistDoc {
   return { meta, title: firstHeading?.[1] ?? name, body };
 }
 
+/** ステップ別ガイドmd（guides/{stepId}.md）を読む */
+export function loadGuide(stepId: string): ChecklistDoc {
+  const file = `guides/${stepId}.md`;
+  const { data, body } = readMd(file);
+  const meta = toMeta(data, file);
+  return { meta, title: data["title"] ?? stepId, body };
+}
+
+export function guideExists(stepId: string): boolean {
+  // パス操作を防ぐため、ステップidの形式に限定する
+  if (!/^[a-z0-9-]+$/.test(stepId)) return false;
+  return contentFileExists(`guides/${stepId}.md`);
+}
+
 /** 品目×国の3軸採点mdを一括ロードする（国mdのroute経由で物流mdを解決） */
 export function loadCriteriaSet(item: ItemId, country: CountryId) {
   const countryDoc = loadCountry(country);
