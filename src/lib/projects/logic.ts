@@ -134,6 +134,33 @@ export function toggleStep(
   };
 }
 
+/** 書類用入力値（inputs）をまとめて更新する */
+export function updateInputs(
+  project: Project,
+  patch: Record<string, string>,
+  now?: number,
+): Project {
+  const at = now ?? Date.now();
+  return {
+    ...project,
+    inputs: { ...project.inputs, ...patch },
+    updatedAt: at,
+    history: [...project.history, { at, action: "inputs-update" }],
+  };
+}
+
+/**
+ * 契約書がドラフト扱いかどうか: 官庁確認ゲート（gate付きステップ）が
+ * 1つでも未完了なら true。未完了ゲートの一覧も返す（PDFに刷り込む用）。
+ */
+export function contractDraftStatus(
+  steps: ProcedureStep[],
+  completedSteps: string[],
+): { isDraft: boolean; outstanding: ProcedureStep[] } {
+  const outstanding = steps.filter((s) => s.gate && !completedSteps.includes(s.id));
+  return { isDraft: outstanding.length > 0, outstanding };
+}
+
 export function updateMemo(project: Project, memo: string, now?: number): Project {
   const at = now ?? Date.now();
   return {

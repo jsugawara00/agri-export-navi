@@ -103,7 +103,9 @@ export function loadProcedure(item: ItemId, country: CountryId): ProcedureDoc {
     id: e["id"] ?? "",
     layer: Number(e["layer"]) as 1 | 2 | 3,
     title: e["title"] ?? "",
+    titleEn: e["title_en"],
     purpose: e["purpose"] ?? "",
+    tool: e["tool"] as ProcedureStep["tool"],
     gate: e["gate"],
     requires: (e["requires"] ?? "")
       .split(",")
@@ -115,6 +117,66 @@ export function loadProcedure(item: ItemId, country: CountryId): ProcedureDoc {
       .map((k) => e[k]),
   }));
   return { meta, steps };
+}
+
+export interface ForwarderEntry {
+  id: string;
+  name: string;
+  note: string;
+}
+
+export interface PortDoc {
+  id: string;
+  meta: ContentMeta;
+  nameJa: string;
+  /** true=最寄り港候補 / false=東京港（2択方式の区分） */
+  nearest: boolean;
+  overview: string;
+  forwarders: ForwarderEntry[];
+}
+
+/** 港の乙仲リスト（forwarders/{port}.md） */
+export function loadPort(port: string): PortDoc {
+  const file = `forwarders/${port}.md`;
+  const { data, body } = readMd(file);
+  const meta = toMeta(data, file);
+  if (!data["name_ja"]) throw new Error(`${file}: frontmatter に name_ja がありません`);
+  return {
+    id: port,
+    meta,
+    nameJa: data["name_ja"],
+    nearest: data["nearest"] === "true",
+    overview: extractSection(body, "概要"),
+    forwarders: parseKeyedList(extractSection(body, "乙仲リスト")).map((e) => ({
+      id: e["id"] ?? "",
+      name: e["name"] ?? "",
+      note: e["note"] ?? "",
+    })),
+  };
+}
+
+/** 自治体mdの ports:（利用しやすい港のid一覧）を読む */
+export function loadMunicipalityPorts(municipality: string): string[] {
+  const { data } = readMd(`municipalities/${municipality}.md`);
+  return (data["ports"] ?? "")
+    .split(",")
+    .map((s) => s.trim())
+    .filter(Boolean);
+}
+
+export interface ChecklistDoc {
+  meta: ContentMeta;
+  title: string;
+  body: string;
+}
+
+/** チェックリストmd（checklists/{name}.md）を読む */
+export function loadChecklist(name: string): ChecklistDoc {
+  const file = `checklists/${name}.md`;
+  const { data, body } = readMd(file);
+  const meta = toMeta(data, file);
+  const firstHeading = body.match(/^## (.+)$/m);
+  return { meta, title: firstHeading?.[1] ?? name, body };
 }
 
 /** 品目×国の3軸採点mdを一括ロードする（国mdのroute経由で物流mdを解決） */

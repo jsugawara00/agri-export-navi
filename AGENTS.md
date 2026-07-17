@@ -57,6 +57,23 @@ This version has breaking changes — APIs, conventions, and file structure may 
 - クライアントへは `buildAllCombos()`（server-only）の結果をpropsで渡す。
   型と `comboKey` は client からも使うため `combo-types.ts` に分離
 
+## Phase 3 実装メモ
+
+- PDFは @react-pdf/renderer（指示書の第一候補を採用）。標準フォントのため
+  **PDF本文は英文**（輸出書類の実務準拠）。日本語をPDFに載せる場合は
+  Noto Sans JP等のフォント埋め込み（数MB）が必要 — リメイク時の検討課題
+- 契約書PDF: `contractDraftStatus()` でゲート未完了なら DRAFT透かし＋
+  未確認事項リスト（mdの title_en）を刷り込む。法的助言でない旨の英文
+  ディスクレーマを全出力に印字
+- 契約書テンプレは `src/lib/docs/contract.ts` の Segment 配列（固定文字列＋変数参照）。
+  UIプレビュー（変数ハイライト）とPDFが同一定義を描画する
+- 書類入力は project.inputs に `doc:` プレフィックスで保存（contract/invoice/
+  logistics/mail）。港選定は `doc:logistics:port`
+- 乙仲リストは forwarders/{port}.md（**掲載はデモ用の例示**。実運用時は税関公表
+  一覧から整備）。港の選択肢は municipalities/yamagata.md の `ports:` が持つ
+- メール下書きはテンプレート差し込み（`src/lib/docs/mail.ts`・決定論的）。
+  Claude APIによる文面生成はAPIキー設定後の拡張ポイント。送信機能は作らない
+
 ## 作業ログ
 
 - 2026-07-17: Phase 1 完了。content雛形（3品目×3カ国＋国情勢3＋航路2＋procedures9＋
@@ -73,3 +90,10 @@ This version has breaking changes — APIs, conventions, and file structure may 
   「今日のTODO」を「いま着手できるステップ」（依存充足の未完了全件）に変更し、
   返事待ち中の先取り作業（契約書ドラフト・書類準備）を可視化。依存未達は
   ロック表示＋完了不可（StepLockedError）。テスト37件。
+- 2026-07-17: ステップメモ（150文字・一行表示→展開編集）と、着手できる
+  ステップからのジャンプ（スクロール＋ハイライト）を追加。テスト40件。
+- 2026-07-17: Phase 3 完了。英文契約書ひな形（変数ハイライト・DRAFT透かし・
+  未確認リスト刷り込み）、インボイス/PL（共有フォーム→PDF 2種）、港選定
+  （最寄り＋東京の2択）→乙仲リスト→相談メール下書き（コピーのみ・送信なし）、
+  銀行チェックリスト画面。ステップの tool: からツールへリンク。テスト49件。
+  Phase 4（区分B巡回・差分検知）は未着手。

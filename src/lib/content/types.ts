@@ -31,11 +31,18 @@ export interface CriteriaDoc {
   overview: string;
 }
 
+/** ステップに紐づく書類ツール（/projects/[id]/{tool} へのリンク先） */
+export type StepTool = "contract" | "invoice" | "logistics" | "bank";
+
 export interface ProcedureStep {
   id: string;
   layer: 1 | 2 | 3;
   title: string;
+  /** PDF等の英文出力で使う英語タイトル（任意） */
+  titleEn?: string;
   purpose: string;
+  /** 対応する書類ツール（任意） */
+  tool?: StepTool;
   /** "human-confirm" = 官庁確認ゲート（確認結果の入力なしに完了できない） */
   gate?: string;
   /** ゲートステップで提示する質問リスト（md内の q1, q2, ... から収集） */

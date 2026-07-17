@@ -112,6 +112,15 @@ function StepItem({
             </p>
           )}
 
+          {step.tool && (
+            <Link
+              href={`/projects/${project.id}/${step.tool}`}
+              className="mt-2 inline-block text-xs text-teal underline decoration-dotted underline-offset-4"
+            >
+              このステップのツールを開く →
+            </Link>
+          )}
+
           {step.gate && !done && !locked && (
             <div className="mt-3 rounded-lg border border-amber/30 bg-background/60 p-3">
               <p className="text-xs font-semibold text-amber">

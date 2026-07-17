@@ -10,6 +10,7 @@ export interface HistoryEntry {
     | "step-uncomplete"
     | "memo-update"
     | "step-memo-update"
+    | "inputs-update"
     | "hurdle-rejudge";
   stepId?: string;
 }
