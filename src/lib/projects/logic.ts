@@ -20,6 +20,7 @@ export function createProject(args: {
   item: ItemId;
   country: CountryId;
   hurdle: HurdleSnapshot;
+  infoSnapshot?: Record<string, string>;
   now?: number;
 }): Project {
   const now = args.now ?? Date.now();
@@ -35,7 +36,26 @@ export function createProject(args: {
     progress: { completedSteps: [], completionPct: 0 },
     inputs: {},
     stepMemos: {},
+    infoSnapshot: args.infoSnapshot ?? {},
     history: [{ at: now, action: "create" }],
+  };
+}
+
+/**
+ * 地域情報の変更をユーザーが確認した際にスナップショットを更新する。
+ * 自動では更新しない（確認は明示操作のみ。ハードル指数の再判定とは別）。
+ */
+export function acknowledgeInfo(
+  project: Project,
+  snapshot: Record<string, string>,
+  now?: number,
+): Project {
+  const at = now ?? Date.now();
+  return {
+    ...project,
+    infoSnapshot: snapshot,
+    updatedAt: at,
+    history: [...project.history, { at, action: "info-ack" }],
   };
 }
 

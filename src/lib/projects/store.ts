@@ -30,7 +30,12 @@ const LOCAL_KEY = "agri-export-navi/projects";
 
 /** 旧バージョンで保存した案件に後付けフィールドの既定値を補う */
 function normalize(p: Project): Project {
-  return { ...p, inputs: p.inputs ?? {}, stepMemos: p.stepMemos ?? {} };
+  return {
+    ...p,
+    inputs: p.inputs ?? {},
+    stepMemos: p.stepMemos ?? {},
+    infoSnapshot: p.infoSnapshot ?? {},
+  };
 }
 
 class LocalStore implements ProjectStore {

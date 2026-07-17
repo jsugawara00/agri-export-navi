@@ -17,11 +17,14 @@ export default function SaveCta({
   country,
   score,
   grade,
+  infoSnapshot,
 }: {
   item: ItemId;
   country: CountryId;
   score: number;
   grade: Grade;
+  /** 判定時点の地域情報スナップショット（変更検知の基準になる） */
+  infoSnapshot: Record<string, string>;
 }) {
   const router = useRouter();
   const { enabled, user, loading, signIn } = useAuth();
@@ -45,6 +48,7 @@ export default function SaveCta({
           grade,
           snapshotAt: new Date().toISOString().slice(0, 10),
         },
+        infoSnapshot,
       });
       await store.save(project);
       router.push(`/projects/${project.id}`);

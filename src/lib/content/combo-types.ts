@@ -1,6 +1,6 @@
 import type { CountryId, ItemId } from "./catalog";
 import type { ScoreResult } from "@/lib/score/engine";
-import type { ContentMeta, CriteriaAxis, ProcedureStep } from "./types";
+import type { ContentMeta, CountryDoc, CriteriaAxis, ProcedureStep } from "./types";
 
 /**
  * サーバで組み立ててクライアント（ナビ画面・案件一覧）へ渡す、
@@ -15,6 +15,8 @@ export interface ComboData {
   steps: ProcedureStep[];
   result: ScoreResult;
   axisMeta: Record<CriteriaAxis, ContentMeta>;
+  /** 国概要（地域情報ページ・変更検知で使用） */
+  countryDoc: CountryDoc;
 }
 
 export type ComboMap = Record<string, ComboData>;

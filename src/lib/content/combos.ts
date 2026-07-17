@@ -26,6 +26,7 @@ export function buildAllCombos(): ComboMap {
           geopolitical: set.geopolitical.meta,
           logistics: set.logistics.meta,
         },
+        countryDoc: set.country,
       };
     }
   }

@@ -11,7 +11,8 @@ export interface HistoryEntry {
     | "memo-update"
     | "step-memo-update"
     | "inputs-update"
-    | "hurdle-rejudge";
+    | "hurdle-rejudge"
+    | "info-ack";
   stepId?: string;
 }
 
@@ -40,5 +41,7 @@ export interface Project {
   inputs: Record<string, string>;
   /** ステップごとの自由メモ（キーはステップid。1件あたり最大150文字） */
   stepMemos: Record<string, string>;
+  /** 判定時点の地域情報・減点内訳のスナップショット（変更検知用） */
+  infoSnapshot: Record<string, string>;
   history: HistoryEntry[];
 }

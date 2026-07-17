@@ -6,6 +6,7 @@ import { useAuth } from "@/components/auth/AuthProvider";
 import FreshnessBadge from "@/components/FreshnessBadge";
 import { comboKey, type ComboData, type ComboMap } from "@/lib/content/combo-types";
 import type { ProcedureStep } from "@/lib/content/types";
+import { buildInfoSnapshot, diffInfoSnapshot } from "@/lib/projects/info";
 import {
   GateNotConfirmedError,
   STEP_MEMO_MAX,
@@ -293,6 +294,12 @@ export default function ProjectNavClient({
     current.status === "scored" &&
     (current.score !== project.hurdle.score || current.grade !== project.hurdle.grade);
 
+  // 地域情報・減点内訳の変更検知（保存時スナップショットとの比較）
+  const infoChanges = diffInfoSnapshot(
+    project.infoSnapshot,
+    buildInfoSnapshot(combo.countryDoc, combo.result),
+  );
+
   return (
     <div className="space-y-6">
       <div>
@@ -313,8 +320,32 @@ export default function ProjectNavClient({
               ローカル保存モード
             </span>
           )}
+          <Link
+            href={`/projects/${project.id}/info`}
+            className="text-xs text-teal underline decoration-dotted underline-offset-4"
+          >
+            地域情報・判定内訳を見る →
+          </Link>
         </div>
       </div>
+
+      {/* 輸出に関わる情報の変更検知（保存時スナップショットとの差分） */}
+      {infoChanges.length > 0 && (
+        <div className="rounded-xl border border-amber/50 bg-panel p-4 text-sm">
+          <p className="font-semibold text-amber">
+            ⚠ 輸出に関わる情報に変更があります（{infoChanges.length}件）。確認をお願いします
+          </p>
+          <p className="mt-1 text-xs text-dim">
+            変更: {infoChanges.map((c) => c.label).join("、")}
+          </p>
+          <Link
+            href={`/projects/${project.id}/info`}
+            className="mt-2 inline-block rounded border border-amber px-4 py-1.5 text-xs font-semibold text-amber transition hover:bg-amber/10"
+          >
+            地域情報で変更点を確認する →
+          </Link>
+        </div>
+      )}
 
       {changed && current.status === "scored" && (
         <div className="rounded-xl border border-amber/40 bg-panel p-4 text-sm">
@@ -495,6 +526,8 @@ export default function ProjectNavClient({
                 {h.action === "memo-update" && "メモを更新"}
                 {h.action === "step-memo-update" && `ステップメモ更新: ${h.stepId}`}
                 {h.action === "hurdle-rejudge" && "ハードル指数を再判定"}
+                {h.action === "info-ack" && "地域情報の変更を確認"}
+                {h.action === "inputs-update" && "書類の入力値を更新"}
               </li>
             ))}
           </ul>

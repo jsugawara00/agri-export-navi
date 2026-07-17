@@ -87,6 +87,18 @@ This version has breaking changes — APIs, conventions, and file structure may 
 - 同一source_urlを見る複数mdは1フェッチにまとめ、pendingキューがある間は再起票しない
 - 巡回の定期実行（cron等）は運用パターンが見えてから導入する（企画書13章の方針）
 
+## 地域情報の変更検知（infoSnapshot）
+
+- 案件保存時に `buildInfoSnapshot()`（src/lib/projects/info.ts）で国概要6項目＋
+  ハードル指数＋軸別減点項目を project.infoSnapshot に保存
+- ナビ画面で現在値と `diffInfoSnapshot()` 比較 → 差分があれば「輸出に関わる情報に
+  変更があります。確認をお願いします」バナー＋ /projects/[id]/info へ誘導
+- /projects/[id]/info（地域情報・判定内訳）: ナビから常設リンク。変更カードは
+  `.changed-glow`（アンバー脈動）＋「変更あり」バッジ＋「保存時: 旧値」併記
+- スナップショット更新はユーザーの「確認しました」操作のみ（acknowledgeInfo、
+  履歴 info-ack）。ハードル指数の再判定とは独立（点数は無断で差し替えない）
+- 旧バージョンで作った案件（infoSnapshot空）は差分なし扱い＋基準記録ボタンを表示
+
 ## 作業ログ
 
 - 2026-07-17: Phase 1 完了。content雛形（3品目×3カ国＋国情勢3＋航路2＋procedures9＋

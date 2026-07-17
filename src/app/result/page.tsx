@@ -10,6 +10,7 @@ import {
   itemLabel,
 } from "@/lib/content/catalog";
 import { loadCriteriaSet } from "@/lib/content/loader";
+import { buildInfoSnapshot } from "@/lib/projects/info";
 import { computeHurdle } from "@/lib/score/engine";
 import type { ContentMeta } from "@/lib/content/types";
 
@@ -170,6 +171,7 @@ export default async function ResultPage({
               country={countryId}
               score={result.score}
               grade={result.grade}
+              infoSnapshot={buildInfoSnapshot(country, result)}
             />
           </div>
         )}
