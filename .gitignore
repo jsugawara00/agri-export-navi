@@ -39,3 +39,6 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# 巡回スナップショット（再生成可能な状態ファイル）
+/ops/snapshots/

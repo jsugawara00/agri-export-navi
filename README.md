@@ -15,7 +15,15 @@ npm install
 npm run dev    # 開発サーバ
 npm test       # 採点エンジン・content整合性・案件ロジックのテスト
 npm run build  # 本番ビルド
+npm run patrol # 区分B巡回（鮮度チェック＋情報源の差分検知→確認キュー起票）
 ```
+
+## 運用（Phase 4）
+
+`npm run patrol` が情報源ページの変化を検知すると `ops/review-queue/` に
+確認キューが積まれます（`/ops` で一覧表示）。**基準mdの自動書き換えは行いません** —
+反映はキューのチェックリストに沿って必ず運用者が行い、`retrieved_at` と
+`reviewed_by` を更新します。鮮度上限は `content/ops/patrol.md` で管理します。
 
 ## 案件保存（Phase 2）
 

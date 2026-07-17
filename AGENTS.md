@@ -74,6 +74,19 @@ This version has breaking changes — APIs, conventions, and file structure may 
 - メール下書きはテンプレート差し込み（`src/lib/docs/mail.ts`・決定論的）。
   Claude APIによる文面生成はAPIキー設定後の拡張ポイント。送信機能は作らない
 
+## Phase 4 実装メモ
+
+- 巡回は `npm run patrol`（tsx実行）。フロー: 情報源フェッチ→正規化→ハッシュ比較
+  →変化あれば `ops/review-queue/` に確認キューmdを起票。**content/への自動書換は
+  実装していない・してはならない**（反映はキューのチェックリストに沿って人間が行う）
+- 鮮度上限（区分A:30日/B:90日/C:365日）は `content/ops/patrol.md` frontmatterが
+  単一情報源。巡回コアの純関数は `src/lib/ops/patrol.ts`（テスト済み）
+- `/ops` は運用者向け読み取り専用コンソール（pendingキュー＋鮮度テーブル）。
+  公開運用時はアクセス制限が必要（未実装）
+- スナップショット（ops/snapshots/）はgitignore。キューとレポートは追跡する
+- 同一source_urlを見る複数mdは1フェッチにまとめ、pendingキューがある間は再起票しない
+- 巡回の定期実行（cron等）は運用パターンが見えてから導入する（企画書13章の方針）
+
 ## 作業ログ
 
 - 2026-07-17: Phase 1 完了。content雛形（3品目×3カ国＋国情勢3＋航路2＋procedures9＋
@@ -96,4 +109,8 @@ This version has breaking changes — APIs, conventions, and file structure may 
   未確認リスト刷り込み）、インボイス/PL（共有フォーム→PDF 2種）、港選定
   （最寄り＋東京の2択）→乙仲リスト→相談メール下書き（コピーのみ・送信なし）、
   銀行チェックリスト画面。ステップの tool: からツールへリンク。テスト49件。
-  Phase 4（区分B巡回・差分検知）は未着手。
+- 2026-07-17: Phase 4 完了。区分B巡回スクリプト（npm run patrol）: 鮮度チェック＋
+  情報源の差分検知＋確認キュー起票（自動書換なし）。/ops運用コンソール。
+  実フェッチで5情報源のスナップショット取得と、擬似変更→キュー起票→resolved
+  の一連の運用フローを検証済み。テスト58件。区分Aの都度取得（検索時API取得）は
+  安定した公的データソース選定が必要なため未実装（静的md＋巡回でカバー）。
