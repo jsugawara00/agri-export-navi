@@ -13,9 +13,20 @@
 ```bash
 npm install
 npm run dev    # 開発サーバ
-npm test       # 採点エンジン・content整合性テスト
+npm test       # 採点エンジン・content整合性・案件ロジックのテスト
 npm run build  # 本番ビルド
 ```
+
+## 案件保存（Phase 2）
+
+検索結果から「この内容でナビゲートを始める」で案件を保存し、ステップナビ
+（現在地・準備完成度・官庁確認ゲート・リキャップ・今日のTODO）を利用できます。
+
+- **Firebase未設定のまま**でも動作します（案件はブラウザのローカル保存モード）
+- Googleログイン＋クラウド保存を有効にするには、`.env.local.example` を
+  `.env.local` にコピーしてFirebaseプロジェクトの値を設定してください
+  （Firebaseコンソールで Authentication の Googleプロバイダと Firestore を有効化。
+  Firestoreのセキュリティルールで `projects` は `uid` 一致のみ読み書き可にすること）
 
 ※ 本アプリの検疫・制度情報はデモ用の整備値です。最終確認は植物防疫所等の
 公的機関へお願いします。

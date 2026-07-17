@@ -43,6 +43,11 @@ export function validateAll(): string[] {
         if (!step.id || !step.title || !step.purpose || ![1, 2, 3].includes(step.layer)) {
           errors.push(`procedures/${comboName}.md: ステップ ${step.id || "(id無し)"} の定義が不完全です`);
         }
+        if (step.gate && step.questions.length === 0) {
+          errors.push(
+            `procedures/${comboName}.md: ゲートステップ ${step.id} に質問リスト（q1〜）がありません`,
+          );
+        }
       }
 
       const docs: [string, CriteriaDoc][] = [

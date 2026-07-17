@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import DotGlobe, { type FlyTarget } from "@/components/globe/DotGlobe";
 import { COUNTRIES, ITEMS, OTHER_ITEM } from "@/lib/content/catalog";
@@ -27,7 +28,12 @@ export default function Home() {
           <span className="font-semibold text-foreground">Toika</span>
           <span className="mx-2">|</span>農産物輸出ナビ
         </p>
-        <p className="text-xs text-dim">DEMO</p>
+        <div className="flex items-center gap-4">
+          <Link href="/projects" className="text-xs text-teal underline">
+            保存した案件
+          </Link>
+          <p className="text-xs text-dim">DEMO</p>
+        </div>
       </header>
 
       <main className="flex flex-1 flex-col items-center justify-center gap-6 px-6 pb-10">

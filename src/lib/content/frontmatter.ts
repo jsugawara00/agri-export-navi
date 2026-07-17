@@ -46,7 +46,7 @@ export function parseKeyedList(sectionBody: string): Record<string, string>[] {
       entries.push(current);
       continue;
     }
-    const kv = line.match(/^\s+([a-z_]+):\s*(.*)$/);
+    const kv = line.match(/^\s+([a-z0-9_]+):\s*(.*)$/);
     if (kv && current) {
       current[kv[1]] = kv[2].trim();
     }

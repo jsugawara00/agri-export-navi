@@ -36,6 +36,10 @@ export interface ProcedureStep {
   layer: 1 | 2 | 3;
   title: string;
   purpose: string;
+  /** "human-confirm" = 官庁確認ゲート（確認結果の入力なしに完了できない） */
+  gate?: string;
+  /** ゲートステップで提示する質問リスト（md内の q1, q2, ... から収集） */
+  questions: string[];
 }
 
 export interface ProcedureDoc {

@@ -2,7 +2,7 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import FreshnessBadge from "@/components/FreshnessBadge";
 import HurdleCard from "@/components/result/HurdleCard";
-import NavCta from "@/components/result/NavCta";
+import SaveCta from "@/components/result/SaveCta";
 import {
   countryOf,
   isCountryId,
@@ -68,9 +68,14 @@ export default async function ResultPage({
           <span className="font-semibold text-foreground">Toika</span>
           <span className="mx-2">|</span>農産物輸出ナビ
         </Link>
-        <Link href="/" className="text-xs text-teal underline">
-          条件を変えて調べ直す
-        </Link>
+        <div className="flex items-center gap-4">
+          <Link href="/projects" className="text-xs text-teal underline">
+            保存した案件
+          </Link>
+          <Link href="/" className="text-xs text-teal underline">
+            条件を変えて調べ直す
+          </Link>
+        </div>
       </header>
 
       <main className="mx-auto w-full max-w-4xl flex-1 px-6 pb-12">
@@ -155,12 +160,19 @@ export default async function ResultPage({
           </Card>
         </div>
 
-        <div
-          className="rise mt-8"
-          style={{ animationDelay: `${nextDelay()}ms` }}
-        >
-          <NavCta />
-        </div>
+        {result.status === "scored" && (
+          <div
+            className="rise mt-8"
+            style={{ animationDelay: `${nextDelay()}ms` }}
+          >
+            <SaveCta
+              item={item}
+              country={countryId}
+              score={result.score}
+              grade={result.grade}
+            />
+          </div>
+        )}
 
         <p
           className="rise mt-6 text-center text-[11px] leading-relaxed text-dim/80"

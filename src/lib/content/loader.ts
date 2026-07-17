@@ -104,6 +104,11 @@ export function loadProcedure(item: ItemId, country: CountryId): ProcedureDoc {
     layer: Number(e["layer"]) as 1 | 2 | 3,
     title: e["title"] ?? "",
     purpose: e["purpose"] ?? "",
+    gate: e["gate"],
+    questions: Object.keys(e)
+      .filter((k) => /^q\d+$/.test(k))
+      .sort((a, b) => Number(a.slice(1)) - Number(b.slice(1)))
+      .map((k) => e[k]),
   }));
   return { meta, steps };
 }

@@ -1,0 +1,144 @@
+import type { ProcedureStep } from "@/lib/content/types";
+import type { CountryId, ItemId } from "@/lib/content/catalog";
+import type { HurdleSnapshot, Project } from "./types";
+
+/**
+ * 案件操作の純関数群（ストア実装から独立。ユニットテスト対象）。
+ * 準備完成度%はステップ完了で上がる進捗であり、ハードル指数とは別の数字
+ * （企画書 中核設計①: 2軸の数字を混ぜない）。
+ */
+
+export function completionPct(completedSteps: string[], totalSteps: number): number {
+  if (totalSteps <= 0) return 0;
+  const done = completedSteps.length;
+  return Math.round(Math.min(1, done / totalSteps) * 100);
+}
+
+export function createProject(args: {
+  id: string;
+  uid: string | null;
+  item: ItemId;
+  country: CountryId;
+  hurdle: HurdleSnapshot;
+  now?: number;
+}): Project {
+  const now = args.now ?? Date.now();
+  return {
+    id: args.id,
+    uid: args.uid,
+    item: args.item,
+    country: args.country,
+    buyerMemo: "",
+    createdAt: now,
+    updatedAt: now,
+    hurdle: args.hurdle,
+    progress: { completedSteps: [], completionPct: 0 },
+    inputs: {},
+    history: [{ at: now, action: "create" }],
+  };
+}
+
+export class GateNotConfirmedError extends Error {
+  constructor(stepId: string) {
+    super(`ステップ ${stepId} は確認結果の入力なしに完了できません（人間確認ゲート）`);
+  }
+}
+
+/**
+ * ステップ完了/取り消しのトグル。
+ * 官庁確認ゲート（gate付きステップ）は確認結果テキスト未入力での完了を拒否する。
+ */
+export function toggleStep(
+  project: Project,
+  step: ProcedureStep,
+  allSteps: ProcedureStep[],
+  confirmText?: string,
+  now?: number,
+): Project {
+  const at = now ?? Date.now();
+  const completed = project.progress.completedSteps.includes(step.id);
+  let completedSteps: string[];
+  const inputs = { ...project.inputs };
+
+  if (completed) {
+    completedSteps = project.progress.completedSteps.filter((s) => s !== step.id);
+  } else {
+    if (step.gate && !(confirmText ?? "").trim()) {
+      throw new GateNotConfirmedError(step.id);
+    }
+    if (step.gate && confirmText) {
+      inputs[step.id] = confirmText.trim();
+    }
+    completedSteps = [...project.progress.completedSteps, step.id];
+  }
+
+  return {
+    ...project,
+    inputs,
+    updatedAt: at,
+    progress: {
+      completedSteps,
+      completionPct: completionPct(completedSteps, allSteps.length),
+    },
+    history: [
+      ...project.history,
+      { at, action: completed ? "step-uncomplete" : "step-complete", stepId: step.id },
+    ],
+  };
+}
+
+export function updateMemo(project: Project, memo: string, now?: number): Project {
+  const at = now ?? Date.now();
+  return {
+    ...project,
+    buyerMemo: memo,
+    updatedAt: at,
+    history: [...project.history, { at, action: "memo-update" }],
+  };
+}
+
+/** 基準md更新後の再判定（ユーザーが明示的に選んだときだけスナップショットを更新） */
+export function rejudge(project: Project, hurdle: HurdleSnapshot, now?: number): Project {
+  const at = now ?? Date.now();
+  return {
+    ...project,
+    hurdle,
+    updatedAt: at,
+    history: [...project.history, { at, action: "hurdle-rejudge" }],
+  };
+}
+
+/**
+ * step_ref（"apple_taiwan#orchard-registration" または "#logistics-plan"）が
+ * 完了済みステップに対応するか（=ハードル解消済みか）を判定する。
+ */
+export function isStepRefResolved(
+  stepRef: string,
+  comboKey: string,
+  completedSteps: string[],
+): boolean {
+  const [refFile, stepId] = stepRef.split("#");
+  if (!stepId) return false;
+  if (refFile && refFile !== comboKey) return false;
+  return completedSteps.includes(stepId);
+}
+
+/** 再開時リキャップ: 「前回は◯◯まで完了。次は◯◯です」 */
+export function recap(
+  steps: ProcedureStep[],
+  completedSteps: string[],
+): { last: ProcedureStep | null; next: ProcedureStep | null } {
+  const done = steps.filter((s) => completedSteps.includes(s.id));
+  const next = steps.find((s) => !completedSteps.includes(s.id)) ?? null;
+  const last = done.length > 0 ? done[done.length - 1] : null;
+  return { last, next };
+}
+
+/** 今日のTODO: 未完了ステップの先頭から最大count件（層1・層2が自然に混在する） */
+export function todayTodos(
+  steps: ProcedureStep[],
+  completedSteps: string[],
+  count = 3,
+): ProcedureStep[] {
+  return steps.filter((s) => !completedSteps.includes(s.id)).slice(0, count);
+}
