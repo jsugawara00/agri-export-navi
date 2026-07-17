@@ -105,6 +105,10 @@ export function loadProcedure(item: ItemId, country: CountryId): ProcedureDoc {
     title: e["title"] ?? "",
     purpose: e["purpose"] ?? "",
     gate: e["gate"],
+    requires: (e["requires"] ?? "")
+      .split(",")
+      .map((s) => s.trim())
+      .filter(Boolean),
     questions: Object.keys(e)
       .filter((k) => /^q\d+$/.test(k))
       .sort((a, b) => Number(a.slice(1)) - Number(b.slice(1)))

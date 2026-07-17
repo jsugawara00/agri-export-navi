@@ -44,6 +44,20 @@ export class GateNotConfirmedError extends Error {
   }
 }
 
+export class StepLockedError extends Error {
+  constructor(
+    stepId: string,
+    public readonly missing: string[],
+  ) {
+    super(`ステップ ${stepId} は依存ステップ（${missing.join(", ")}）の完了が先に必要です`);
+  }
+}
+
+/** requires（真の依存）がすべて完了していれば着手可能 */
+export function isStepAvailable(step: ProcedureStep, completedSteps: string[]): boolean {
+  return step.requires.every((r) => completedSteps.includes(r));
+}
+
 /**
  * ステップ完了/取り消しのトグル。
  * 官庁確認ゲート（gate付きステップ）は確認結果テキスト未入力での完了を拒否する。
@@ -63,6 +77,12 @@ export function toggleStep(
   if (completed) {
     completedSteps = project.progress.completedSteps.filter((s) => s !== step.id);
   } else {
+    if (!isStepAvailable(step, project.progress.completedSteps)) {
+      throw new StepLockedError(
+        step.id,
+        step.requires.filter((r) => !project.progress.completedSteps.includes(r)),
+      );
+    }
     if (step.gate && !(confirmText ?? "").trim()) {
       throw new GateNotConfirmedError(step.id);
     }
@@ -134,11 +154,15 @@ export function recap(
   return { last, next };
 }
 
-/** 今日のTODO: 未完了ステップの先頭から最大count件（層1・層2が自然に混在する） */
-export function todayTodos(
+/**
+ * いま着手できるステップ: 未完了かつ依存（requires）が満たされたもの全部。
+ * 返事待ちの間に先取りできる並行作業がそのまま並ぶ（直列のTODOにしない）。
+ */
+export function actionableSteps(
   steps: ProcedureStep[],
   completedSteps: string[],
-  count = 3,
 ): ProcedureStep[] {
-  return steps.filter((s) => !completedSteps.includes(s.id)).slice(0, count);
+  return steps.filter(
+    (s) => !completedSteps.includes(s.id) && isStepAvailable(s, completedSteps),
+  );
 }

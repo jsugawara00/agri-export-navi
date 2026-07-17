@@ -34,6 +34,10 @@ retrieved_at: 2026-07-17
   layer: 2
   title: 港・輸送スケジュールを乙仲と相談する
   purpose: 出荷時期と輸送手段を確定し、鮮度と納期を両立させるため
+- id: contract-draft
+  layer: 1
+  title: 英文契約書のひな形を作成する
+  purpose: 取引条件のたたき台を早めに用意し、バイヤーとの認識合わせを進めるため（締結は層3・本アプリの範囲外）
 - id: docs-prepare
   layer: 1
   title: インボイス等の書類を準備する

@@ -40,6 +40,11 @@ export interface ProcedureStep {
   gate?: string;
   /** ゲートステップで提示する質問リスト（md内の q1, q2, ... から収集） */
   questions: string[];
+  /**
+   * 先に完了が必要なステップid（md内の requires: a, b）。
+   * 真に順番が固定される依存のみ書く。無指定のステップはいつでも先取り着手できる。
+   */
+  requires: string[];
 }
 
 export interface ProcedureDoc {

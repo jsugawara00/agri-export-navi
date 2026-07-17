@@ -8,10 +8,11 @@ import { comboKey, type ComboData, type ComboMap } from "@/lib/content/combo-typ
 import type { ProcedureStep } from "@/lib/content/types";
 import {
   GateNotConfirmedError,
+  StepLockedError,
+  actionableSteps,
   isStepRefResolved,
   recap,
   rejudge,
-  todayTodos,
   toggleStep,
   updateMemo,
 } from "@/lib/projects/logic";
@@ -33,13 +34,17 @@ const AXIS_LABEL: Record<string, string> = {
 function StepItem({
   step,
   project,
+  missingTitles,
   onToggle,
 }: {
   step: ProcedureStep;
   project: Project;
+  /** 未完了の依存ステップ名（あればロック表示） */
+  missingTitles: string[];
   onToggle: (step: ProcedureStep, confirmText?: string) => Promise<void>;
 }) {
   const done = project.progress.completedSteps.includes(step.id);
+  const locked = !done && missingTitles.length > 0;
   const [confirmText, setConfirmText] = useState(project.inputs[step.id] ?? "");
   const [error, setError] = useState("");
   const badge = LAYER_BADGE[step.layer];
@@ -51,6 +56,8 @@ function StepItem({
     } catch (e) {
       if (e instanceof GateNotConfirmedError) {
         setError("確認結果を入力してから完了にしてください（人間確認ゲート）");
+      } else if (e instanceof StepLockedError) {
+        setError("先に依存するステップを完了してください");
       } else {
         setError(String(e));
       }
@@ -59,14 +66,15 @@ function StepItem({
 
   return (
     <li
-      className={`rounded-xl border p-4 ${done ? "border-teal/40 bg-teal/5" : "border-line bg-panel"}`}
+      className={`rounded-xl border p-4 ${done ? "border-teal/40 bg-teal/5" : "border-line bg-panel"} ${locked ? "opacity-70" : ""}`}
     >
       <div className="flex items-start gap-3">
         <input
           type="checkbox"
           checked={done}
+          disabled={locked}
           onChange={handleToggle}
-          className="mt-1 h-4 w-4 accent-[#8fd4b8]"
+          className="mt-1 h-4 w-4 accent-[#8fd4b8] disabled:opacity-40"
           aria-label={`${step.title} を${done ? "未完了" : "完了"}にする`}
         />
         <div className="min-w-0 flex-1">
@@ -79,7 +87,13 @@ function StepItem({
           {/* 「何のためにやるか」一行説明（常設） */}
           <p className="mt-1 text-xs leading-relaxed text-dim">{step.purpose}</p>
 
-          {step.gate && !done && (
+          {locked && (
+            <p className="mt-2 text-xs text-amber">
+              🔒 先に「{missingTitles.join("」「")}」を完了すると着手できます
+            </p>
+          )}
+
+          {step.gate && !done && !locked && (
             <div className="mt-3 rounded-lg border border-amber/30 bg-background/60 p-3">
               <p className="text-xs font-semibold text-amber">
                 確認電話の質問リスト（結果を入力するまで次へ進めません）
@@ -181,8 +195,12 @@ export default function ProjectNavClient({
   const steps = combo.steps;
   const completed = project.progress.completedSteps;
   const { last, next } = recap(steps, completed);
-  const todos = todayTodos(steps, completed);
+  const actionable = actionableSteps(steps, completed);
   const pct = project.progress.completionPct;
+  const missingTitlesOf = (step: ProcedureStep) =>
+    step.requires
+      .filter((r) => !completed.includes(r))
+      .map((r) => steps.find((s) => s.id === r)?.title ?? r);
 
   const persist = async (updated: Project) => {
     setProject(updated);
@@ -306,12 +324,15 @@ export default function ProjectNavClient({
         </p>
       </div>
 
-      {/* 今日のTODO */}
-      {todos.length > 0 && (
+      {/* いま着手できるステップ（依存が満たされた未完了。並行の先取りもここに並ぶ） */}
+      {actionable.length > 0 && (
         <div className="rounded-xl border border-line bg-panel p-4">
-          <h2 className="text-sm font-semibold">今日のTODO</h2>
+          <h2 className="text-sm font-semibold">いま着手できるステップ</h2>
+          <p className="mt-1 text-xs text-dim">
+            順番は自由です。確認の返事待ちの間に、契約書や書類の準備を先取りできます。
+          </p>
           <ul className="mt-2 space-y-1.5">
-            {todos.map((t) => (
+            {actionable.map((t) => (
               <li key={t.id} className="flex items-center gap-2 text-sm">
                 <span className="text-teal">→</span>
                 <span>{t.title}</span>
@@ -349,7 +370,13 @@ export default function ProjectNavClient({
         <h2 className="text-sm font-semibold">ステップ</h2>
         <ul className="mt-3 space-y-3">
           {steps.map((s) => (
-            <StepItem key={s.id} step={s} project={project} onToggle={handleToggle} />
+            <StepItem
+              key={s.id}
+              step={s}
+              project={project}
+              missingTitles={missingTitlesOf(s)}
+              onToggle={handleToggle}
+            />
           ))}
         </ul>
       </div>

@@ -48,6 +48,15 @@ export function validateAll(): string[] {
             `procedures/${comboName}.md: ゲートステップ ${step.id} に質問リスト（q1〜）がありません`,
           );
         }
+        for (const req of step.requires) {
+          if (req === step.id) {
+            errors.push(`procedures/${comboName}.md: ステップ ${step.id} が自分自身に依存しています`);
+          } else if (!procedure.steps.some((s) => s.id === req)) {
+            errors.push(
+              `procedures/${comboName}.md: ステップ ${step.id} の requires "${req}" が存在しません`,
+            );
+          }
+        }
       }
 
       const docs: [string, CriteriaDoc][] = [

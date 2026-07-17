@@ -1,18 +1,27 @@
 import { describe, expect, it } from "vitest";
 import {
   GateNotConfirmedError,
+  StepLockedError,
+  actionableSteps,
   completionPct,
   createProject,
+  isStepAvailable,
   isStepRefResolved,
   recap,
   rejudge,
-  todayTodos,
   toggleStep,
 } from "@/lib/projects/logic";
 import type { ProcedureStep } from "@/lib/content/types";
 
 const steps: ProcedureStep[] = [
-  { id: "export-conditions", layer: 1, title: "条件確認", purpose: "全体像把握", questions: [] },
+  {
+    id: "export-conditions",
+    layer: 1,
+    title: "条件確認",
+    purpose: "全体像把握",
+    questions: [],
+    requires: [],
+  },
   {
     id: "gov-confirm",
     layer: 2,
@@ -20,9 +29,32 @@ const steps: ProcedureStep[] = [
     purpose: "最新条件の確認",
     gate: "human-confirm",
     questions: ["条件に変更はないか"],
+    requires: [],
   },
-  { id: "logistics-plan", layer: 2, title: "輸送相談", purpose: "納期両立", questions: [] },
-  { id: "docs-prepare", layer: 1, title: "書類準備", purpose: "通関書類", questions: [] },
+  {
+    id: "logistics-plan",
+    layer: 2,
+    title: "輸送相談",
+    purpose: "納期両立",
+    questions: [],
+    requires: [],
+  },
+  {
+    id: "phytosanitary-cert",
+    layer: 2,
+    title: "検疫証明の検査",
+    purpose: "検疫要件の証明",
+    questions: [],
+    requires: ["gov-confirm"],
+  },
+  {
+    id: "docs-prepare",
+    layer: 1,
+    title: "書類準備",
+    purpose: "通関書類",
+    questions: [],
+    requires: [],
+  },
 ];
 
 function newProject() {
@@ -47,7 +79,7 @@ describe("案件ロジック", () => {
     let p = newProject();
     p = toggleStep(p, steps[0], steps, undefined, 2000);
     expect(p.progress.completedSteps).toEqual(["export-conditions"]);
-    expect(p.progress.completionPct).toBe(25);
+    expect(p.progress.completionPct).toBe(20);
     expect(p.history.at(-1)).toEqual({
       at: 2000,
       action: "step-complete",
@@ -132,11 +164,44 @@ describe("リキャップとTODO", () => {
     );
     expect(r.next).toBeNull();
   });
-  it("今日のTODOは未完了の先頭から最大3件", () => {
-    expect(todayTodos(steps, ["export-conditions"]).map((s) => s.id)).toEqual([
+  it("着手できるステップは未完了かつ依存が満たされたもの全部（並行の先取り込み）", () => {
+    // gov-confirm が未完了でも、依存のない契約書・書類系は並んで着手できる
+    expect(actionableSteps(steps, ["export-conditions"]).map((s) => s.id)).toEqual([
       "gov-confirm",
       "logistics-plan",
       "docs-prepare",
     ]);
+    // gov-confirm 完了で phytosanitary-cert が解放される
+    expect(
+      actionableSteps(steps, ["export-conditions", "gov-confirm"]).map((s) => s.id),
+    ).toEqual(["logistics-plan", "phytosanitary-cert", "docs-prepare"]);
+  });
+});
+
+describe("依存ロック（requires）", () => {
+  it("依存が満たされるまで isStepAvailable は false", () => {
+    const cert = steps.find((s) => s.id === "phytosanitary-cert")!;
+    expect(isStepAvailable(cert, [])).toBe(false);
+    expect(isStepAvailable(cert, ["gov-confirm"])).toBe(true);
+  });
+
+  it("依存未達のステップは完了できない（StepLockedError）", () => {
+    const cert = steps.find((s) => s.id === "phytosanitary-cert")!;
+    const p = newProject();
+    expect(() => toggleStep(p, cert, steps)).toThrow(StepLockedError);
+    try {
+      toggleStep(p, cert, steps);
+    } catch (e) {
+      expect((e as StepLockedError).missing).toEqual(["gov-confirm"]);
+    }
+  });
+
+  it("依存を満たせば完了できる", () => {
+    const gov = steps.find((s) => s.id === "gov-confirm")!;
+    const cert = steps.find((s) => s.id === "phytosanitary-cert")!;
+    let p = newProject();
+    p = toggleStep(p, gov, steps, "7/17に確認。条件変更なし");
+    p = toggleStep(p, cert, steps);
+    expect(p.progress.completedSteps).toEqual(["gov-confirm", "phytosanitary-cert"]);
   });
 });

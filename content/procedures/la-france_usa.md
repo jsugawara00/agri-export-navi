@@ -30,6 +30,7 @@ retrieved_at: 2026-07-17
   layer: 2
   title: 輸出前検査の日程を確保する
   purpose: 検査官立会いの輸出前検査の要件と日程を確定するため
+  requires: systems-approach
 - id: fda-registration
   layer: 2
   title: FDA施設登録と事前通知の運用を確認する
@@ -42,6 +43,10 @@ retrieved_at: 2026-07-17
   layer: 2
   title: 港・輸送スケジュール（温度管理含む）を乙仲と相談する
   purpose: 追熟特性に合わせた温度帯と納期を両立させるため
+- id: contract-draft
+  layer: 1
+  title: 英文契約書のひな形を作成する
+  purpose: 取引条件のたたき台を早めに用意し、バイヤーとの認識合わせを進めるため（締結は層3・本アプリの範囲外）
 - id: docs-prepare
   layer: 1
   title: インボイス等の書類を準備する

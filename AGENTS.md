@@ -47,6 +47,13 @@ This version has breaking changes — APIs, conventions, and file structure may 
   確認結果テキスト未入力だと完了できない
 - ハードル指数は判定時点のスナップショットを案件に保存。基準md更新で現在値と
   差が出たら「再判定しますか？」バナー表示（無断で数字を差し替えない）
+- ステップは直列ではなく依存関係（mdの `requires: a, b`）で管理。依存は真に順番が
+  固定される所のみ（例: 園地登録→検疫証明、施設登録→輸出前検査）。依存のない
+  ステップ（contract-draft / docs-prepare 等）はいつでも先取り着手できる。
+  UIの「いま着手できるステップ」= 未完了かつ依存充足の全件（並行作業を可視化）
+- 契約書は「ひな形作成（contract-draft・層1）」と「締結（層3・範囲外）」を分離。
+  Phase 3のPDF生成では確認系ステップ未完了の間はDRAFT透かし＋未確認リストを
+  刷り込む方針（書類自体に警告を背負わせる）
 - クライアントへは `buildAllCombos()`（server-only）の結果をpropsで渡す。
   型と `comboKey` は client からも使うため `combo-types.ts` に分離
 
@@ -62,3 +69,7 @@ This version has breaking changes — APIs, conventions, and file structure may 
   内訳のハードル解消反映・再判定バナー・バイヤーメモ）。テスト34件。
   Firestoreセキュリティルールの整備とE2Eテストは未着手（Firebase実接続が前提）。
   Phase 3（PDF生成・乙仲リスト・メール下書き）は未着手。
+- 2026-07-17: ステップ依存関係（requires）＋contract-draftステップを追加。
+  「今日のTODO」を「いま着手できるステップ」（依存充足の未完了全件）に変更し、
+  返事待ち中の先取り作業（契約書ドラフト・書類準備）を可視化。依存未達は
+  ロック表示＋完了不可（StepLockedError）。テスト37件。
