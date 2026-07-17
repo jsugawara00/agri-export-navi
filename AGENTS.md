@@ -126,3 +126,10 @@ This version has breaking changes — APIs, conventions, and file structure may 
   実フェッチで5情報源のスナップショット取得と、擬似変更→キュー起票→resolved
   の一連の運用フローを検証済み。テスト58件。区分Aの都度取得（検索時API取得）は
   安定した公的データソース選定が必要なため未実装（静的md＋巡回でカバー）。
+- 2026-07-17: 実ブラウザ全体検証（Playwright・50項目PASS）。手順を
+  .claude/skills/verify/SKILL.md に記録。地域情報ページ＋変更検知
+  （infoSnapshot比較・変更カードの脈動ハイライト・確認操作で解除）を追加。
+  全ステップにツール導線（専用4ツール＋content/guides/の15ガイド）。テスト65件。
+- 次回（完成に向けた候補）: ①Vercelデプロイ（外から触れるデモ化。Firebase使う
+  なら環境変数設定）②ガイド・content文面の推敲 ③トップ/結果画面の演出磨き込み
+  ④READMEのデモ手順整備 ⑤（任意）/opsのアクセス制限、日本語PDFフォント検討。
