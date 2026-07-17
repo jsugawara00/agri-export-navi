@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import {
   GateNotConfirmedError,
+  STEP_MEMO_MAX,
   StepLockedError,
   actionableSteps,
   completionPct,
@@ -10,6 +11,7 @@ import {
   recap,
   rejudge,
   toggleStep,
+  updateStepMemo,
 } from "@/lib/projects/logic";
 import type { ProcedureStep } from "@/lib/content/types";
 
@@ -114,6 +116,32 @@ describe("案件ロジック", () => {
     p = rejudge(p, { score: 80, grade: "B", snapshotAt: "2026-08-01" }, 3000);
     expect(p.hurdle.score).toBe(80);
     expect(p.history.at(-1)).toEqual({ at: 3000, action: "hurdle-rejudge" });
+  });
+});
+
+describe("ステップメモ", () => {
+  it("メモを保存でき、履歴が残る", () => {
+    let p = newProject();
+    p = updateStepMemo(p, "gov-confirm", "7/17 佐藤さんに電話。折返し待ち", 5000);
+    expect(p.stepMemos["gov-confirm"]).toBe("7/17 佐藤さんに電話。折返し待ち");
+    expect(p.history.at(-1)).toEqual({
+      at: 5000,
+      action: "step-memo-update",
+      stepId: "gov-confirm",
+    });
+  });
+
+  it("150文字を超える分は切り詰める", () => {
+    let p = newProject();
+    p = updateStepMemo(p, "docs-prepare", "あ".repeat(200));
+    expect(p.stepMemos["docs-prepare"]).toHaveLength(STEP_MEMO_MAX);
+  });
+
+  it("空文字で保存するとメモが消える", () => {
+    let p = newProject();
+    p = updateStepMemo(p, "docs-prepare", "一時メモ");
+    p = updateStepMemo(p, "docs-prepare", "  ");
+    expect(p.stepMemos["docs-prepare"]).toBeUndefined();
   });
 });
 

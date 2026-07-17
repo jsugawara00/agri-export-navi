@@ -28,13 +28,19 @@ export interface ProjectStore {
 
 const LOCAL_KEY = "agri-export-navi/projects";
 
+/** 旧バージョンで保存した案件に後付けフィールドの既定値を補う */
+function normalize(p: Project): Project {
+  return { ...p, inputs: p.inputs ?? {}, stepMemos: p.stepMemos ?? {} };
+}
+
 class LocalStore implements ProjectStore {
   mode = "local" as const;
 
   private read(): Project[] {
     if (typeof window === "undefined") return [];
     try {
-      return JSON.parse(window.localStorage.getItem(LOCAL_KEY) ?? "[]") as Project[];
+      const list = JSON.parse(window.localStorage.getItem(LOCAL_KEY) ?? "[]") as Project[];
+      return list.map(normalize);
     } catch {
       return [];
     }
@@ -74,14 +80,14 @@ class FirestoreStore implements ProjectStore {
   async list(): Promise<Project[]> {
     const snap = await getDocs(query(this.col(), where("uid", "==", this.uid)));
     return snap.docs
-      .map((d) => d.data() as Project)
+      .map((d) => normalize(d.data() as Project))
       .sort((a, b) => b.updatedAt - a.updatedAt);
   }
 
   async get(id: string): Promise<Project | null> {
     const snap = await getDoc(doc(this.col(), id));
     if (!snap.exists()) return null;
-    const project = snap.data() as Project;
+    const project = normalize(snap.data() as Project);
     return project.uid === this.uid ? project : null;
   }
 

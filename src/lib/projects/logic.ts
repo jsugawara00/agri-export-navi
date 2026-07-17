@@ -34,7 +34,34 @@ export function createProject(args: {
     hurdle: args.hurdle,
     progress: { completedSteps: [], completionPct: 0 },
     inputs: {},
+    stepMemos: {},
     history: [{ at: now, action: "create" }],
+  };
+}
+
+/** ステップメモの最大文字数（保存容量と一覧性のための上限） */
+export const STEP_MEMO_MAX = 150;
+
+/** ステップごとの自由メモを更新する（150文字に切り詰め。空なら削除） */
+export function updateStepMemo(
+  project: Project,
+  stepId: string,
+  memo: string,
+  now?: number,
+): Project {
+  const at = now ?? Date.now();
+  const trimmed = memo.trim().slice(0, STEP_MEMO_MAX);
+  const stepMemos = { ...project.stepMemos };
+  if (trimmed) {
+    stepMemos[stepId] = trimmed;
+  } else {
+    delete stepMemos[stepId];
+  }
+  return {
+    ...project,
+    stepMemos,
+    updatedAt: at,
+    history: [...project.history, { at, action: "step-memo-update", stepId }],
   };
 }
 

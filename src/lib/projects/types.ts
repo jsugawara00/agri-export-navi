@@ -9,6 +9,7 @@ export interface HistoryEntry {
     | "step-complete"
     | "step-uncomplete"
     | "memo-update"
+    | "step-memo-update"
     | "hurdle-rejudge";
   stepId?: string;
 }
@@ -36,5 +37,7 @@ export interface Project {
   };
   /** 書類用入力値・官庁確認結果など（キーはステップid等） */
   inputs: Record<string, string>;
+  /** ステップごとの自由メモ（キーはステップid。1件あたり最大150文字） */
+  stepMemos: Record<string, string>;
   history: HistoryEntry[];
 }

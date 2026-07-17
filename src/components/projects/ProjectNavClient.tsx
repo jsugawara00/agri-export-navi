@@ -8,6 +8,7 @@ import { comboKey, type ComboData, type ComboMap } from "@/lib/content/combo-typ
 import type { ProcedureStep } from "@/lib/content/types";
 import {
   GateNotConfirmedError,
+  STEP_MEMO_MAX,
   StepLockedError,
   actionableSteps,
   isStepRefResolved,
@@ -15,6 +16,7 @@ import {
   rejudge,
   toggleStep,
   updateMemo,
+  updateStepMemo,
 } from "@/lib/projects/logic";
 import { resolveStore, type ProjectStore } from "@/lib/projects/store";
 import type { Project } from "@/lib/projects/types";
@@ -36,18 +38,31 @@ function StepItem({
   project,
   missingTitles,
   onToggle,
+  onMemo,
 }: {
   step: ProcedureStep;
   project: Project;
   /** 未完了の依存ステップ名（あればロック表示） */
   missingTitles: string[];
   onToggle: (step: ProcedureStep, confirmText?: string) => Promise<void>;
+  onMemo: (step: ProcedureStep, memo: string) => Promise<void>;
 }) {
   const done = project.progress.completedSteps.includes(step.id);
   const locked = !done && missingTitles.length > 0;
   const [confirmText, setConfirmText] = useState(project.inputs[step.id] ?? "");
   const [error, setError] = useState("");
+  const memo = project.stepMemos[step.id] ?? "";
+  const [memoEditing, setMemoEditing] = useState(false);
+  const [memoDraft, setMemoDraft] = useState("");
   const badge = LAYER_BADGE[step.layer];
+
+  const saveMemo = async () => {
+    setMemoEditing(false);
+    const next = memoDraft.trim().slice(0, STEP_MEMO_MAX);
+    if (next !== memo) {
+      await onMemo(step, next);
+    }
+  };
 
   const handleToggle = async () => {
     setError("");
@@ -117,6 +132,41 @@ function StepItem({
               確認結果: {project.inputs[step.id]}
             </p>
           )}
+
+          {/* ステップメモ: 一行表示（あふれは…省略）→クリックで展開編集 */}
+          {memoEditing ? (
+            <div className="mt-2">
+              <textarea
+                value={memoDraft}
+                onChange={(e) => setMemoDraft(e.target.value.slice(0, STEP_MEMO_MAX))}
+                onBlur={saveMemo}
+                autoFocus
+                rows={3}
+                maxLength={STEP_MEMO_MAX}
+                placeholder="このステップのメモ（担当者名・電話した日・気づき等）"
+                className="w-full rounded border border-line bg-background/60 px-2 py-1.5 text-xs leading-relaxed focus:border-teal focus:outline-none"
+              />
+              <p className="text-right text-[10px] text-dim/70">
+                {memoDraft.length} / {STEP_MEMO_MAX}
+              </p>
+            </div>
+          ) : (
+            <button
+              onClick={() => {
+                setMemoDraft(memo);
+                setMemoEditing(true);
+              }}
+              className="mt-1.5 block w-full truncate text-left text-xs"
+              title={memo || "メモを追加"}
+            >
+              {memo ? (
+                <span className="text-dim">📝 {memo}</span>
+              ) : (
+                <span className="text-dim/50">＋ メモを追加</span>
+              )}
+            </button>
+          )}
+
           {error && <p className="mt-2 text-xs text-red-400">{error}</p>}
         </div>
       </div>
@@ -209,6 +259,10 @@ export default function ProjectNavClient({
 
   const handleToggle = async (step: ProcedureStep, confirmText?: string) => {
     await persist(toggleStep(project, step, steps, confirmText));
+  };
+
+  const handleMemo = async (step: ProcedureStep, memo: string) => {
+    await persist(updateStepMemo(project, step.id, memo));
   };
 
   // 基準mdが更新されてスナップショットと差が出た場合のみ再判定を提案（無断で差し替えない）
@@ -376,6 +430,7 @@ export default function ProjectNavClient({
               project={project}
               missingTitles={missingTitlesOf(s)}
               onToggle={handleToggle}
+              onMemo={handleMemo}
             />
           ))}
         </ul>
@@ -407,6 +462,7 @@ export default function ProjectNavClient({
                 {h.action === "step-complete" && `ステップ完了: ${h.stepId}`}
                 {h.action === "step-uncomplete" && `ステップ取り消し: ${h.stepId}`}
                 {h.action === "memo-update" && "メモを更新"}
+                {h.action === "step-memo-update" && `ステップメモ更新: ${h.stepId}`}
                 {h.action === "hurdle-rejudge" && "ハードル指数を再判定"}
               </li>
             ))}
