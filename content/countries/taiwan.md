@@ -1,0 +1,26 @@
+---
+freshness: A
+source: 外務省 基礎データ／海外安全ホームページ
+source_url: https://www.mofa.go.jp/mofaj/area/taiwan/
+retrieved_at: 2026-07-17
+name_ja: 台湾
+route: east-china-sea
+population: 約2,340万人
+currency: 新台湾ドル（TWD）
+language: 中国語（繁体字）
+safety_level: 0
+---
+
+## 治安
+
+外務省の危険情報は現在レベル指定なし。渡航・取引の際は最新情報の確認を。
+
+## 検疫概要
+
+生果実は品目ごとに検疫条件が定められており、りんご・西洋なし等は生産園地
+登録と植物検疫証明書が必要。精米は残留農薬基準への適合確認が中心。
+
+## EPA・関税
+
+日台間に発効済みのEPA・FTAはない。関税率は品目ごとに異なり、米は関税
+割当制度の対象。最新の税率は財政部関務署等の公表資料で確認が必要。

@@ -1,0 +1,19 @@
+---
+freshness: C
+source: 山形県公表資料をもとに手動整備
+retrieved_at: 2026-07-17
+name_ja: 山形県
+items: rice, apple, la-france
+ports: sakata, sendai-shiogama, niigata, tokyo
+---
+
+## 特産品
+
+- 米（つや姫・雪若丸 ほか）
+- りんご
+- ラ・フランス（西洋なし）
+
+## 輸出に使いやすい港
+
+最寄り港: 酒田港・仙台塩釜港・新潟港。定期航路の選択肢が広い東京港も候補。
+港選定は「最寄り港＋東京港の2択方式」で比較する（Phase 3で乙仲リスト提示）。

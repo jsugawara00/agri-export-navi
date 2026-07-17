@@ -1,65 +1,118 @@
-import Image from "next/image";
+"use client";
+
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import DotGlobe, { type FlyTarget } from "@/components/globe/DotGlobe";
+import { COUNTRIES, ITEMS, OTHER_ITEM } from "@/lib/content/catalog";
 
 export default function Home() {
+  const router = useRouter();
+  const [item, setItem] = useState("");
+  const [country, setCountry] = useState("");
+  const [flyTarget, setFlyTarget] = useState<FlyTarget | null>(null);
+
+  const isOther = item === OTHER_ITEM.id;
+  const canSearch = item !== "" && !isOther && country !== "" && !flyTarget;
+
+  const handleSearch = () => {
+    if (!canSearch) return;
+    const c = COUNTRIES.find((c) => c.id === country)!;
+    setFlyTarget({ lat: c.lat, lng: c.lng });
+  };
+
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
+    <div className="flex min-h-screen flex-col">
+      <header className="flex items-center justify-between px-6 py-4">
+        <p className="text-sm tracking-widest text-dim">
+          <span className="font-semibold text-foreground">Toika</span>
+          <span className="mx-2">|</span>農産物輸出ナビ
+        </p>
+        <p className="text-xs text-dim">DEMO</p>
+      </header>
+
+      <main className="flex flex-1 flex-col items-center justify-center gap-6 px-6 pb-10">
+        <div className="text-center">
+          <h1 className="text-2xl font-bold tracking-wide sm:text-4xl">
+            調べる数ヶ月を、確かめる数分に。
           </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
+          <p className="mt-3 text-sm text-dim sm:text-base">
+            その一箱を、世界の食卓へ
           </p>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+
+        <div className="relative h-[52vmin] w-[52vmin] min-h-64 min-w-64">
+          <DotGlobe
+            flyTarget={flyTarget}
+            onDone={() => router.push(`/result?item=${item}&country=${country}`)}
+          />
+        </div>
+
+        <div
+          className="flex w-full max-w-2xl flex-col items-center gap-4"
+          style={{
+            opacity: flyTarget ? 0 : 1,
+            transition: "opacity 400ms ease-out",
+          }}
+        >
+          <div className="flex w-full flex-col gap-3 sm:flex-row">
+            <select
+              value={item}
+              onChange={(e) => setItem(e.target.value)}
+              className="flex-1 rounded-lg border border-line bg-panel px-4 py-3 text-sm focus:border-teal focus:outline-none"
+              aria-label="品目を選択"
+            >
+              <option value="">品目を選択</option>
+              {ITEMS.map((i) => (
+                <option key={i.id} value={i.id}>
+                  {i.label}
+                </option>
+              ))}
+              <option value={OTHER_ITEM.id}>{OTHER_ITEM.label}</option>
+            </select>
+            <select
+              value={country}
+              onChange={(e) => setCountry(e.target.value)}
+              className="flex-1 rounded-lg border border-line bg-panel px-4 py-3 text-sm focus:border-teal focus:outline-none"
+              aria-label="輸出先の国・地域を選択"
+            >
+              <option value="">輸出先の国・地域を選択</option>
+              {COUNTRIES.map((c) => (
+                <option key={c.id} value={c.id}>
+                  {c.label}
+                </option>
+              ))}
+            </select>
+            <button
+              onClick={handleSearch}
+              disabled={!canSearch}
+              className="rounded-lg bg-teal px-6 py-3 text-sm font-semibold text-background transition disabled:opacity-30 sm:whitespace-nowrap"
+            >
+              調べる
+            </button>
+          </div>
+
+          {isOther && (
+            <div className="rise w-full rounded-lg border border-line bg-panel p-4 text-sm leading-relaxed text-dim">
+              その他の品目は個別にご相談を承ります。本デモは山形県産の
+              米・りんご・ラ・フランスを対象としています。貴自治体・貴社の
+              特産品を盛り込んだ再設計のご相談は、下記の相談窓口からお寄せください。
+            </div>
+          )}
         </div>
       </main>
+
+      <footer className="border-t border-line px-6 py-5 text-center">
+        <p className="mx-auto max-w-2xl text-xs leading-relaxed text-dim">
+          本アプリは山形県産の米・りんご・ラ・フランスを対象としたデモンストレーションです。
+          貴自治体・貴社の特産品を盛り込んだ再設計のご相談を承ります。
+          <a href="mailto:sugaron777@gmail.com" className="ml-2 text-teal underline">
+            ご相談はこちら
+          </a>
+        </p>
+        <p className="mt-2 text-[11px] text-dim/70">
+          検疫・制度情報の最終確認は植物防疫所等の公的機関へお願いします。
+        </p>
+      </footer>
     </div>
   );
 }
