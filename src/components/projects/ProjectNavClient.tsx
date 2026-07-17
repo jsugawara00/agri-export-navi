@@ -39,6 +39,7 @@ function StepItem({
   missingTitles,
   onToggle,
   onMemo,
+  highlighted,
 }: {
   step: ProcedureStep;
   project: Project;
@@ -46,6 +47,8 @@ function StepItem({
   missingTitles: string[];
   onToggle: (step: ProcedureStep, confirmText?: string) => Promise<void>;
   onMemo: (step: ProcedureStep, memo: string) => Promise<void>;
+  /** 「いま着手できるステップ」からジャンプした直後のハイライト */
+  highlighted: boolean;
 }) {
   const done = project.progress.completedSteps.includes(step.id);
   const locked = !done && missingTitles.length > 0;
@@ -81,7 +84,8 @@ function StepItem({
 
   return (
     <li
-      className={`rounded-xl border p-4 ${done ? "border-teal/40 bg-teal/5" : "border-line bg-panel"} ${locked ? "opacity-70" : ""}`}
+      id={`step-${step.id}`}
+      className={`rounded-xl border p-4 transition-shadow duration-500 scroll-mt-24 ${done ? "border-teal/40 bg-teal/5" : "border-line bg-panel"} ${locked ? "opacity-70" : ""} ${highlighted ? "ring-2 ring-teal/70" : ""}`}
     >
       <div className="flex items-start gap-3">
         <input
@@ -187,6 +191,15 @@ export default function ProjectNavClient({
   const [memoDraft, setMemoDraft] = useState<string | null>(null);
   const [showBreakdown, setShowBreakdown] = useState(false);
   const [showHistory, setShowHistory] = useState(false);
+  const [highlightId, setHighlightId] = useState<string | null>(null);
+
+  const jumpToStep = (stepId: string) => {
+    document
+      .getElementById(`step-${stepId}`)
+      ?.scrollIntoView({ behavior: "smooth", block: "center" });
+    setHighlightId(stepId);
+    window.setTimeout(() => setHighlightId(null), 1600);
+  };
 
   const uid = user?.uid ?? null;
   const store: ProjectStore | null = useMemo(
@@ -381,20 +394,28 @@ export default function ProjectNavClient({
       {/* いま着手できるステップ（依存が満たされた未完了。並行の先取りもここに並ぶ） */}
       {actionable.length > 0 && (
         <div className="rounded-xl border border-line bg-panel p-4">
-          <h2 className="text-sm font-semibold">いま着手できるステップ</h2>
+          <h2 className="text-sm font-semibold">いま着手できるステップ（着手中のステップ）</h2>
           <p className="mt-1 text-xs text-dim">
             順番は自由です。確認の返事待ちの間に、契約書や書類の準備を先取りできます。
+            クリックでそのステップへ移動します。
           </p>
           <ul className="mt-2 space-y-1.5">
             {actionable.map((t) => (
-              <li key={t.id} className="flex items-center gap-2 text-sm">
-                <span className="text-teal">→</span>
-                <span>{t.title}</span>
-                <span
-                  className={`rounded border px-1.5 py-0.5 text-[10px] ${LAYER_BADGE[t.layer].cls}`}
+              <li key={t.id}>
+                <button
+                  onClick={() => jumpToStep(t.id)}
+                  className="group flex w-full items-center gap-2 rounded px-1 py-0.5 text-left text-sm hover:bg-background/60"
                 >
-                  {LAYER_BADGE[t.layer].label}
-                </span>
+                  <span className="text-teal">→</span>
+                  <span className="underline decoration-dotted underline-offset-4 group-hover:text-teal">
+                    {t.title}
+                  </span>
+                  <span
+                    className={`rounded border px-1.5 py-0.5 text-[10px] ${LAYER_BADGE[t.layer].cls}`}
+                  >
+                    {LAYER_BADGE[t.layer].label}
+                  </span>
+                </button>
               </li>
             ))}
           </ul>
@@ -431,6 +452,7 @@ export default function ProjectNavClient({
               missingTitles={missingTitlesOf(s)}
               onToggle={handleToggle}
               onMemo={handleMemo}
+              highlighted={highlightId === s.id}
             />
           ))}
         </ul>
