@@ -83,7 +83,8 @@ This version has breaking changes — APIs, conventions, and file structure may 
   単一情報源。巡回コアの純関数は `src/lib/ops/patrol.ts`（テスト済み）
 - `/ops` は運用者向け読み取り専用コンソール（pendingキュー＋鮮度テーブル）。
   公開運用時はアクセス制限が必要（未実装）
-- スナップショット（ops/snapshots/）はgitignore。キューとレポートは追跡する
+- スナップショット（ops/snapshots/）もgit追跡する（週次のクラウド巡回エージェントが
+  前回との差分を取る基準になるため。2026-07-18にgitignoreから外した）
 - 同一source_urlを見る複数mdは1フェッチにまとめ、pendingキューがある間は再起票しない
 - 巡回の定期実行（cron等）は運用パターンが見えてから導入する（企画書13章の方針）
 
