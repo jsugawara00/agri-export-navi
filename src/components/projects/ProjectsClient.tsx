@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, type MouseEvent } from "react";
 import Link from "next/link";
 import { useAuth } from "@/components/auth/AuthProvider";
 import { comboKey, type ComboMap } from "@/lib/content/combo-types";
@@ -16,6 +16,23 @@ export default function ProjectsClient({ combos }: { combos: ComboMap }) {
   const [projects, setProjects] = useState<Project[] | null>(null);
 
   const uid = user?.uid ?? null;
+  const [deletingId, setDeletingId] = useState<string | null>(null);
+
+  async function handleDelete(e: MouseEvent, id: string) {
+    // カード全体がLinkのため、遷移させずに削除だけ行う
+    e.preventDefault();
+    e.stopPropagation();
+    if (!window.confirm("この案件を削除します。元に戻せません。よろしいですか？")) return;
+    const store = resolveStore(uid);
+    if (!store) return;
+    setDeletingId(id);
+    try {
+      await store.remove(id);
+      setProjects((prev) => (prev ? prev.filter((p) => p.id !== id) : prev));
+    } finally {
+      setDeletingId(null);
+    }
+  }
 
   useEffect(() => {
     if (loading) return;
@@ -78,7 +95,16 @@ export default function ProjectsClient({ combos }: { combos: ComboMap }) {
               <p className="text-base font-semibold">
                 {combo ? `${combo.itemLabel} × ${combo.countryLabel}` : `${p.item} × ${p.country}`}
               </p>
-              <p className="text-xs text-dim">最終更新 {fmtDate(p.updatedAt)}</p>
+              <span className="flex items-baseline gap-3">
+                <p className="text-xs text-dim">最終更新 {fmtDate(p.updatedAt)}</p>
+                <button
+                  onClick={(e) => handleDelete(e, p.id)}
+                  disabled={deletingId === p.id}
+                  className="text-xs text-dim underline hover:text-red-400 disabled:opacity-50"
+                >
+                  {deletingId === p.id ? "削除中…" : "削除"}
+                </button>
+              </span>
             </div>
             <div className="mt-2 flex flex-wrap items-center gap-4 text-sm">
               <span>
