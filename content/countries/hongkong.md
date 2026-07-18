@@ -2,7 +2,7 @@
 freshness: A
 source: 外務省 基礎データ／海外安全ホームページ
 source_url: https://www.mofa.go.jp/mofaj/area/hongkong/
-retrieved_at: 2026-07-17
+retrieved_at: 2026-07-18
 name_ja: 香港
 route: east-china-sea
 population: 約750万人
