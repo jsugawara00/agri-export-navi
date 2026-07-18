@@ -5,12 +5,13 @@ import type { Thresholds, WatchTarget } from "./patrol";
 
 const CONTENT_DIR = path.join(process.cwd(), "content");
 
-/** 巡回対象: 鮮度メタデータを持つ採点md・国概要md */
+/** 巡回対象: 鮮度メタデータを持つ採点md・国概要md・ステップガイドmd */
 const WATCH_DIRS = [
   "criteria/institutional",
   "criteria/geopolitical",
   "criteria/logistics",
   "countries",
+  "guides",
 ];
 
 export function collectTargets(): WatchTarget[] {

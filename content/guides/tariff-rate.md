@@ -1,6 +1,7 @@
 ---
 freshness: C
-source: 台湾財政部関務署の公表資料・JETROをもとに手動整備（雛形）
+source: JETRO 台湾・輸入品目規制/関税ページ等をもとに手動整備（雛形）
+source_url: https://www.jetro.go.jp/world/asia/tw/trade_02.html
 retrieved_at: 2026-07-18
 title: 適用関税率を確認する
 ---
