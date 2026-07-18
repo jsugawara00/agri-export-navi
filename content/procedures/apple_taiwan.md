@@ -14,6 +14,10 @@ retrieved_at: 2026-07-17
   layer: 2
   title: 生産園地登録を申請する
   purpose: 相手国が求める登録園地からの出荷であることを証明するため
+- id: tariff-rate
+  layer: 2
+  title: 適用関税率を確認する
+  purpose: 一般関税率を確認して採算を見極めるため（日台間にEPAはなく特恵手続きは無い）
 - id: gov-confirm
   layer: 2
   title: 植物防疫所に最新条件を電話で確認する

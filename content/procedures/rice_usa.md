@@ -18,6 +18,10 @@ retrieved_at: 2026-07-17
   layer: 2
   title: 重金属の検査データを取得する
   purpose: カドミウム等の分析データを準備し、バイヤー要求に応えるため
+- id: tariff-preference
+  layer: 2
+  title: 適用税率と日米貿易協定の適用可否を確認する
+  purpose: 一般税率と協定対象かを確認し、特恵を使う場合の原産地申告の要件まで把握するため
 - id: gov-confirm
   layer: 2
   title: 植物防疫所に最新条件を電話で確認する
