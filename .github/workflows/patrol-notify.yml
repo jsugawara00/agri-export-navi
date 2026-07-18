@@ -25,20 +25,26 @@ jobs:
       - name: 新しい巡回PRの通知（メンション→メール）
         if: github.event_name == 'pull_request' && contains(github.event.pull_request.title, '[patrol]')
         run: |
-          gh pr comment ${{ github.event.pull_request.number }} --repo ${{ github.repository }} --body "@${OPERATOR} 巡回PRが起票されました。
-
-■ 承認する場合 → このPRを **Merge**（自動でサイトに反映されます）
-■ 相談する場合 → マージせず、手元のClaude Codeで「巡回PRを一緒に確認して」と伝えてください"
+          {
+            echo "@${OPERATOR} 巡回PRが起票されました。"
+            echo ""
+            echo "■ 承認する場合 → このPRを **Merge**（自動でサイトに反映されます）"
+            echo "■ 相談する場合 → マージせず、手元のClaude Codeで「巡回PRを一緒に確認して」と伝えてください"
+          } > body.md
+          gh pr comment ${{ github.event.pull_request.number }} --repo ${{ github.repository }} --body-file body.md
 
       - name: 放置中の巡回PRへ週次リマインド（メンション→メール）
         if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
         run: |
+          {
+            echo "@${OPERATOR} 未対応の巡回PRが残っています。"
+            echo ""
+            echo "■ 承認する場合 → このPRを **Merge**（自動でサイトに反映されます）"
+            echo "■ 相談する場合 → マージせず、手元のClaude Codeで「巡回PRを一緒に確認して」と伝えてください"
+          } > body.md
           gh pr list --repo ${{ github.repository }} --state open --json number,title \
-            -q '.[] | select(.title | contains("[patrol]")) | .number' | while read -r n; do
-            gh pr comment "$n" --repo ${{ github.repository }} --body "@${OPERATOR} 未対応の巡回PRが残っています。
-
-■ 承認する場合 → このPRを **Merge**（自動でサイトに反映されます）
-■ 相談する場合 → マージせず、手元のClaude Codeで「巡回PRを一緒に確認して」と伝えてください"
+            --jq '.[] | select(.title | contains("[patrol]")) | .number' | while read -r n; do
+            gh pr comment "$n" --repo ${{ github.repository }} --body-file body.md
           done
 
       - name: リポジトリ取得（30日チェック用）
@@ -56,8 +62,12 @@ jobs:
           if [ "$days" -lt 30 ]; then exit 0; fi
           title="巡回リマインド: 前回の巡回から30日以上経過"
           exists=$(gh issue list --repo ${{ github.repository }} --state open --json title \
-            -q ".[] | select(.title == \"$title\") | .title")
+            --jq ".[] | select(.title == \"$title\") | .title")
           if [ -n "$exists" ]; then echo "open reminder already exists"; exit 0; fi
-          gh issue create --repo ${{ github.repository }} --title "$title" --body "@${OPERATOR} 前回の巡回（$last）から${days}日が経過しています。
-
-手元のClaude Codeで「巡回して」と伝えれば、巡回から修正案PRの起票までが実行されます（外務省系のページは手元PCからしか取得できないため、この操作だけは人の手が必要です）。"
+          {
+            echo "@${OPERATOR} 前回の巡回（$last）から${days}日が経過しています。"
+            echo ""
+            echo "手元のClaude Codeで「巡回して」と伝えれば、巡回から修正案PRの起票までが実行されます"
+            echo "（外務省系のページは手元PCからしか取得できないため、この操作だけは人の手が必要です）。"
+          } > issue-body.md
+          gh issue create --repo ${{ github.repository }} --title "$title" --body-file issue-body.md
