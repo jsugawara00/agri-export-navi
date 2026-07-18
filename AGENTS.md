@@ -131,6 +131,23 @@ This version has breaking changes — APIs, conventions, and file structure may 
   .claude/skills/verify/SKILL.md に記録。地域情報ページ＋変更検知
   （infoSnapshot比較・変更カードの脈動ハイライト・確認操作で解除）を追加。
   全ステップにツール導線（専用4ツール＋content/guides/の15ガイド）。テスト65件。
-- 次回（完成に向けた候補）: ①Vercelデプロイ（外から触れるデモ化。Firebase使う
-  なら環境変数設定）②ガイド・content文面の推敲 ③トップ/結果画面の演出磨き込み
-  ④READMEのデモ手順整備 ⑤（任意）/opsのアクセス制限、日本語PDFフォント検討。
+- 2026-07-18: 本番公開日。Vercelデプロイ（https://agri-export-navi.vercel.app）、
+  GitHub非公開リポジトリ作成＋Vercel連携（mainへのマージ=自動デプロイ。ブランチ
+  master→main改名）。方針転換: 試作ではなく本番品として営業に使う。
+  /ops を OPS_CONSOLE=1 限定に（本番404）。保存方針の利用者向け注記
+  （ログイン不要・端末×ブラウザごと保存・PCスマホ間共有なし）を案件一覧と
+  保存ボタン下に追加。案件一覧に削除ボタン（確認ダイアログ付き）。README全面改訂
+  （製作者の考え方・対象拡張の相談歓迎・使い方3分。開発者向け節は削除）。
+- 2026-07-18: 鮮度運用の自動化。週次クラウドルーチン（月曜7:00 JST・
+  trig_01JSoK8PbsDY9aHHNaHFpuuG）を構築したが、www.mofa.go.jp が
+  データセンターIPを403で拒否（クラウド環境・GitHub Actions双方で実証）。
+  → 二層体制に再設計: ①手元巡回=/patrolスキル（「巡回して」で巡回→差分評価→
+  修正案→PR起票。外務省系はこれのみ）②クラウド見張り番=未対応[patrol]PRの
+  リマインドコメント・30日無巡回でIssue起票・農水省/海外安全HP等は自動でPRまで。
+  承認=PRをMerge（自動デプロイ）/相談=手元のClaudeと確認。ops/snapshots/ は
+  git追跡に変更（差分の基準）。見本PR #1 起票済み（台湾=擬似変更からの復元＋
+  輸入規制撤廃の反映案・香港=実変更だが更新日のみ→影響なし判定）。テスト65件。
+- 未完（次回）: PR #1 のMerge（承認→自動デプロイの通し体験）／エージェント名義
+  コメントのメール実証（クラウドからのコメント権限に疑義あり・実行ログ要確認）／
+  network-test.yml の削除／運用マニュアル作成（todo.md 0.45章に骨子）／
+  content推敲・演出磨き・名刺（URL確定済み）。
