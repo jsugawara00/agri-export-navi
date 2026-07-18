@@ -8,6 +8,7 @@ on:
     types: [opened]
   schedule:
     - cron: "5 22 * * 0" # 月曜 7:05 JST
+  workflow_dispatch: # 手動テスト用（scheduleと同じ動きをする）
 
 permissions:
   pull-requests: write
@@ -30,7 +31,7 @@ jobs:
 ■ 相談する場合 → マージせず、手元のClaude Codeで「巡回PRを一緒に確認して」と伝えてください"
 
       - name: 放置中の巡回PRへ週次リマインド（メンション→メール）
-        if: github.event_name == 'schedule'
+        if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
         run: |
           gh pr list --repo ${{ github.repository }} --state open --json number,title \
             -q '.[] | select(.title | contains("[patrol]")) | .number' | while read -r n; do
@@ -41,11 +42,11 @@ jobs:
           done
 
       - name: リポジトリ取得（30日チェック用）
-        if: github.event_name == 'schedule'
+        if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
         uses: actions/checkout@v4
 
       - name: 巡回30日超のリマインドIssue（メンション→メール）
-        if: github.event_name == 'schedule'
+        if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
         run: |
           last=$(grep -m1 "^generated_at:" ops/patrol-report.md | sed 's/generated_at: *//' | cut -c1-10)
           last_epoch=$(date -d "$last" +%s)
