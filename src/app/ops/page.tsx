@@ -1,6 +1,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import Link from "next/link";
+import { notFound } from "next/navigation";
 import { checkStaleness } from "@/lib/ops/patrol";
 import { collectTargets, loadThresholds } from "@/lib/ops/targets";
 import { listQueueItems, OPS_DIR } from "@/lib/ops/queue";
@@ -13,6 +14,12 @@ export const metadata = { title: "運用コンソール | 農産物輸出ナビ"
  * mdの自動書き換えは行わない。反映は必ず人間が行う。
  */
 export default function OpsPage() {
+  // 運用者専用: OPS_CONSOLE=1 の環境（手元のdev等）でのみ表示する。
+  // 本番（Vercel）には設定しないため404になる。巡回・反映の実務は手元で行う。
+  if (process.env.OPS_CONSOLE !== "1") {
+    notFound();
+  }
+
   const today = new Date().toISOString().slice(0, 10);
   const thresholds = loadThresholds();
   const targets = collectTargets();
