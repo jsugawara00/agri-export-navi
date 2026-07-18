@@ -51,8 +51,10 @@ export default function ProjectsClient({ combos }: { combos: ComboMap }) {
   return (
     <div className="mt-6 space-y-3">
       {!enabled && (
-        <p className="rounded-lg border border-line bg-panel px-4 py-2 text-xs text-dim">
-          ローカル保存モード: 案件はこのブラウザにのみ保存されています。
+        <p className="rounded-lg border border-line bg-panel px-4 py-2 text-xs leading-relaxed text-dim">
+          本サイトは会員登録・ログインなしで、どなたでも無料でお使いいただけます。
+          個人情報をお預かりしない設計のため、案件はいまお使いの端末（ブラウザ）にのみ
+          保存され、PCとスマホの間でデータは共有されません。あらかじめご了承ください。
         </p>
       )}
       {projects.length === 0 && (

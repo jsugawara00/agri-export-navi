@@ -88,7 +88,8 @@ export default function SaveCta({
       </button>
       {store?.mode === "local" && (
         <p className="mt-3 text-xs text-dim">
-          ローカル保存モード: 案件はこのブラウザにのみ保存されます（Firebase設定で同期可能）。
+          本サイトはログイン不要で、案件はいまお使いの端末（ブラウザ）にのみ保存されます。
+          PCとスマホの間でデータは共有されません。
         </p>
       )}
       {error && <p className="mt-2 text-xs text-red-400">{error}</p>}
