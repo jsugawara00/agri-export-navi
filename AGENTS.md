@@ -147,7 +147,16 @@ This version has breaking changes — APIs, conventions, and file structure may 
   承認=PRをMerge（自動デプロイ）/相談=手元のClaudeと確認。ops/snapshots/ は
   git追跡に変更（差分の基準）。見本PR #1 起票済み（台湾=擬似変更からの復元＋
   輸入規制撤廃の反映案・香港=実変更だが更新日のみ→影響なし判定）。テスト65件。
-- 未完（次回）: PR #1 のMerge（承認→自動デプロイの通し体験）／エージェント名義
-  コメントのメール実証（クラウドからのコメント権限に疑義あり・実行ログ要確認）／
-  network-test.yml の削除／運用マニュアル作成（todo.md 0.45章に骨子）／
-  content推敲・演出磨き・名刺（URL確定済み）。
+- 2026-07-18(夜): 鮮度運用の全経路を本番実証して完成。判明した2つの制約と対処:
+  ①クラウドのGitHub接続は読み取り専用だった → Claude GitHub Appを
+  agri-export-navi 1リポジトリ限定でインストールし書き込み可に。
+  ②クラウドエージェントの操作は運用者本人名義になりGitHubが自分宛メールを
+  送らない → 通知係 .github/workflows/patrol-notify.yml を新設。
+  github-actions[bot] が@メンション付きコメント/Issueを投稿しメールを保証
+  （[patrol] PR起票時・毎週月曜7:05の放置PRリマインド・巡回30日超のIssue）。
+  通し実証: PR #1（台湾・香港）→メンションメール受信→Merge→自動デプロイ→
+  本番表示確認。教訓: 国概要mdの修正案はUIが抽出する既存節（治安/検疫概要/
+  EPA・関税）内に書く（新節名は描画されない。SKILL.mdに追記済み）。
+  「巡回して」の平常経路（全UNCHANGED・2分）も体験済み。
+- 未完（次回）: 運用マニュアル作成（todo.md 0.45章に骨子）／content推敲／
+  演出磨き／名刺作成（URL確定済み）／READMEへのスクリーンショット挿入。
