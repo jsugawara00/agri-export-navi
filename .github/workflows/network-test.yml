@@ -1,0 +1,22 @@
+name: network-test
+# 巡回情報源へGitHub Actionsの実行環境から到達できるかの一時検証用。
+# 検証が済んだら削除してよい。
+on: workflow_dispatch
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    steps:
+      - name: probe sources
+        run: |
+          for url in \
+            "https://www.maff.go.jp/pps/" \
+            "https://www.anzen.mofa.go.jp/" \
+            "https://www.mofa.go.jp/mofaj/area/taiwan/" \
+            "https://www.mofa.go.jp/mofaj/area/hongkong/" \
+            "https://www.mofa.go.jp/mofaj/area/usa/"; do
+            code=$(curl -s -o /dev/null -w "%{http_code}" --max-time 20 \
+              -H "user-agent: toika-export-navi-patrol/0.1 (content freshness check)" \
+              "$url")
+            echo "$code $url"
+          done
