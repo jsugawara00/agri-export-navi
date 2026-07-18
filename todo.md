@@ -4,8 +4,9 @@
 
 ## 1. 開発の残作業（完成に向けて）
 
-- [ ] Vercelデプロイ（無料枠。まずはローカル保存モードのままでOK。
-      Firebaseを有効化する場合のみ NEXT_PUBLIC_FIREBASE_* を環境変数に設定）
+- [x] Vercelデプロイ（2026-07-18完了: https://agri-export-navi.vercel.app ・
+      ローカル保存モード。Firebaseを有効化する場合のみ NEXT_PUBLIC_FIREBASE_* を
+      環境変数に設定して再デプロイ）
 - [ ] README整備（デモの触り方・スクリーンショット）
 - [ ] content文面の推敲（guides 15本／採点md／国概要。md編集のみで反映可）
 - [ ] トップ・結果画面の演出磨き込み（正確さ優先、演出は後から盛る方針どおり）
