@@ -54,6 +54,21 @@ describe("実contentでの採点", () => {
     const result = computeHurdle(loadCriteriaSet("apple", "usa"));
     expect(result.status === "scored" && result.grade).toBe("D");
   });
+
+  it("さくらんぼ×台湾はりんご×台湾より低い（物流・収穫期のショーケース）", () => {
+    const cherry = computeHurdle(loadCriteriaSet("cherry", "taiwan"));
+    const apple = computeHurdle(loadCriteriaSet("apple", "taiwan"));
+    // 同じ台湾でも、日持ちの短さ・収穫期の集中でさくらんぼの方が難しく出る
+    expect(cherry.status === "scored" && apple.status === "scored").toBe(true);
+    if (cherry.status === "scored" && apple.status === "scored") {
+      expect(cherry.score).toBeLessThan(apple.score);
+    }
+    // 物流制約の減点が内訳に必ず含まれること（指示書1.3）
+    const hasPerishability =
+      cherry.status === "scored" &&
+      cherry.breakdown.some((b) => b.id === "perishability");
+    expect(hasPerishability).toBe(true);
+  });
 });
 
 describe("県統計の実績データ（v1.1・参考表示専用）", () => {
