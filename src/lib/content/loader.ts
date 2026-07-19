@@ -181,6 +181,55 @@ export function loadPort(port: string): PortDoc {
   };
 }
 
+/** 輸出ルート（港・空港）の候補。v1.1: 全候補併記方式（order順・酒田港先頭固定） */
+export interface RouteDoc {
+  id: string;
+  meta: ContentMeta;
+  nameJa: string;
+  mode: "sea" | "air";
+  order: number;
+  /** pending_research = 実データ未取得（UIで「取扱実績データ整備中」表示） */
+  pending: boolean;
+  portType?: string;
+  routeNote: string;
+  serviceFrequency: string;
+  frequencyAsOf?: string;
+  leadTime: string;
+  localNote?: string;
+  overview: string;
+  /** 取扱実績（公的統計・数値と出典のみの節。無ければ空） */
+  cargoRecord: string;
+}
+
+/** content/routes/ の全ルートを表示順（order）で読む */
+export function loadExportRoutes(): RouteDoc[] {
+  const dir = path.join(CONTENT_DIR, "routes");
+  const routes: RouteDoc[] = [];
+  for (const name of fs.readdirSync(dir)) {
+    if (!name.endsWith(".md")) continue;
+    const file = `routes/${name}`;
+    const { data, body } = readMd(file);
+    const meta = toMeta(data, file);
+    routes.push({
+      id: name.replace(/\.md$/, ""),
+      meta,
+      nameJa: data["name_ja"] ?? name,
+      mode: data["mode"] === "air" ? "air" : "sea",
+      order: Number(data["order"] ?? 99),
+      pending: data["status"] === "pending_research",
+      portType: data["port_type"],
+      routeNote: data["route_note"] ?? "要調査",
+      serviceFrequency: data["service_frequency"] ?? "要調査",
+      frequencyAsOf: data["frequency_as_of"],
+      leadTime: data["lead_time"] ?? "要確認",
+      localNote: data["local_note"],
+      overview: extractSection(body, "概要"),
+      cargoRecord: extractSection(body, "取扱実績（公的統計・数値と出典のみ）"),
+    });
+  }
+  return routes.sort((a, b) => a.order - b.order);
+}
+
 /** 自治体mdの ports:（利用しやすい港のid一覧）を読む */
 export function loadMunicipalityPorts(municipality: string): string[] {
   const { data } = readMd(`municipalities/${municipality}.md`);

@@ -3,7 +3,8 @@
 import { useState } from "react";
 import FreshnessBadge from "@/components/FreshnessBadge";
 import { comboKey, type ComboMap } from "@/lib/content/combo-types";
-import type { PortDoc } from "@/lib/content/loader";
+import { itemOf, isItemId } from "@/lib/content/catalog";
+import type { PortDoc, RouteDoc } from "@/lib/content/loader";
 import { buildForwarderMail } from "@/lib/docs/mail";
 import { updateInputs } from "@/lib/projects/logic";
 import { useProject } from "@/components/projects/useProject";
@@ -18,15 +19,21 @@ const MAIL_KEYS = {
   contact: "doc:mail:contact",
 } as const;
 
-/** 港選定（最寄り港＋東京港の2択方式）→乙仲リスト→相談メール下書き */
+/**
+ * 港・出荷ルート選定（v1.1: 全候補を実データ付きで併記・酒田港先頭固定）
+ * →乙仲リスト→相談メール下書き。
+ * 表示順以外で特定の港を有利に見せる加工はしない（数値と出典のみ）。
+ */
 export default function LogisticsTool({
   id,
   combos,
   ports,
+  routes,
 }: {
   id: string;
   combos: ComboMap;
   ports: PortDoc[];
+  routes: RouteDoc[];
 }) {
   const state = useProject(id);
   const { project, persist } = state;
@@ -38,7 +45,13 @@ export default function LogisticsTool({
 
   const combo = combos[comboKey(project.item, project.country)];
   const selectedPortId = project.inputs[PORT_KEY] ?? "";
+  const selectedRoute = routes.find((r) => r.id === selectedPortId) ?? null;
   const selectedPort = ports.find((p) => p.id === selectedPortId) ?? null;
+
+  // 日持ちの短い品目は航空便を海上輸送と並べて表示する（v1.1 3.6）
+  const perishability = isItemId(project.item) ? itemOf(project.item).perishability : "中";
+  const visibleRoutes =
+    perishability === "短" ? routes : routes.filter((r) => r.mode === "sea");
 
   const mailVals =
     mailDraft ??
@@ -57,11 +70,11 @@ export default function LogisticsTool({
   };
 
   const mail =
-    combo && selectedPort
+    combo && selectedRoute
       ? buildForwarderMail({
           itemLabel: combo.itemLabel,
           countryLabel: combo.countryLabel,
-          portLabel: selectedPort.nameJa,
+          portLabel: selectedRoute.nameJa,
           quantity: mailVals.quantity,
           timing: mailVals.timing,
           senderName: mailVals.senderName,
@@ -76,52 +89,73 @@ export default function LogisticsTool({
     window.setTimeout(() => setCopied(false), 2000);
   };
 
-  const nearestPorts = ports.filter((p) => p.nearest);
-  const tokyoPorts = ports.filter((p) => !p.nearest);
-
   return (
     <div className="mt-4 space-y-6">
       <p className="text-sm text-dim">
-        最寄り港と東京港の2択方式で比較し、港を選ぶと乙仲リストと相談メールの下書きが出ます。
+        出荷ルートの候補を一覧で比較し、選ぶと乙仲リストと相談メールの下書きが出ます。
+        各項目は公表情報の事実のみを記載しています（データ未整備の港は「情報整備中」）。
+        {perishability === "短" &&
+          " この品目は日持ちが短いため、航空便も候補に表示しています。"}
       </p>
 
-      {/* 港選定 */}
+      {/* ルート選定（全候補併記・表示順固定） */}
       <section className="rounded-xl border border-line bg-panel p-4">
-        <h2 className="text-sm font-semibold">港を選ぶ</h2>
-        <div className="mt-3 grid gap-3 sm:grid-cols-2">
-          <div>
-            <p className="text-xs text-dim">最寄り港（山形から）</p>
-            <div className="mt-2 space-y-2">
-              {nearestPorts.map((p) => (
-                <button
-                  key={p.id}
-                  onClick={() => selectPort(p.id)}
-                  className={`block w-full rounded-lg border px-3 py-2 text-left text-sm transition ${selectedPortId === p.id ? "border-teal bg-teal/10 text-teal" : "border-line hover:border-teal/50"}`}
-                >
-                  {p.nameJa}
-                </button>
-              ))}
-            </div>
-          </div>
-          <div>
-            <p className="text-xs text-dim">航路・便数で選ぶなら</p>
-            <div className="mt-2 space-y-2">
-              {tokyoPorts.map((p) => (
-                <button
-                  key={p.id}
-                  onClick={() => selectPort(p.id)}
-                  className={`block w-full rounded-lg border px-3 py-2 text-left text-sm transition ${selectedPortId === p.id ? "border-teal bg-teal/10 text-teal" : "border-line hover:border-teal/50"}`}
-                >
-                  {p.nameJa}
-                </button>
-              ))}
-            </div>
-          </div>
+        <h2 className="text-sm font-semibold">出荷ルートを選ぶ</h2>
+        <div className="mt-3 space-y-2">
+          {visibleRoutes.map((r) => (
+            <button
+              key={r.id}
+              onClick={() => selectPort(r.id)}
+              className={`block w-full rounded-lg border px-3 py-2.5 text-left transition ${selectedPortId === r.id ? "border-teal bg-teal/10" : "border-line hover:border-teal/50"}`}
+            >
+              <span className="flex flex-wrap items-center gap-2">
+                <span className={`text-sm font-medium ${selectedPortId === r.id ? "text-teal" : ""}`}>
+                  {r.mode === "air" ? "【航空】" : ""}
+                  {r.nameJa}
+                </span>
+                {r.portType && (
+                  <span className="rounded bg-background/60 px-1.5 py-0.5 text-[10px] text-dim">
+                    {r.portType}
+                  </span>
+                )}
+                {r.pending && (
+                  <span className="rounded bg-amber/15 px-1.5 py-0.5 text-[10px] text-amber">
+                    取扱実績データ整備中
+                  </span>
+                )}
+              </span>
+              <span className="mt-1 block text-xs leading-relaxed text-dim">
+                {r.pending ? (
+                  <>便数・航路形態・実績は要調査（推測値は表示しません）。{r.localNote}</>
+                ) : (
+                  <>
+                    {r.routeNote}／便数: {r.serviceFrequency}
+                    {r.frequencyAsOf && `（${r.frequencyAsOf}時点）`}
+                    ／リードタイム: {r.leadTime}
+                    {r.localNote && `／${r.localNote}`}
+                  </>
+                )}
+              </span>
+            </button>
+          ))}
         </div>
       </section>
 
+      {/* 選択ルートの詳細（実データのある港のみ・数値と出典のみ） */}
+      {selectedRoute && !selectedRoute.pending && selectedRoute.cargoRecord && (
+        <section className="rise rounded-xl border border-line bg-panel p-4">
+          <div className="flex flex-wrap items-center gap-2">
+            <h2 className="text-sm font-semibold">{selectedRoute.nameJa}の取扱実績（公的統計）</h2>
+            <FreshnessBadge meta={selectedRoute.meta} />
+          </div>
+          <pre className="mt-2 whitespace-pre-wrap font-sans text-xs leading-relaxed text-dim">
+            {selectedRoute.cargoRecord}
+          </pre>
+        </section>
+      )}
+
       {/* 乙仲リスト */}
-      {selectedPort && (
+      {selectedRoute && selectedPort && (
         <section className="rise rounded-xl border border-line bg-panel p-4">
           <div className="flex flex-wrap items-center gap-2">
             <h2 className="text-sm font-semibold">{selectedPort.nameJa}の乙仲（通関・海貨業者）</h2>
@@ -136,11 +170,48 @@ export default function LogisticsTool({
               </li>
             ))}
           </ul>
+          <p className="mt-3 text-[11px] leading-relaxed text-dim/80">
+            以下は公表情報に基づく一覧（五十音順）であり、特定業者の推奨を意味しません。
+            最新の通関業者は税関「通関業者一覧」・日本通関業連合会の検索システムでも確認できます。
+          </p>
+        </section>
+      )}
+
+      {/* 乙仲リスト未整備の港・空港 */}
+      {selectedRoute && !selectedPort && (
+        <section className="rise rounded-xl border border-line bg-panel p-4">
+          <h2 className="text-sm font-semibold">{selectedRoute.nameJa}の乙仲（通関・海貨業者）</h2>
+          <p className="mt-2 text-xs leading-relaxed text-dim">
+            この港・空港の乙仲リストは情報整備中です。通関業者は次の公的・業界公表情報から
+            探せます（特定業者の推奨はしません）。
+          </p>
+          <ul className="mt-3 space-y-1 text-sm">
+            <li>
+              <a
+                href="https://www.customs.go.jp/tsukangyousha/index.htm"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-teal underline"
+              >
+                税関「通関業者一覧」
+              </a>
+            </li>
+            <li>
+              <a
+                href="https://search.tsukangyo.or.jp/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-teal underline"
+              >
+                日本通関業連合会 通関業者検索システム
+              </a>
+            </li>
+          </ul>
         </section>
       )}
 
       {/* メール下書き */}
-      {selectedPort && (
+      {selectedRoute && (
         <section className="rise rounded-xl border border-line bg-panel p-4">
           <h2 className="text-sm font-semibold">相談メール下書き</h2>
           <div className="mt-3 grid gap-3 sm:grid-cols-2">
