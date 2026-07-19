@@ -8,7 +8,8 @@ const CONTENT_DIR = path.join(process.cwd(), "content");
 /**
  * 巡回対象: 鮮度メタデータを持つmd。
  * criteria/countries/guides に加え、procedures（ステップ定義・年1回見直し）、
- * reference（県統計・年1回＋出典差分検知）を含む。
+ * reference（県統計・年1回＋出典差分検知）、routes（港・出荷ルート＝便数/航路形態/
+ * 取扱実績。港湾統計は年次更新のため出典差分検知で拾う）を含む。
  */
 const WATCH_DIRS = [
   "criteria/institutional",
@@ -18,6 +19,7 @@ const WATCH_DIRS = [
   "guides",
   "procedures",
   "reference",
+  "routes",
 ];
 
 export function collectTargets(): WatchTarget[] {

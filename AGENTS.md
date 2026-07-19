@@ -207,6 +207,15 @@ This version has breaking changes — APIs, conventions, and file structure may 
   （isBeefメッセージ処理コードは残置）。案内文・フッターを現スコープに更新。
   **復活は VISIBLE_*_IDS へID追記のみ**（牛肉のみ page.tsx のoption行復元も要）。
   見た目のみの変更として本番反映済み（commit 782c888）。テスト69件PASS。
+- 2026-07-19(続8): READMEに画面イメージ3枚を追加（docs/screenshots/。トップ／
+  検索結果りんご×台湾78B／案件ナビ。Playwright・devバッジ非表示・Retina相当）。
+  **routes（港・出荷ルート）を巡回監視対象に追加**（targets.ts の WATCH_DIRS）。
+  report-html は routes を更新対象エリアに挙げていたのに targets.ts が監視して
+  いなかった不整合を解消。酒田港（freshness B・source_url有）は出典差分検知が
+  効く。他6港（仙台塩釜/新潟/東京/横浜/仙台空港/成田）は実データ未取得の
+  プレースホルダ（source_url無＝差分検知はスキップ、鮮度Cで年次見直し）。実データを
+  入れた港から見張りが効く。運用マニュアル4章に酒田港源を追記。酒田港源の初回
+  スナップショットは次回「巡回して」実行時に作成。テスト69件PASS。
 - 未完（次回）: todo.md 0.6章の残り（柿ぶどう西洋なし×タイ、他港データ調査、
   統計PDF表2の目視補完、乙仲拡充）／content推敲／演出磨き／名刺作成（URL確定済み）／
   READMEへのスクリーンショット挿入。運用マニュアルは docs/運用マニュアル.md に作成済み。
