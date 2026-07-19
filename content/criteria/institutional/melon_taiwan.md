@@ -1,0 +1,25 @@
+---
+freshness: C
+source: 植物防疫所 輸出入条件詳細情報・JETRO公表資料をもとに手動整備（雛形）
+source_url: https://www.maff.go.jp/pps/
+retrieved_at: 2026-07-19
+---
+
+## 概要
+
+台湾向けメロンは山形県で横ばいで推移する品目（県統計でR6は12t・7百万円）。
+生果実のため生産園地登録・植物検疫証明書等の検疫条件への対応が主な論点。
+本情報は初期整備値（雛形）であり、最終確認は植物防疫所等の公的機関へ。
+
+## 減点項目
+
+- id: orchard-registration
+  points: -10
+  label: 生産園地登録が必要
+  remedy: 県の窓口経由で輸出用園地の登録を申請する
+  step_ref: melon_taiwan#orchard-registration
+- id: phytosanitary-cert
+  points: -5
+  label: 植物検疫証明書が必要
+  remedy: 輸出前に植物防疫所の検査を受け、植物検疫証明書の交付を受ける
+  step_ref: melon_taiwan#phytosanitary-cert
