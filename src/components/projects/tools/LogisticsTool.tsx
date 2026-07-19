@@ -221,7 +221,7 @@ export default function LogisticsTool({
             <FreshnessBadge meta={selectedRoute.meta} />
           </div>
           <p className="mt-2 text-sm leading-relaxed text-dim">
-            エア便（国際航空貨物）をご利用の場合は、各空港で国際貨物便の取扱いのある
+            エア便をお使いになる場合は、各空港で国際便の貨物輸送を取り扱っている
             各航空会社へお問い合わせください。便・スペース・料金は航空会社および混載業者
             （フォワーダー）により異なり、頻繁に変動するため、本サイトでは個別便を
             掲載していません。
