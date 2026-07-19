@@ -1,17 +1,19 @@
 import "server-only";
 import { COUNTRIES, ITEMS } from "./catalog";
-import { loadCriteriaSet, loadProcedure } from "./loader";
+import { comboPrepared, loadCriteriaSet, loadProcedure } from "./loader";
 import { computeHurdle } from "@/lib/score/engine";
 import { comboKey, type ComboMap } from "./combo-types";
 
 export type { ComboData, ComboMap } from "./combo-types";
 export { comboKey } from "./combo-types";
+export { comboPrepared } from "./loader";
 
-/** 全9組み合わせ分のステップ定義＋判定結果を組み立てる（content/ mdが単一情報源） */
+/** 整備済みの全組み合わせ分のステップ定義＋判定結果を組み立てる（content/ mdが単一情報源） */
 export function buildAllCombos(): ComboMap {
   const map: ComboMap = {};
   for (const item of ITEMS) {
     for (const country of COUNTRIES) {
+      if (!comboPrepared(item.id, country.id)) continue;
       const set = loadCriteriaSet(item.id, country.id);
       const procedure = loadProcedure(item.id, country.id);
       map[comboKey(item.id, country.id)] = {

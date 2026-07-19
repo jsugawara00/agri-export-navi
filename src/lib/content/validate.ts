@@ -1,9 +1,12 @@
 import { COUNTRIES, ITEMS } from "./catalog";
 import {
+  comboPrepared,
+  contentFileExists,
   guideExists,
   loadCountry,
   loadCriteriaSet,
   loadProcedure,
+  readFrontmatter,
 } from "./loader";
 import type { CriteriaDoc, ProcedureDoc } from "./types";
 
@@ -17,6 +20,8 @@ export function validateAll(): string[] {
   const errors: string[] = [];
 
   for (const country of COUNTRIES) {
+    // v1.1: 国mdが未整備の仕向地は検証をスキップ（当該国の全コンボが「情報整備中」になる）
+    if (!contentFileExists(`countries/${country.id}.md`)) continue;
     try {
       loadCountry(country.id);
     } catch (e) {
@@ -27,6 +32,23 @@ export function validateAll(): string[] {
   for (const item of ITEMS) {
     for (const country of COUNTRIES) {
       const comboName = `${item.id}_${country.id}`;
+      const instExists = contentFileExists(`criteria/institutional/${comboName}.md`);
+      const procExists = contentFileExists(`procedures/${comboName}.md`);
+
+      if (!comboPrepared(item.id, country.id)) {
+        // 未整備は正当な状態（UIで「情報整備中」表示）。ただし中途半端は事故のもとなのでエラー
+        if (instExists !== procExists) {
+          errors.push(
+            `${comboName}: institutional と procedures の片方だけが存在します（両方揃えるか status: pending_research を付けること）`,
+          );
+        }
+        // pending_research のmdは整備の予告として存在してよいが、中身の検証はしない
+        if (instExists && readFrontmatter(`criteria/institutional/${comboName}.md`)["status"] === "pending_research") {
+          continue;
+        }
+        continue;
+      }
+
       let set: ReturnType<typeof loadCriteriaSet>;
       let procedure: ProcedureDoc;
       try {

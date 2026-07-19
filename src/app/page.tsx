@@ -4,7 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import DotGlobe, { type FlyTarget } from "@/components/globe/DotGlobe";
-import { COUNTRIES, ITEMS, OTHER_ITEM } from "@/lib/content/catalog";
+import { BEEF_ITEM, COUNTRIES, ITEMS, OTHER_ITEM } from "@/lib/content/catalog";
 
 export default function Home() {
   const router = useRouter();
@@ -13,7 +13,8 @@ export default function Home() {
   const [flyTarget, setFlyTarget] = useState<FlyTarget | null>(null);
 
   const isOther = item === OTHER_ITEM.id;
-  const canSearch = item !== "" && !isOther && country !== "" && !flyTarget;
+  const isBeef = item === BEEF_ITEM.id;
+  const canSearch = item !== "" && !isOther && !isBeef && country !== "" && !flyTarget;
 
   const handleSearch = () => {
     if (!canSearch) return;
@@ -32,7 +33,6 @@ export default function Home() {
           <Link href="/projects" className="text-xs text-teal underline">
             保存した案件
           </Link>
-          <p className="text-xs text-dim">DEMO</p>
         </div>
       </header>
 
@@ -73,6 +73,7 @@ export default function Home() {
                   {i.label}
                 </option>
               ))}
+              <option value={BEEF_ITEM.id}>{BEEF_ITEM.label}</option>
               <option value={OTHER_ITEM.id}>{OTHER_ITEM.label}</option>
             </select>
             <select
@@ -97,11 +98,16 @@ export default function Home() {
             </button>
           </div>
 
+          {isBeef && (
+            <div className="rise w-full rounded-lg border border-amber/40 bg-panel p-4 text-sm leading-relaxed text-dim">
+              {BEEF_ITEM.message}
+            </div>
+          )}
           {isOther && (
             <div className="rise w-full rounded-lg border border-line bg-panel p-4 text-sm leading-relaxed text-dim">
-              その他の品目は個別にご相談を承ります。本デモは山形県産の
-              米・りんご・ラ・フランスを対象としています。貴自治体・貴社の
-              特産品を盛り込んだ再設計のご相談は、下記の相談窓口からお寄せください。
+              その他の品目は個別にご相談を承ります。現在は山形県産の主要8品目に
+              対応しています。品目・輸出先の追加や、貴自治体・貴社の特産品を
+              盛り込んだ再設計のご相談は、下記の相談窓口からお寄せください。
             </div>
           )}
         </div>
@@ -109,7 +115,8 @@ export default function Home() {
 
       <footer className="border-t border-line px-6 py-5 text-center">
         <p className="mx-auto max-w-2xl text-xs leading-relaxed text-dim">
-          本アプリは山形県産の米・りんご・ラ・フランスを対象としたデモンストレーションです。
+          現在は山形県産の主要8品目（米・りんご・ラ・フランス・もも・柿・ぶどう・
+          メロン・さくらんぼ）× 10の国・地域に対応しています。品目・輸出先の追加や、
           貴自治体・貴社の特産品を盛り込んだ再設計のご相談を承ります。
           <a href="mailto:sugaron777@gmail.com" className="ml-2 text-teal underline">
             ご相談はこちら

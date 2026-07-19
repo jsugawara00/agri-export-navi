@@ -4,12 +4,13 @@ import FreshnessBadge from "@/components/FreshnessBadge";
 import HurdleCard from "@/components/result/HurdleCard";
 import SaveCta from "@/components/result/SaveCta";
 import {
+  countryNotice,
   countryOf,
   isCountryId,
   isItemId,
   itemLabel,
 } from "@/lib/content/catalog";
-import { loadCriteriaSet } from "@/lib/content/loader";
+import { comboPrepared, loadCriteriaSet } from "@/lib/content/loader";
 import { buildInfoSnapshot } from "@/lib/projects/info";
 import { computeHurdle } from "@/lib/score/engine";
 import type { ContentMeta } from "@/lib/content/types";
@@ -51,6 +52,56 @@ export default async function ResultPage({
   const countryId = params.country ?? "";
   if (!isItemId(item) || !isCountryId(countryId)) {
     redirect("/");
+  }
+
+  // v1.1: mdが未整備の組み合わせは採点せず「情報整備中」を明示する
+  // （空欄や推測値を表示しない。実績がないことは輸出不可を意味しない）
+  if (!comboPrepared(item, countryId)) {
+    const notice = countryNotice(countryId);
+    return (
+      <div className="flex min-h-screen flex-col">
+        <header className="flex items-center justify-between px-6 py-4">
+          <Link href="/" className="text-sm tracking-widest text-dim hover:text-foreground">
+            <span className="font-semibold text-foreground">Toika</span>
+            <span className="mx-2">|</span>農産物輸出ナビ
+          </Link>
+          <Link href="/" className="text-xs text-teal underline">
+            条件を変えて調べ直す
+          </Link>
+        </header>
+        <main className="mx-auto flex w-full max-w-2xl flex-1 flex-col items-center justify-center px-6 pb-16">
+          <p className="text-sm text-dim">
+            {itemLabel(item)} × {countryOf(countryId).label}
+          </p>
+          <h1 className="mt-2 text-2xl font-bold">この組み合わせは情報整備中です</h1>
+          <div className="rise mt-6 w-full rounded-xl border border-line bg-panel p-5 text-sm leading-relaxed text-dim">
+            <p>
+              検疫条件・手続きの確認が済んでいないため、ハードル指数を表示していません。
+              未確認の情報を推測で表示しない方針のためです。
+            </p>
+            <p className="mt-3">
+              <span className="font-semibold text-foreground">
+                情報が無いことは、輸出できないことを意味しません。
+              </span>
+              整備のご要望があればお気軽にお知らせください — 優先して整備します
+              （2〜3日を目安）。お急ぎの場合は植物防疫所・JETROへ直接ご相談ください。
+            </p>
+          </div>
+          {notice && (
+            <div className="rise mt-4 w-full rounded-xl border border-amber/40 bg-panel p-5 text-sm leading-relaxed">
+              <p className="font-semibold text-amber">この地域についての注意</p>
+              <p className="mt-2 text-dim">{notice}</p>
+            </div>
+          )}
+          <Link
+            href="/"
+            className="mt-8 rounded-lg border border-teal px-6 py-2.5 text-sm font-semibold text-teal hover:bg-teal/10"
+          >
+            トップへ戻る
+          </Link>
+        </main>
+      </div>
+    );
   }
 
   const set = loadCriteriaSet(item, countryId);
@@ -117,6 +168,16 @@ export default async function ResultPage({
             />
           )}
         </div>
+
+        {countryNotice(countryId) && (
+          <div
+            className="rise mt-4 rounded-xl border border-amber/40 bg-panel p-4 text-sm leading-relaxed"
+            style={{ animationDelay: `${nextDelay()}ms` }}
+          >
+            <p className="font-semibold text-amber">この地域についての注意</p>
+            <p className="mt-1.5 text-dim">{countryNotice(countryId)}</p>
+          </div>
+        )}
 
         {result.status === "scored" && set.institutional.overview && (
           <div className="mt-4">

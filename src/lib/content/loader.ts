@@ -24,6 +24,32 @@ export function contentFileExists(relPath: string): boolean {
   return fs.existsSync(path.join(CONTENT_DIR, relPath));
 }
 
+/** frontmatterだけを読む（整備状況 status: pending_research の判定などに使用） */
+export function readFrontmatter(relPath: string): Record<string, string> {
+  return readMd(relPath).data;
+}
+
+/**
+ * 組み合わせのmdが整備済みか（v1.1）。
+ * institutional / procedures / countries の3点が揃い、かつ
+ * status: pending_research が付いていない場合のみ採点対象とする。
+ * 未整備の組み合わせはUIで「情報整備中」と表示する（空欄や推測値を出さない）。
+ */
+export function comboPrepared(item: ItemId, country: CountryId): boolean {
+  const instPath = `criteria/institutional/${item}_${country}.md`;
+  const procPath = `procedures/${item}_${country}.md`;
+  if (
+    !contentFileExists(instPath) ||
+    !contentFileExists(procPath) ||
+    !contentFileExists(`countries/${country}.md`)
+  ) {
+    return false;
+  }
+  if (readFrontmatter(instPath)["status"] === "pending_research") return false;
+  if (readFrontmatter(procPath)["status"] === "pending_research") return false;
+  return true;
+}
+
 function toMeta(data: Record<string, string>, file: string): ContentMeta {
   const freshness = data["freshness"] as Freshness;
   if (!freshness || !["A", "B", "C"].includes(freshness)) {
