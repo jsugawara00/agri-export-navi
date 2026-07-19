@@ -128,9 +128,19 @@ export default function LogisticsTool({
                     定期航路検索サイトで確認
                   </span>
                 )}
+                {r.airlineInquiry && (
+                  <span className="rounded bg-teal/15 px-1.5 py-0.5 text-[10px] text-teal">
+                    各航空会社へ要問合せ
+                  </span>
+                )}
               </span>
               <span className="mt-1 block text-xs leading-relaxed text-dim">
-                {r.pending ? (
+                {r.airlineInquiry ? (
+                  <>
+                    {r.routeNote}
+                    {r.localNote && `／${r.localNote}`}
+                  </>
+                ) : r.pending ? (
                   <>便数・航路形態・実績は要調査（推測値は表示しません）。{r.localNote}</>
                 ) : r.referral ? (
                   <>
@@ -200,6 +210,22 @@ export default function LogisticsTool({
               {selectedRoute.portalLabel ?? "定期航路情報サイトを開く"} →
             </a>
           )}
+        </section>
+      )}
+
+      {/* 航空便（各航空会社へ問い合わせの案内。便・料金は変動が大きく巡回になじまない） */}
+      {selectedRoute && selectedRoute.airlineInquiry && (
+        <section className="rise rounded-xl border border-teal/40 bg-panel p-4">
+          <div className="flex flex-wrap items-center gap-2">
+            <h2 className="text-sm font-semibold">{selectedRoute.nameJa}からの航空便について</h2>
+            <FreshnessBadge meta={selectedRoute.meta} />
+          </div>
+          <p className="mt-2 text-sm leading-relaxed text-dim">
+            エア便（国際航空貨物）をご利用の場合は、各空港で国際貨物便の取扱いのある
+            各航空会社へお問い合わせください。便・スペース・料金は航空会社および混載業者
+            （フォワーダー）により異なり、頻繁に変動するため、本サイトでは個別便を
+            掲載していません。
+          </p>
         </section>
       )}
 

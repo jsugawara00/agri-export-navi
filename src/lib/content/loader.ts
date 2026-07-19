@@ -219,6 +219,11 @@ export interface RouteDoc {
   /** referral時の誘導先サイト */
   portalUrl?: string;
   portalLabel?: string;
+  /**
+   * airline_inquiry = 航空便。便・料金が航空会社/混載業者ごとに変動し巡回になじまないため、
+   * 各航空会社への問い合わせを案内する（仙台空港・成田など）。
+   */
+  airlineInquiry: boolean;
   portType?: string;
   routeNote: string;
   serviceFrequency: string;
@@ -249,6 +254,7 @@ export function loadExportRoutes(): RouteDoc[] {
       referral: data["status"] === "site_referral",
       portalUrl: data["portal_url"],
       portalLabel: data["portal_label"],
+      airlineInquiry: data["status"] === "airline_inquiry",
       portType: data["port_type"],
       routeNote: data["route_note"] ?? "要調査",
       serviceFrequency: data["service_frequency"] ?? "要調査",

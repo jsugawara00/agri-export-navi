@@ -246,6 +246,12 @@ This version has breaking changes — APIs, conventions, and file structure may 
   SKILL.md に「データ基準日は巡回日でなく出典の更新日を入れる（retrieved_at＝人間確認日
   とは別物）」を追記。東京・横浜のサイト活用カードは現状維持（削除しない方針に決定）。
   テスト69件PASS。
+- 2026-07-19(続12): 航空便（仙台空港・成田）は便・料金が航空会社/混載業者ごとに
+  変動し巡回になじまないため、pending（要調査）から status: airline_inquiry に変更。
+  「エア便をご利用の場合は各空港で国際貨物便の取扱いのある各航空会社へお問い合わせ
+  ください」の案内カード＋テールバッジ「各航空会社へ要問合せ」を新設（loader に
+  airlineInquiry を追加、LogisticsTool で mode/status を先に分岐）。鮮度バッジ（retrieved_at
+  ＝人間確認日）は現状維持で確定（利用者の希望＝巡回日が理想）。テスト69件PASS。
 - 未完（次回）: todo.md 0.6章の残り（柿ぶどう西洋なし×タイ、他港データ調査、
   統計PDF表2の目視補完、乙仲拡充）／content推敲／演出磨き／名刺作成（URL確定済み）／
   READMEへのスクリーンショット挿入。運用マニュアルは docs/運用マニュアル.md に作成済み。
