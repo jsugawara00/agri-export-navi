@@ -199,6 +199,14 @@ This version has breaking changes — APIs, conventions, and file structure may 
   海外の嗜好品扱い等で現地相場の正確把握が困難なため扱わない判断。相場カード・
   loadRetailPrice・content/prices/・WATCH_DIRSのprices登録を除去。procedures/reference
   の年次監視は有効なまま。テスト69件PASS・ビルド成功。
+- 2026-07-19(続7): **プルダウンを絞り込み表示**（品目＝米・りんご・ラ・フランス＋
+  その他相談／仕向地＝台湾・香港・米国）。catalog.ts に VISIBLE_ITEM_IDS /
+  VISIBLE_COUNTRY_IDS を新設し、トップ画面のselectのみこれを参照。**ITEMS/COUNTRIES
+  （全8品目×10仕向地）は単一情報源として維持**＝巡回・採点・combos・直URLアクセス・
+  content検証は全対象のまま（巡回は非表示分のmdも従来通り更新）。牛肉optionは非表示
+  （isBeefメッセージ処理コードは残置）。案内文・フッターを現スコープに更新。
+  **復活は VISIBLE_*_IDS へID追記のみ**（牛肉のみ page.tsx のoption行復元も要）。
+  見た目のみの変更として本番反映済み（commit 782c888）。テスト69件PASS。
 - 未完（次回）: todo.md 0.6章の残り（柿ぶどう西洋なし×タイ、他港データ調査、
   統計PDF表2の目視補完、乙仲拡充）／content推敲／演出磨き／名刺作成（URL確定済み）／
   READMEへのスクリーンショット挿入。運用マニュアルは docs/運用マニュアル.md に作成済み。
