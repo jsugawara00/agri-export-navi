@@ -61,6 +61,20 @@ export const COUNTRIES = [
 export type ItemId = (typeof ITEMS)[number]["id"];
 export type CountryId = (typeof COUNTRIES)[number]["id"];
 
+/**
+ * プルダウン表示スコープ（絞り込み）。
+ * ここは「トップ画面のselectに何を出すか」だけを決める。
+ * 巡回・combos・content検証・直URLアクセスは ITEMS/COUNTRIES 全対象のまま。
+ * 非表示の品目・仕向地は相談を受けて随時復活させる（IDを下記へ戻すだけ）。
+ */
+export const VISIBLE_ITEM_IDS: readonly ItemId[] = ["rice", "apple", "la-france"];
+export const VISIBLE_COUNTRY_IDS: readonly CountryId[] = ["taiwan", "hongkong", "usa"];
+
+/** プルダウンに出す品目（表示順は ITEMS の並びを踏襲） */
+export const VISIBLE_ITEMS = ITEMS.filter((i) => VISIBLE_ITEM_IDS.includes(i.id));
+/** プルダウンに出す仕向地（表示順は COUNTRIES の並びを踏襲） */
+export const VISIBLE_COUNTRIES = COUNTRIES.filter((c) => VISIBLE_COUNTRY_IDS.includes(c.id));
+
 export function isItemId(v: string): v is ItemId {
   return ITEMS.some((i) => i.id === v);
 }

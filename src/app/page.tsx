@@ -4,7 +4,13 @@ import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import DotGlobe, { type FlyTarget } from "@/components/globe/DotGlobe";
-import { BEEF_ITEM, COUNTRIES, ITEMS, OTHER_ITEM } from "@/lib/content/catalog";
+import {
+  BEEF_ITEM,
+  COUNTRIES,
+  OTHER_ITEM,
+  VISIBLE_COUNTRIES,
+  VISIBLE_ITEMS,
+} from "@/lib/content/catalog";
 
 export default function Home() {
   const router = useRouter();
@@ -68,12 +74,11 @@ export default function Home() {
               aria-label="品目を選択"
             >
               <option value="">品目を選択</option>
-              {ITEMS.map((i) => (
+              {VISIBLE_ITEMS.map((i) => (
                 <option key={i.id} value={i.id}>
                   {i.label}
                 </option>
               ))}
-              <option value={BEEF_ITEM.id}>{BEEF_ITEM.label}</option>
               <option value={OTHER_ITEM.id}>{OTHER_ITEM.label}</option>
             </select>
             <select
@@ -83,7 +88,7 @@ export default function Home() {
               aria-label="輸出先の国・地域を選択"
             >
               <option value="">輸出先の国・地域を選択</option>
-              {COUNTRIES.map((c) => (
+              {VISIBLE_COUNTRIES.map((c) => (
                 <option key={c.id} value={c.id}>
                   {c.label}
                 </option>
@@ -105,9 +110,9 @@ export default function Home() {
           )}
           {isOther && (
             <div className="rise w-full rounded-lg border border-line bg-panel p-4 text-sm leading-relaxed text-dim">
-              その他の品目は個別にご相談を承ります。現在は山形県産の主要8品目に
-              対応しています。品目・輸出先の追加や、貴自治体・貴社の特産品を
-              盛り込んだ再設計のご相談は、下記の相談窓口からお寄せください。
+              その他の品目は個別にご相談を承ります。現在は米・りんご・ラ・フランスを
+              中心にご案内しています。他の品目・輸出先の追加や、貴自治体・貴社の
+              特産品を盛り込んだ再設計のご相談は、下記の相談窓口からお寄せください。
             </div>
           )}
         </div>
@@ -115,9 +120,9 @@ export default function Home() {
 
       <footer className="border-t border-line px-6 py-5 text-center">
         <p className="mx-auto max-w-2xl text-xs leading-relaxed text-dim">
-          現在は山形県産の主要8品目（米・りんご・ラ・フランス・もも・柿・ぶどう・
-          メロン・さくらんぼ）× 10の国・地域に対応しています。品目・輸出先の追加や、
-          貴自治体・貴社の特産品を盛り込んだ再設計のご相談を承ります。
+          現在は山形県産の米・りんご・ラ・フランス × 台湾・香港・米国を中心に
+          ご案内しています。他の品目・輸出先（山形県産の主要8品目・10の国・地域まで
+          整備済み）の追加や、貴自治体・貴社の特産品を盛り込んだ再設計のご相談を承ります。
           <a href="mailto:sugaron777@gmail.com" className="ml-2 text-teal underline">
             ご相談はこちら
           </a>
