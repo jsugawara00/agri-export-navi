@@ -10,7 +10,7 @@ import {
   isItemId,
   itemLabel,
 } from "@/lib/content/catalog";
-import { comboPrepared, loadCriteriaSet, loadExportRecord } from "@/lib/content/loader";
+import { comboPrepared, loadCriteriaSet, loadExportRecord, loadRetailPrice } from "@/lib/content/loader";
 import { buildInfoSnapshot } from "@/lib/projects/info";
 import { computeHurdle } from "@/lib/score/engine";
 import type { ContentMeta } from "@/lib/content/types";
@@ -110,6 +110,8 @@ export default async function ResultPage({
   const countryLabel = countryOf(countryId).label;
   // 県統計の実績は参考表示のみ（可否判定・点数には一切使用しない）
   const record = loadExportRecord(item, countryId);
+  // 海外現地の小売相場（参考表示・年1回見直し。日々変動するため時点を明記）
+  const price = loadRetailPrice(item, countryId);
 
   // riseIn 500ms を60ms段差で順次出現させる
   let delayIndex = 0;
@@ -212,6 +214,39 @@ export default async function ResultPage({
                 この組み合わせの県内実績データはありません。
                 <span className="text-xs text-dim">
                   ※実績がないことは輸出不可を意味しません（可否は検疫条件に基づきます）。
+                </span>
+              </>
+            )}
+          </Card>
+        </div>
+
+        <div className="mt-4">
+          <Card
+            title={`海外現地の小売相場（参考${price?.asOf ? `・${price.asOf}` : ""}）`}
+            meta={price ? price.meta : record.meta}
+            delay={nextDelay()}
+          >
+            {price ? (
+              price.japanOnly ? (
+                <>
+                  {price.body || "現地に同種品の一般的な流通がなく、比較対象の小売相場は設定していません。日本産プレミアム品としての価格はバイヤーとご相談ください。"}
+                  <span className="mt-2 block text-xs text-dim">
+                    ※本サイトの相場は年1回の見直しです。
+                  </span>
+                </>
+              ) : (
+                <>
+                  {price.body}
+                  <span className="mt-2 block text-xs text-dim">
+                    ※上記は参考傾向です。相場は日々変動するため、今日現在の価格はご自身でお調べください。本サイトの相場は年1回の見直しです。
+                  </span>
+                </>
+              )
+            ) : (
+              <>
+                この組み合わせの現地小売相場は情報整備中です。
+                <span className="mt-2 block text-xs text-dim">
+                  ※相場は日々変動します。最新の価格はJETRO・現地バイヤー等でご確認ください。
                 </span>
               </>
             )}

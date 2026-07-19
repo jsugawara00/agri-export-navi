@@ -10,7 +10,7 @@ import {
   type WatchTarget,
 } from "@/lib/ops/patrol";
 
-const thresholds = { A: 30, B: 90, C: 365 };
+const thresholds = { W: 7, A: 30, B: 90, C: 365 };
 
 function target(freshness: "A" | "B" | "C", retrievedAt: string): WatchTarget {
   return { file: "content/test.md", freshness, retrievedAt };
