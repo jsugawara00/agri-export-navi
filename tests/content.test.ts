@@ -55,3 +55,19 @@ describe("実contentでの採点", () => {
     expect(result.status === "scored" && result.grade).toBe("D");
   });
 });
+
+describe("県統計の実績データ（v1.1・参考表示専用）", () => {
+  it("確認済みの組み合わせは実績メモを返す（例: 米×香港）", async () => {
+    const { loadExportRecord } = await import("@/lib/content/loader");
+    expect(loadExportRecord("rice", "hongkong").note).toBeTruthy();
+    expect(loadExportRecord("apple", "taiwan").note).toBeTruthy();
+  });
+
+  it("未確認の組み合わせはnote無し＝中立表示（実績ゼロでも減点しない）", async () => {
+    const { loadExportRecord } = await import("@/lib/content/loader");
+    expect(loadExportRecord("apple", "usa").note).toBeUndefined();
+    // 実績データの有無がスコアへ影響しないこと（エンジンは実績を参照しない）
+    const withRecord = computeHurdle(loadCriteriaSet("rice", "hongkong"));
+    expect(withRecord.status).toBe("scored");
+  });
+});

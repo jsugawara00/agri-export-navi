@@ -10,7 +10,7 @@ import {
   isItemId,
   itemLabel,
 } from "@/lib/content/catalog";
-import { comboPrepared, loadCriteriaSet } from "@/lib/content/loader";
+import { comboPrepared, loadCriteriaSet, loadExportRecord } from "@/lib/content/loader";
 import { buildInfoSnapshot } from "@/lib/projects/info";
 import { computeHurdle } from "@/lib/score/engine";
 import type { ContentMeta } from "@/lib/content/types";
@@ -108,6 +108,8 @@ export default async function ResultPage({
   const result = computeHurdle(set);
   const country = set.country;
   const countryLabel = countryOf(countryId).label;
+  // 県統計の実績は参考表示のみ（可否判定・点数には一切使用しない）
+  const record = loadExportRecord(item, countryId);
 
   // riseIn 500ms を60ms段差で順次出現させる
   let delayIndex = 0;
@@ -190,6 +192,31 @@ export default async function ResultPage({
             </Card>
           </div>
         )}
+
+        {/* 実績は「前例」の参考情報。可否判定・点数には使用しない（v1.1 絶対原則） */}
+        <div className="mt-4">
+          <Card
+            title="県内輸出実績（山形県統計・参考情報）"
+            meta={record.meta}
+            delay={nextDelay()}
+          >
+            {record.note ? (
+              <>
+                {record.note}。
+                <span className="text-xs text-dim">
+                  ※実績は前例の参考情報であり、可否判定・ハードル指数には使用していません。
+                </span>
+              </>
+            ) : (
+              <>
+                この組み合わせの県内実績データはありません。
+                <span className="text-xs text-dim">
+                  ※実績がないことは輸出不可を意味しません（可否は検疫条件に基づきます）。
+                </span>
+              </>
+            )}
+          </Card>
+        </div>
 
         <div className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           <Card title="人口" meta={country.meta} delay={nextDelay()}>

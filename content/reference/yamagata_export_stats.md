@@ -158,21 +158,21 @@ title: 山形県産農産物の輸出実績（参考データ）
 **注意: 原PDFの表2はテキスト抽出が不完全だったため、以下は確実に読み取れた行のみ。
 残りは原PDFを目視で確認してから追記すること。推測で埋めないこと。**
 
-- combo: rice_china
+- id: rice_china
   note: 中国は全量が米（282t）
-- combo: rice_canada
+- id: rice_canada
   note: カナダは全量が米（194t）
-- combo: rice_eu
+- id: rice_eu
   note: 欧州は全量が米（55t）
-- combo: rice_usa
+- id: rice_usa
   note: 米国はほぼ全量が米（96t）
-- combo: apple_taiwan
+- id: apple_taiwan
   note: 台湾はりんご196tが主力（ほか牛肉約70t）
-- combo: rice_singapore
+- id: rice_singapore
   note: シンガポールは米が約287t
-- combo: rice_hongkong
+- id: rice_hongkong
   note: 香港は米751tが中心（ほか、りんご・もも・メロン・西洋なし・柿・牛肉）
-- combo: beef_australia
+- id: beef_australia
   note: オーストラリアは牛肉3tのみ
 
 ## 中国の実績変動について（事実のみ）

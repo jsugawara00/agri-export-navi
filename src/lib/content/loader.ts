@@ -181,6 +181,27 @@ export function loadPort(port: string): PortDoc {
   };
 }
 
+/**
+ * 山形県統計の「品目×仕向地」実績（参考表示専用）。
+ * 絶対原則: 実績は可否ではない。可否判定・減点には使用しない。
+ */
+export interface ExportRecord {
+  meta: ContentMeta;
+  /** 確認できた範囲の実績メモ（無ければundefined＝「県内実績データなし」を中立表示） */
+  note?: string;
+}
+
+export function loadExportRecord(item: ItemId, country: CountryId): ExportRecord {
+  const file = "reference/yamagata_export_stats.md";
+  const { data, body } = readMd(file);
+  const meta = toMeta(data, file);
+  const entries = parseKeyedList(
+    extractSection(body, "品目×仕向地の対応（令和5年度・確認できた範囲のみ）"),
+  );
+  const hit = entries.find((e) => e["id"] === `${item}_${country}`);
+  return { meta, note: hit?.["note"] };
+}
+
 /** 輸出ルート（港・空港）の候補。v1.1: 全候補併記方式（order順・酒田港先頭固定） */
 export interface RouteDoc {
   id: string;
