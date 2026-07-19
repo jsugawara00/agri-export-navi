@@ -229,8 +229,19 @@ export default function LogisticsTool({
         </section>
       )}
 
-      {/* 乙仲リスト */}
-      {selectedRoute && selectedPort && (
+      {/* 港の情報カード（乙仲を掲載しない港でも概要は表示する。行政中立で特定業者は出さない） */}
+      {selectedRoute && selectedPort && selectedPort.forwarders.length === 0 && selectedPort.overview && (
+        <section className="rise rounded-xl border border-line bg-panel p-4">
+          <div className="flex flex-wrap items-center gap-2">
+            <h2 className="text-sm font-semibold">{selectedPort.nameJa}について</h2>
+            <FreshnessBadge meta={selectedPort.meta} />
+          </div>
+          <p className="mt-2 text-sm leading-relaxed text-dim">{selectedPort.overview}</p>
+        </section>
+      )}
+
+      {/* 乙仲リスト（掲載のある港のみ） */}
+      {selectedRoute && selectedPort && selectedPort.forwarders.length > 0 && (
         <section className="rise rounded-xl border border-line bg-panel p-4">
           <div className="flex flex-wrap items-center gap-2">
             <h2 className="text-sm font-semibold">{selectedPort.nameJa}の乙仲（通関・海貨業者）</h2>
@@ -252,8 +263,9 @@ export default function LogisticsTool({
         </section>
       )}
 
-      {/* 乙仲リスト未整備の港・空港 */}
-      {selectedRoute && !selectedPort && (
+      {/* 乙仲を掲載しない港・空港（酒田は行政中立で非掲載。横浜・空港は未整備）。
+          いずれも特定業者を出さず公的・業界の検索へ誘導する */}
+      {selectedRoute && (!selectedPort || selectedPort.forwarders.length === 0) && (
         <section className="rise rounded-xl border border-line bg-panel p-4">
           <h2 className="text-sm font-semibold">{selectedRoute.nameJa}の乙仲（通関・海貨業者）</h2>
           <p className="mt-2 text-xs leading-relaxed text-dim">

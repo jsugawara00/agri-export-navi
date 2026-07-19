@@ -4,7 +4,7 @@ source: 山形県公表資料をもとに手動整備
 retrieved_at: 2026-07-17
 name_ja: 山形県
 items: rice, apple, la-france
-ports: sendai-shiogama, niigata, tokyo
+ports: sakata, sendai-shiogama, niigata, tokyo
 ---
 
 ## 特産品
