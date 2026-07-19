@@ -257,8 +257,8 @@ export default function LogisticsTool({
         <section className="rise rounded-xl border border-line bg-panel p-4">
           <h2 className="text-sm font-semibold">{selectedRoute.nameJa}の乙仲（通関・海貨業者）</h2>
           <p className="mt-2 text-xs leading-relaxed text-dim">
-            この港・空港の乙仲リストは情報整備中です。通関業者は次の公的・業界公表情報から
-            探せます（特定業者の推奨はしません）。
+            通関業者（乙仲）の個別掲載は行っていません。特定業者の推奨を避けるため、
+            通関業者は次の公的・業界の公表情報からお探しください。
           </p>
           <ul className="mt-3 space-y-1 text-sm">
             <li>
