@@ -130,7 +130,7 @@ export default function OpsPage() {
         </section>
 
         <p className="mt-6 text-[11px] leading-relaxed text-dim/80">
-          本画面はデモの運用者向けです。公開運用時はアクセス制限を設けること。
+          本画面は運用者向けです（本番では環境変数 OPS_CONSOLE=1 の環境のみ表示）。
           検疫・制度情報の最終確認は植物防疫所等の公的機関へ。
         </p>
       </main>

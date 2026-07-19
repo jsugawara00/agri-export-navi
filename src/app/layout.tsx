@@ -16,7 +16,7 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "農産物輸出ナビ | Toika Export Navigator",
   description:
-    "調べる数ヶ月を、確かめる数分に。品目と国を選ぶだけで、農産物輸出の可否と手続きを数分で確認できる無料サイトです（まずは山形県産の米・りんご・ラ・フランスに対応）。",
+    "調べる数ヶ月を、確かめる数分に。品目と国を選ぶだけで、農産物輸出の可否と手続きを数分で確認できる無料サイトです（山形県産の主要8品目×10の国・地域に対応）。",
 };
 
 export default function RootLayout({

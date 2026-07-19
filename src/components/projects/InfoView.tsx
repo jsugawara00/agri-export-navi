@@ -151,7 +151,7 @@ export default function InfoView({ id, combos }: { id: string; combos: ComboMap 
       </div>
 
       <p className="text-center text-[11px] leading-relaxed text-dim/80">
-        本表示はデモ用に整備した基準ファイルに基づく目安です。
+        本表示は運用者が整備した基準ファイルに基づく目安です。
         検疫・制度情報の最終確認は植物防疫所等の公的機関へお願いします。
       </p>
 

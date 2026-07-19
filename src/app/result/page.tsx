@@ -268,7 +268,7 @@ export default async function ResultPage({
           className="rise mt-6 text-center text-[11px] leading-relaxed text-dim/80"
           style={{ animationDelay: `${nextDelay()}ms` }}
         >
-          本結果はデモ用に整備した基準ファイルに基づく目安であり、AIによる断定ではありません。
+          本結果は運用者が整備した基準ファイルに基づく目安であり、AIによる断定ではありません。
           <br />
           検疫・制度情報の最終確認は植物防疫所等の公的機関へお願いします。
         </p>
