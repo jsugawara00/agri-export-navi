@@ -1,5 +1,5 @@
 ---
-freshness: B
+freshness: C
 source: 山形県 農林水産部 農産物販路開拓・輸出推進課「令和6年度県産農産物の輸出実績について」（2025年10月6日公表）
 source_url: https://www.pref.yamagata.jp/140031/export/yusyutujisseki.html
 pdf_url: https://www.pref.yamagata.jp/documents/30205/r6_yusyutsuzisseki_upload.pdf

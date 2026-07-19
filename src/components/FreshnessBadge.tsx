@@ -1,12 +1,14 @@
 import type { ContentMeta } from "@/lib/content/types";
 
 const STYLE: Record<string, string> = {
+  W: "border-teal/50 text-teal",
   A: "border-teal/50 text-teal",
   B: "border-amber/50 text-amber",
   C: "border-dim/50 text-dim",
 };
 
 const LABEL: Record<string, string> = {
+  W: "区分W 週間監視",
   A: "区分A 自動取得",
   B: "区分B 人間確認済",
   C: "区分C 静的整備",

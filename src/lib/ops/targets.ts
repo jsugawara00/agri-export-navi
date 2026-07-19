@@ -5,13 +5,20 @@ import type { Thresholds, WatchTarget } from "./patrol";
 
 const CONTENT_DIR = path.join(process.cwd(), "content");
 
-/** 巡回対象: 鮮度メタデータを持つ採点md・国概要md・ステップガイドmd */
+/**
+ * 巡回対象: 鮮度メタデータを持つmd。
+ * criteria/countries/guides に加え、procedures（ステップ定義・年1回見直し）、
+ * reference（県統計・年1回＋出典差分検知）、prices（小売相場・週間監視）を含む。
+ */
 const WATCH_DIRS = [
   "criteria/institutional",
   "criteria/geopolitical",
   "criteria/logistics",
   "countries",
   "guides",
+  "procedures",
+  "reference",
+  "prices",
 ];
 
 export function collectTargets(): WatchTarget[] {
@@ -39,6 +46,7 @@ export function loadThresholds(): Thresholds {
   const raw = fs.readFileSync(path.join(CONTENT_DIR, "ops/patrol.md"), "utf-8");
   const { data } = parseFrontmatter(raw);
   return {
+    W: Number(data["stale_days_W"] ?? 7),
     A: Number(data["stale_days_A"] ?? 30),
     B: Number(data["stale_days_B"] ?? 90),
     C: Number(data["stale_days_C"] ?? 365),

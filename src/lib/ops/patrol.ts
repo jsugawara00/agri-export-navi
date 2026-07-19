@@ -7,6 +7,7 @@ import crypto from "node:crypto";
  */
 
 export interface Thresholds {
+  W: number;
   A: number;
   B: number;
   C: number;
@@ -15,7 +16,7 @@ export interface Thresholds {
 export interface WatchTarget {
   /** content/ からの相対パス */
   file: string;
-  freshness: "A" | "B" | "C";
+  freshness: "W" | "A" | "B" | "C";
   retrievedAt: string;
   sourceUrl?: string;
 }
@@ -29,7 +30,7 @@ export function daysBetween(fromIso: string, toIso: string): number {
 
 export interface StalenessResult {
   file: string;
-  freshness: "A" | "B" | "C";
+  freshness: "W" | "A" | "B" | "C";
   retrievedAt: string;
   staleDays: number;
   limitDays: number;

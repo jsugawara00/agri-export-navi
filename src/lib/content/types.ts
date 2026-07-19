@@ -1,5 +1,5 @@
 /** 鮮度区分: A=自動取得 / B=変更検知型(人間確認済み) / C=静的md */
-export type Freshness = "A" | "B" | "C";
+export type Freshness = "W" | "A" | "B" | "C";
 
 /** 全contentが必ず持つ鮮度メタデータ */
 export interface ContentMeta {

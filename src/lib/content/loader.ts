@@ -52,8 +52,8 @@ export function comboPrepared(item: ItemId, country: CountryId): boolean {
 
 function toMeta(data: Record<string, string>, file: string): ContentMeta {
   const freshness = data["freshness"] as Freshness;
-  if (!freshness || !["A", "B", "C"].includes(freshness)) {
-    throw new Error(`${file}: frontmatter に freshness (A|B|C) がありません`);
+  if (!freshness || !["W", "A", "B", "C"].includes(freshness)) {
+    throw new Error(`${file}: frontmatter に freshness (W|A|B|C) がありません`);
   }
   if (!data["source"]) throw new Error(`${file}: frontmatter に source がありません`);
   if (!data["retrieved_at"]) throw new Error(`${file}: frontmatter に retrieved_at がありません`);
