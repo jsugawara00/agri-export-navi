@@ -202,36 +202,6 @@ export function loadExportRecord(item: ItemId, country: CountryId): ExportRecord
   return { meta, note: hit?.["note"] };
 }
 
-/**
- * 海外現地の小売相場（参考表示専用・年1回見直し／区分C）。
- * 相場は日々変動するため as_of（時点）を必ず持ち、UIで「最新は自己確認を」と添える。
- * japan_only: true は現地に同種品の一般流通がなく比較相場を設定しない品目。
- */
-export interface RetailPriceDoc {
-  meta: ContentMeta;
-  title: string;
-  asOf: string;
-  currency: string;
-  japanOnly: boolean;
-  body: string;
-}
-
-/** content/prices/{item}_{country}.md を読む（無ければnull＝相場整備中） */
-export function loadRetailPrice(item: ItemId, country: CountryId): RetailPriceDoc | null {
-  const file = `prices/${item}_${country}.md`;
-  if (!contentFileExists(file)) return null;
-  const { data, body } = readMd(file);
-  const meta = toMeta(data, file);
-  return {
-    meta,
-    title: data["title"] ?? `${item} ${country} の小売相場`,
-    asOf: data["as_of"] ?? "",
-    currency: data["currency"] ?? "",
-    japanOnly: data["japan_only"] === "true",
-    body: extractSection(body, "参考小売相場"),
-  };
-}
-
 /** 輸出ルート（港・空港）の候補。v1.1: 全候補併記方式（order順・酒田港先頭固定） */
 export interface RouteDoc {
   id: string;
