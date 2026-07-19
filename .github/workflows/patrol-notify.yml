@@ -51,6 +51,27 @@ jobs:
         if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
         uses: actions/checkout@v4
 
+      - name: 到達できない情報源をメール通知（サイト閉鎖→代替探索の依頼）
+        if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
+        run: |
+          dead=$(grep "UNREACHABLE" ops/patrol-report.md || true)
+          if [ -z "$dead" ]; then echo "no unreachable sources"; exit 0; fi
+          title="巡回リマインド: 到達できない情報源があります（代替探索）"
+          exists=$(gh issue list --repo ${{ github.repository }} --state open --json title \
+            --jq ".[] | select(.title == \"$title\") | .title")
+          if [ -n "$exists" ]; then echo "open reminder already exists"; exit 0; fi
+          {
+            echo "@${OPERATOR} 前回の巡回で到達できなかった情報源があります（サイト閉鎖・移転の可能性）。"
+            echo ""
+            echo '```'
+            echo "$dead"
+            echo '```'
+            echo ""
+            echo "手元のClaude Codeで「巡回して」と伝えると、代替の公的／公表情報を探して"
+            echo "対象mdの source_url を更新する案をPRにします（反映は運用者のMergeで確定）。"
+          } > unreachable-body.md
+          gh issue create --repo ${{ github.repository }} --title "$title" --body-file unreachable-body.md
+
       - name: 巡回30日超のリマインドIssue（メンション→メール）
         if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
         run: |

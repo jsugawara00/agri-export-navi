@@ -211,6 +211,14 @@ export interface RouteDoc {
   order: number;
   /** pending_research = 実データ未取得（UIで「取扱実績データ整備中」表示） */
   pending: boolean;
+  /**
+   * site_referral = 航路・便数が多く個別掲載しきれない港。定期航路検索/入出港予定の
+   * 公式サイトへ誘導する（東京・横浜など）。推測値を並べる代わりに一次情報へつなぐ。
+   */
+  referral: boolean;
+  /** referral時の誘導先サイト */
+  portalUrl?: string;
+  portalLabel?: string;
   portType?: string;
   routeNote: string;
   serviceFrequency: string;
@@ -238,6 +246,9 @@ export function loadExportRoutes(): RouteDoc[] {
       mode: data["mode"] === "air" ? "air" : "sea",
       order: Number(data["order"] ?? 99),
       pending: data["status"] === "pending_research",
+      referral: data["status"] === "site_referral",
+      portalUrl: data["portal_url"],
+      portalLabel: data["portal_label"],
       portType: data["port_type"],
       routeNote: data["route_note"] ?? "要調査",
       serviceFrequency: data["service_frequency"] ?? "要調査",

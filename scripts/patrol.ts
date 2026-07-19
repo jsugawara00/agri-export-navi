@@ -50,6 +50,9 @@ for (const t of targets) {
 }
 if (staleCount === 0) log("- すべて鮮度上限内です");
 
+/** 到達できなかった情報源（サイト閉鎖・移転の可能性→代替探索が必要） */
+const unreachable: { url: string; reason: string; files: string[] }[] = [];
+
 async function fetchAndDiff() {
   log("");
   log("## 差分検知");
@@ -66,6 +69,7 @@ async function fetchAndDiff() {
       });
       if (!res.ok) {
         log(`- ✗ ERROR ${url} — HTTP ${res.status}`);
+        unreachable.push({ url, reason: `HTTP ${res.status}`, files: files.map((f) => f.file) });
         continue;
       }
       const text = normalizeHtml(await res.text());
@@ -93,8 +97,24 @@ async function fetchAndDiff() {
       fs.writeFileSync(hashFile, newHash);
       fs.writeFileSync(textFile, text);
     } catch (e) {
-      log(`- ✗ ERROR ${url} — ${e instanceof Error ? e.message : String(e)}`);
+      const reason = e instanceof Error ? e.message : String(e);
+      log(`- ✗ ERROR ${url} — ${reason}`);
+      unreachable.push({ url, reason, files: files.map((f) => f.file) });
     }
+  }
+
+  // 到達できなかった情報源はサイト閉鎖・移転の可能性。代替先の調査を促し、
+  // このブロックを通知ワークフローがgrep（UNREACHABLE）してメールに載せる。
+  if (unreachable.length > 0) {
+    log("");
+    log("## 到達できなかった情報源（サイト閉鎖・移転の可能性／代替探索が必要）");
+    log("");
+    for (const u of unreachable) {
+      log(`- 🔌 UNREACHABLE ${u.url} — ${u.reason}（対象md: ${u.files.join(", ")}）`);
+    }
+    log("");
+    log("→ サイトが移転・閉鎖された可能性があります。同等の公的／公表情報の代替先を探し、");
+    log("  対象mdの source_url を更新する案をPRにしてください（この状況はメール通知に載ります）。");
   }
 }
 

@@ -1,8 +1,8 @@
 ---
 freshness: B
-source: 山形県「酒田港定期コンテナ航路の紹介」／国土交通省東北地方整備局 酒田港湾事務所「コンテナ貨物の状況」（令和6年酒田港統計年報）
-source_url: https://www.pref.yamagata.jp/180033/kurashi/kendo/kouwan/sakatakou/container_sea-lane.html
-retrieved_at: 2026-07-18
+source: 酒田港ポートセールス協議会「コンテナ定期航路」／国土交通省東北地方整備局 酒田港湾事務所「コンテナ貨物の状況」（令和6年酒田港統計年報）
+source_url: https://www.port-of-sakata.jp/container.html
+retrieved_at: 2026-07-19
 reviewed_by: Jump
 name_ja: 酒田港
 mode: sea

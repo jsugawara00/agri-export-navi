@@ -216,6 +216,18 @@ This version has breaking changes — APIs, conventions, and file structure may 
   プレースホルダ（source_url無＝差分検知はスキップ、鮮度Cで年次見直し）。実データを
   入れた港から見張りが効く。運用マニュアル4章に酒田港源を追記。酒田港源の初回
   スナップショットは次回「巡回して」実行時に作成。テスト69件PASS。
+- 2026-07-19(続9): 港データを本整備。①酒田＝巡回先を酒田港ポートセールス協議会
+  ページ（port-of-sakata.jp/container.html）に変更。②仙台塩釜（仙台商工会議所）・
+  新潟（n-wtt.jp）＝実データ＋出典で整備（status ok・数値は公表情報のみ、直航なし
+  仕向地は釜山積替が前提と明記）。③**東京・横浜＝「サイト活用」方式を新設**
+  （status: site_referral。航路・便数が多く個別掲載しきれないため公式の定期航路検索／
+  入出港予定サイトへ誘導。loader に referral/portalUrl/portalLabel を追加、LogisticsTool
+  に誘導カード＋テールバッジ「定期航路検索サイトで確認」）。④**巡回先が閉鎖・到達
+  不能な場合の経路を実装**: patrol.ts が「到達できなかった情報源」節（UNREACHABLE）を
+  出力→patrol-notify.yml が週次でgrepして代替探索リマインドIssueをメール→/patrol
+  SKILL.md に「到達不能→代替提案」手順を追記。仙台空港・成田は未整備プレースホルダの
+  まま。テスト69件PASS・ビルド成功。酒田/仙台/新潟の初回スナップショットは次回
+  「巡回して」で作成。
 - 未完（次回）: todo.md 0.6章の残り（柿ぶどう西洋なし×タイ、他港データ調査、
   統計PDF表2の目視補完、乙仲拡充）／content推敲／演出磨き／名刺作成（URL確定済み）／
   READMEへのスクリーンショット挿入。運用マニュアルは docs/運用マニュアル.md に作成済み。

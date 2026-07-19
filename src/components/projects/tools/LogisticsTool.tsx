@@ -123,10 +123,20 @@ export default function LogisticsTool({
                     取扱実績データ整備中
                   </span>
                 )}
+                {r.referral && (
+                  <span className="rounded bg-teal/15 px-1.5 py-0.5 text-[10px] text-teal">
+                    定期航路検索サイトで確認
+                  </span>
+                )}
               </span>
               <span className="mt-1 block text-xs leading-relaxed text-dim">
                 {r.pending ? (
                   <>便数・航路形態・実績は要調査（推測値は表示しません）。{r.localNote}</>
+                ) : r.referral ? (
+                  <>
+                    {r.routeNote}
+                    {r.localNote && `／${r.localNote}`}
+                  </>
                 ) : (
                   <>
                     {r.routeNote}／便数: {r.serviceFrequency}
@@ -142,7 +152,7 @@ export default function LogisticsTool({
       </section>
 
       {/* 選択ルートの詳細（実データのある港のみ・数値と出典のみ） */}
-      {selectedRoute && !selectedRoute.pending && selectedRoute.cargoRecord && (
+      {selectedRoute && !selectedRoute.pending && !selectedRoute.referral && selectedRoute.cargoRecord && (
         <section className="rise rounded-xl border border-line bg-panel p-4">
           <div className="flex flex-wrap items-center gap-2">
             <h2 className="text-sm font-semibold">{selectedRoute.nameJa}の取扱実績（公的統計）</h2>
@@ -151,6 +161,31 @@ export default function LogisticsTool({
           <pre className="mt-2 whitespace-pre-wrap font-sans text-xs leading-relaxed text-dim">
             {selectedRoute.cargoRecord}
           </pre>
+        </section>
+      )}
+
+      {/* サイト活用の港（航路・便数が多く個別掲載しきれない港は一次サイトへ誘導） */}
+      {selectedRoute && selectedRoute.referral && (
+        <section className="rise rounded-xl border border-teal/40 bg-panel p-4">
+          <div className="flex flex-wrap items-center gap-2">
+            <h2 className="text-sm font-semibold">{selectedRoute.nameJa}の定期航路を調べる</h2>
+            <FreshnessBadge meta={selectedRoute.meta} />
+          </div>
+          <p className="mt-2 text-xs leading-relaxed text-dim">
+            {selectedRoute.nameJa}は航路・便数が非常に多く、本サイトで個別便を網羅
+            できません。推測値を並べる代わりに、公式の定期航路検索／入出港予定サイトで
+            最新情報をご確認ください。
+          </p>
+          {selectedRoute.portalUrl && (
+            <a
+              href={selectedRoute.portalUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mt-3 inline-block rounded-lg bg-teal px-4 py-2 text-sm font-semibold text-background transition hover:opacity-90"
+            >
+              {selectedRoute.portalLabel ?? "定期航路情報サイトを開く"} →
+            </a>
+          )}
         </section>
       )}
 
