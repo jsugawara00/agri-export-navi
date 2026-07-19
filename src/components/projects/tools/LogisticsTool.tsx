@@ -161,6 +161,20 @@ export default function LogisticsTool({
           <pre className="mt-2 whitespace-pre-wrap font-sans text-xs leading-relaxed text-dim">
             {selectedRoute.cargoRecord}
           </pre>
+          {selectedRoute.portalUrl && (
+            <p className="mt-3 text-xs leading-relaxed text-dim">
+              なお、最新の定期コンテナ航路情報は{" "}
+              <a
+                href={selectedRoute.portalUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-teal underline"
+              >
+                {selectedRoute.portalLabel ?? "運航元の公式サイト"}
+              </a>
+              {" "}にてご確認ください。
+            </p>
+          )}
         </section>
       )}
 
