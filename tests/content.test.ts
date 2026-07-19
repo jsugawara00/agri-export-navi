@@ -69,6 +69,17 @@ describe("実contentでの採点", () => {
       cherry.breakdown.some((b) => b.id === "perishability");
     expect(hasPerishability).toBe(true);
   });
+
+  it("タイ向け青果には県の選果こん包施設証明の減点が必ず含まれる（指示書2.3）", () => {
+    for (const item of ["apple", "peach", "cherry"] as const) {
+      const result = computeHurdle(loadCriteriaSet(item, "thailand"));
+      expect(result.status, `${item}_thailand`).toBe("scored");
+      const hasPrefCert =
+        result.status === "scored" &&
+        result.breakdown.some((b) => b.id === "prefecture-facility-cert");
+      expect(hasPrefCert, `${item}_thailand に県施設証明の減点がない`).toBe(true);
+    }
+  });
 });
 
 describe("県統計の実績データ（v1.1・参考表示専用）", () => {
