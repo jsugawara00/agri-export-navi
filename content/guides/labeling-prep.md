@@ -1,6 +1,6 @@
 ---
 freshness: C
-source: 香港の食品表示規制・JETRO公表資料をもとに手動整備（雛形）
+source: 香港の食品表示規制・JETRO公表資料をもとに手動整備
 retrieved_at: 2026-07-17
 title: 英文・中文の食品表示ラベルを準備する
 ---

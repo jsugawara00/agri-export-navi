@@ -1,6 +1,6 @@
 ---
 freshness: C
-source: 香港食物環境衛生署・JETRO公表資料をもとに手動整備（雛形）
+source: 香港食物環境衛生署・JETRO公表資料をもとに手動整備
 retrieved_at: 2026-07-17
 title: 輸入者側の手続きをバイヤーと確認する
 ---

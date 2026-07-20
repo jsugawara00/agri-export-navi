@@ -1,6 +1,6 @@
 ---
 freshness: C
-source: 米国EPAトレランス・JETRO公表資料をもとに手動整備（雛形）
+source: 米国EPAトレランス・JETRO公表資料をもとに手動整備
 retrieved_at: 2026-07-17
 title: 使用農薬を米国基準と照合する
 ---

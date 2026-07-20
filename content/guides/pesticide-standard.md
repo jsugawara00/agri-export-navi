@@ -1,6 +1,6 @@
 ---
 freshness: C
-source: 台湾衛生福利部の残留農薬基準・JETRO公表資料をもとに手動整備（雛形）
+source: 台湾衛生福利部の残留農薬基準・JETRO公表資料をもとに手動整備
 retrieved_at: 2026-07-17
 title: 使用農薬を台湾基準と照合する
 ---

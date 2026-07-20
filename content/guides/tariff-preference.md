@@ -1,6 +1,6 @@
 ---
 freshness: C
-source: 税関 EPA原産地規則ポータル・JETROの公表資料をもとに手動整備（雛形）
+source: 税関 EPA原産地規則ポータル・JETROの公表資料をもとに手動整備
 source_url: https://www.customs.go.jp/roo/index.htm
 retrieved_at: 2026-07-18
 title: 適用税率と日米貿易協定の適用可否を確認する

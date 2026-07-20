@@ -1,6 +1,6 @@
 ---
 freshness: C
-source: JETRO公表資料をもとに手動整備（雛形）
+source: JETRO公表資料をもとに手動整備
 retrieved_at: 2026-07-19
 title: 輸入者側の登録・ライセンス要否を確認する
 ---

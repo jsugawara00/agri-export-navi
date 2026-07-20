@@ -1,6 +1,6 @@
 ---
 freshness: C
-source: 台湾財政部関務署の公表資料・JETROをもとに手動整備（雛形）
+source: 台湾財政部関務署の公表資料・JETROをもとに手動整備
 retrieved_at: 2026-07-17
 title: 関税割当枠と税率を確認する
 ---

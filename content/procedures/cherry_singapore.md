@@ -1,6 +1,6 @@
 ---
 freshness: C
-source: 植物防疫所・JETRO公表資料をもとに手動整備（雛形）
+source: 植物防疫所・JETRO公表資料をもとに手動整備
 retrieved_at: 2026-07-19
 ---
 

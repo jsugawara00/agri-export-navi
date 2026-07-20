@@ -1,6 +1,6 @@
 ---
 freshness: C
-source: 米国FDA（FSMA）・JETRO公表資料をもとに手動整備（雛形）
+source: 米国FDA（FSMA）・JETRO公表資料をもとに手動整備
 retrieved_at: 2026-07-17
 title: FDA施設登録と事前通知の運用を確認する
 ---
