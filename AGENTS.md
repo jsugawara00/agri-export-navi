@@ -289,6 +289,12 @@ This version has breaking changes — APIs, conventions, and file structure may 
   （国情勢md3本・銀行チェックリストsource）。③yamagata.mdの古い「港2択方式」記述を
   現行（routes全候補併記・首都圏はサイト活用）に更新。ガイド21本・国概要は既に統一
   構造で高品質のため大きな書換は不要と判断。テスト69件PASS。
+- 2026-07-20(続4): カスタムドメイン移行（toika.jp。Xserver取得×Cloudflare DNS）。
+  navi.toika.jp=農産物輸出ナビ、wms/gateway/sotto=各アプリ、toika.jp/www=ポートフォリオ。
+  4リポの公開URL（README・GitHub About Website）を新ドメインに一括更新（wmsは記載なし）。
+  トップにToika導線を追加: ヘッダーをティール色「Toika ↗」リンク（→toika.jp）、フッター
+  最下部に「作者: Toika（トイカ）↗ — 『問うて確かめる』を大切に、断定しすぎず、使う人の
+  余白を残すものづくりを目指しています。」（無料配布時に理念が届く形）。テスト69件PASS。
 - 未完（次回）: todo.md 0.6章の残り（柿ぶどう西洋なし×タイ、他港データ調査、
   統計PDF表2の目視補完、乙仲拡充）／content推敲／演出磨き／名刺作成（URL確定済み）／
   READMEへのスクリーンショット挿入。運用マニュアルは docs/運用マニュアル.md に作成済み。

@@ -32,7 +32,14 @@ export default function Home() {
     <div className="flex min-h-screen flex-col">
       <header className="flex items-center justify-between px-6 py-4">
         <p className="text-sm tracking-widest text-dim">
-          <span className="font-semibold text-foreground">Toika</span>
+          <a
+            href="https://toika.jp"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="font-semibold text-teal transition hover:opacity-80"
+          >
+            Toika<span className="ml-0.5 text-[10px]">↗</span>
+          </a>
           <span className="mx-2">|</span>農産物輸出ナビ
         </p>
         <div className="flex items-center gap-4">
@@ -129,6 +136,18 @@ export default function Home() {
         </p>
         <p className="mt-2 text-[11px] text-dim/70">
           検疫・制度情報の最終確認は植物防疫所等の公的機関へお願いします。
+        </p>
+        <p className="mx-auto mt-4 max-w-2xl border-t border-line/60 pt-4 text-[11px] leading-relaxed text-dim/80">
+          <a
+            href="https://toika.jp"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="font-semibold text-teal transition hover:opacity-80"
+          >
+            作者: Toika（トイカ）↗
+          </a>
+          <span className="mx-1.5 text-dim/40">—</span>
+          「問うて確かめる」を大切に、断定しすぎず、使う人の余白を残すものづくりを目指しています。
         </p>
       </footer>
     </div>
