@@ -123,7 +123,7 @@ export default function Home() {
           現在は山形県産の米・りんご・ラ・フランス × 台湾・香港・米国を中心に
           ご案内しています。他の品目・輸出先（山形県産の主要8品目・10の国・地域まで
           整備済み）の追加や、貴自治体・貴社の特産品を盛り込んだ再設計のご相談を承ります。
-          <a href="mailto:sugaron777@gmail.com" className="ml-2 text-teal underline">
+          <a href="mailto:info@toika.jp" className="ml-2 text-teal underline">
             ご相談はこちら
           </a>
         </p>
