@@ -71,7 +71,10 @@ export default function DotGlobe({
   const stateRef = useRef({
     theta: 0.6, // 経度方向の回転（初期は日本が正面寄り）
     tilt: 0.45, // 緯度方向の傾き
-    mode: "auto" as "auto" | "fly" | "zoom",
+    mode: "auto" as "auto" | "aim" | "fly" | "zoom",
+    aimStart: 0, // 照準（仕向地パルス）開始時刻
+    targetLatR: 0, // 仕向地（ラジアン）
+    targetLngR: 0,
     flyStart: 0,
     fromTheta: 0,
     fromTilt: 0,
@@ -104,6 +107,22 @@ export default function DotGlobe({
     resize();
     window.addEventListener("resize", resize);
 
+    const AIM_MS = 680; // 照準フェーズの長さ
+
+    // 照準完了 → 対象国方向への回転を開始
+    const beginFly = (s: typeof stateRef.current) => {
+      const toTheta = -s.targetLngR;
+      const twoPi = Math.PI * 2;
+      const from = s.theta % twoPi;
+      const diff = ((((toTheta - from) % twoPi) + twoPi * 1.5) % twoPi) - twoPi / 2;
+      s.fromTheta = from;
+      s.toTheta = from + diff;
+      s.fromTilt = s.tilt;
+      s.toTilt = s.targetLatR;
+      s.flyStart = performance.now();
+      s.mode = "fly";
+    };
+
     const draw = (now: number) => {
       const s = stateRef.current;
       const dt = Math.min(0.05, (now - last) / 1000);
@@ -111,6 +130,9 @@ export default function DotGlobe({
 
       if (s.mode === "auto") {
         s.theta += dt * 0.12; // 自動回転
+      } else if (s.mode === "aim") {
+        s.theta += dt * 0.12; // 照準中もゆっくり回す
+        if (now - s.aimStart >= AIM_MS) beginFly(s);
       } else if (s.mode === "fly") {
         const t = Math.min(1, (now - s.flyStart) / 800);
         const e = easeInOutCubic(t);
@@ -164,6 +186,45 @@ export default function DotGlobe({
       }
       ctx.globalAlpha = 1;
 
+      // 照準フェーズ: 仕向地が正面側にあればパルス発光で「狙いを定める」演出
+      if (s.mode === "aim") {
+        const a = s.targetLngR + s.theta;
+        const cosLatT = Math.cos(s.targetLatR);
+        const sinLatT = Math.sin(s.targetLatR);
+        const tx = cosLatT * Math.sin(a);
+        const tz0 = cosLatT * Math.cos(a);
+        const ty = sinLatT * cosT - tz0 * sinT;
+        const tz = sinLatT * sinT + tz0 * cosT;
+        if (tz > 0.02) {
+          const px = cx + tx * R;
+          const py = cy - ty * R;
+          const elapsed = now - s.aimStart;
+          // 柔らかいグロー（背後のハロー）
+          ctx.globalAlpha = 0.3;
+          ctx.fillStyle = "#f0b95a";
+          ctx.beginPath();
+          ctx.arc(px, py, 10 * dpr, 0, Math.PI * 2);
+          ctx.fill();
+          // 拡がるリング（2重・明るめ）
+          for (let k = 0; k < 2; k++) {
+            const phase = ((elapsed / 650 + k * 0.5) % 1 + 1) % 1;
+            ctx.globalAlpha = (1 - phase) * 0.9;
+            ctx.strokeStyle = "#ffd27a";
+            ctx.lineWidth = 2 * dpr;
+            ctx.beginPath();
+            ctx.arc(px, py, (4 + phase * 24) * dpr, 0, Math.PI * 2);
+            ctx.stroke();
+          }
+          // 明るいコア
+          ctx.globalAlpha = 1;
+          ctx.fillStyle = "#ffe6ad";
+          ctx.beginPath();
+          ctx.arc(px, py, 3.2 * dpr, 0, Math.PI * 2);
+          ctx.fill();
+          ctx.globalAlpha = 1;
+        }
+      }
+
       raf = requestAnimationFrame(draw);
     };
     raf = requestAnimationFrame(draw);
@@ -174,21 +235,16 @@ export default function DotGlobe({
     };
   }, []);
 
-  // 検索実行: 対象国方向への回転を開始
+  // 検索実行: まず仕向地を「照準」（パルス）→ その後に回転（beginFly）
   useEffect(() => {
     if (!flyTarget) return;
     const s = stateRef.current;
-    const toTheta = (-flyTarget.lng * Math.PI) / 180;
-    // 現在角から最短経路で回す
-    const twoPi = Math.PI * 2;
-    const from = s.theta % twoPi;
-    const diff = ((((toTheta - from) % twoPi) + twoPi * 1.5) % twoPi) - twoPi / 2;
-    s.fromTheta = from;
-    s.toTheta = from + diff;
-    s.fromTilt = s.tilt;
-    s.toTilt = (flyTarget.lat * Math.PI) / 180;
-    s.flyStart = performance.now();
-    s.mode = "fly";
+    s.targetLatR = (flyTarget.lat * Math.PI) / 180;
+    s.targetLngR = (flyTarget.lng * Math.PI) / 180;
+    const reduce = window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
+    // 動きを控える設定なら照準を飛ばして即回転（aimStartを過去にして即遷移）
+    s.aimStart = reduce ? performance.now() - 10000 : performance.now();
+    s.mode = "aim";
   }, [flyTarget]);
 
   return (
