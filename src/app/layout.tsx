@@ -13,10 +13,28 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+const SITE_URL = "https://navi.toika.jp";
+const SITE_TITLE = "農産物輸出ナビ | Toika Export Navigator";
+const SITE_DESCRIPTION =
+  "調べる数ヶ月を、確かめる数分に。品目と国を選ぶだけで、農産物輸出の可否と手続きを数分で確認できる無料サイトです（山形県産の主要8品目×10の国・地域に対応）。";
+
 export const metadata: Metadata = {
-  title: "農産物輸出ナビ | Toika Export Navigator",
-  description:
-    "調べる数ヶ月を、確かめる数分に。品目と国を選ぶだけで、農産物輸出の可否と手続きを数分で確認できる無料サイトです（山形県産の主要8品目×10の国・地域に対応）。",
+  metadataBase: new URL(SITE_URL),
+  title: SITE_TITLE,
+  description: SITE_DESCRIPTION,
+  openGraph: {
+    type: "website",
+    locale: "ja_JP",
+    url: SITE_URL,
+    siteName: "農産物輸出ナビ",
+    title: SITE_TITLE,
+    description: SITE_DESCRIPTION,
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: SITE_TITLE,
+    description: SITE_DESCRIPTION,
+  },
 };
 
 export default function RootLayout({

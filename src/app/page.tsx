@@ -12,11 +12,24 @@ import {
   VISIBLE_ITEMS,
 } from "@/lib/content/catalog";
 
+const CONTACT_MAIL = "info@toika.jp";
+
 export default function Home() {
   const router = useRouter();
   const [item, setItem] = useState("");
   const [country, setCountry] = useState("");
   const [flyTarget, setFlyTarget] = useState<FlyTarget | null>(null);
+  const [copied, setCopied] = useState(false);
+
+  const handleCopyMail = async () => {
+    try {
+      await navigator.clipboard.writeText(CONTACT_MAIL);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    } catch {
+      setCopied(false);
+    }
+  };
 
   const isOther = item === OTHER_ITEM.id;
   const isBeef = item === BEEF_ITEM.id;
@@ -130,9 +143,15 @@ export default function Home() {
           現在は山形県産の米・りんご・ラ・フランス × 台湾・香港・米国を中心に
           ご案内しています。他の品目・輸出先（山形県産の主要8品目・10の国・地域まで
           整備済み）の追加や、貴自治体・貴社の特産品を盛り込んだ再設計のご相談を承ります。
-          <a href="mailto:info@toika.jp" className="ml-2 text-teal underline">
-            ご相談はこちら
-          </a>
+          <button
+            type="button"
+            onClick={handleCopyMail}
+            className="ml-2 inline-flex items-center gap-1 rounded border border-line px-2 py-0.5 align-middle text-teal transition hover:opacity-80"
+            aria-label={`ご相談窓口のメールアドレス ${CONTACT_MAIL} をコピー`}
+          >
+            {CONTACT_MAIL}
+            <span className="text-dim/70">{copied ? "コピーしました" : "コピー"}</span>
+          </button>
         </p>
         <p className="mt-2 text-[11px] text-dim/70">
           検疫・制度情報の最終確認は植物防疫所等の公的機関へお願いします。

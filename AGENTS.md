@@ -295,6 +295,16 @@ This version has breaking changes — APIs, conventions, and file structure may 
   トップにToika導線を追加: ヘッダーをティール色「Toika ↗」リンク（→toika.jp）、フッター
   最下部に「作者: Toika（トイカ）↗ — 『問うて確かめる』を大切に、断定しすぎず、使う人の
   余白を残すものづくりを目指しています。」（無料配布時に理念が届く形）。テスト69件PASS。
+- 2026-07-20(続3): ①トップフッターの「ご相談はこちら」（mailtoリンク）を
+  **メールアドレス表示＋クリップボードコピー**に変更（メーラーが立ち上がらず、
+  スマホ・共用PCでも住所を控えられる。2秒「コピーしました」表示）。
+  ②**OGP画像を追加**（src/app/opengraph-image.png・twitter-image.png ＝1200×630、
+  alt.txt付き。layout.tsx に metadataBase=https://navi.toika.jp ＋ openGraph/twitter
+  メタ）。画像は静的PNG＝**next/og（ImageResponse）は日本語フォント埋め込みが要る
+  ため不採用**。生成元は `scripts/ogp-image.html`（Canvas 2Dの点描地球儀＋酒田→
+  台湾/香港の弧。作り直しは
+  `npx playwright screenshot --viewport-size "1200,630" file:///…/ogp-image.html out.png`）。
+  テスト69件PASS。
 - 未完（次回）: **名刺作成（todo 2章＝次回ここから）**。印刷屋登録済み・残りは構成のみ。
   メール info@toika.jp／QR= navi.toika.jp 確定。動機と配布戦略は memory の
   agri-export-navi-mission に記録（恩返し×名刺配布×Toika宣伝×秋田横展開×SNSなし）。
