@@ -305,6 +305,11 @@ This version has breaking changes — APIs, conventions, and file structure may 
   台湾/香港の弧。作り直しは
   `npx playwright screenshot --viewport-size "1200,630" file:///…/ogp-image.html out.png`）。
   テスト69件PASS。
+  ③**LINEはOGPをURL単位でキャッシュする**（OGP設定前に送ったURLは画像なしのまま
+  残る）。`?v=2` 付きで送ると別URL扱いで画像が出ることを実機確認済み＝サイト側は
+  正常。数日〜1週間で自然に更新されるため**名刺のQRはパラメータなしの
+  `https://navi.toika.jp` で確定**。X/Facebookは Card Validator /
+  Sharing Debugger で即時再取得できる。
 - 未完（次回）: **名刺作成（todo 2章＝次回ここから）**。印刷屋登録済み・残りは構成のみ。
   メール info@toika.jp／QR= navi.toika.jp 確定。動機と配布戦略は memory の
   agri-export-navi-mission に記録（恩返し×名刺配布×Toika宣伝×秋田横展開×SNSなし）。
