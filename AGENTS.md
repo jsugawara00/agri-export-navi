@@ -295,6 +295,8 @@ This version has breaking changes — APIs, conventions, and file structure may 
   トップにToika導線を追加: ヘッダーをティール色「Toika ↗」リンク（→toika.jp）、フッター
   最下部に「作者: Toika（トイカ）↗ — 『問うて確かめる』を大切に、断定しすぎず、使う人の
   余白を残すものづくりを目指しています。」（無料配布時に理念が届く形）。テスト69件PASS。
-- 未完（次回）: todo.md 0.6章の残り（柿ぶどう西洋なし×タイ、他港データ調査、
-  統計PDF表2の目視補完、乙仲拡充）／content推敲／演出磨き／名刺作成（URL確定済み）／
-  READMEへのスクリーンショット挿入。運用マニュアルは docs/運用マニュアル.md に作成済み。
+- 未完（次回）: **名刺作成（todo 2章＝次回ここから）**。印刷屋登録済み・残りは構成のみ。
+  メール info@toika.jp／QR= navi.toika.jp 確定。動機と配布戦略は memory の
+  agri-export-navi-mission に記録（恩返し×名刺配布×Toika宣伝×秋田横展開×SNSなし）。
+  その他の残り: todo 0.6章（柿ぶどう西洋なし×タイ、統計PDF表2の目視補完）／秋田横展開／
+  Firebase有効化（端末またぎ要望が出たら）。運用マニュアルは docs/運用マニュアル.md。
