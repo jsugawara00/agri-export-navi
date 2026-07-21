@@ -311,8 +311,28 @@ This version has breaking changes — APIs, conventions, and file structure may 
   正常。数日〜1週間で自然に更新されるため**名刺のQRはパラメータなしの
   `https://navi.toika.jp` で確定**。X/Facebookは Card Validator /
   Sharing Debugger で即時再取得できる。
-- 未完（次回）: **名刺作成（todo 2章＝次回ここから）**。印刷屋登録済み・残りは構成のみ。
-  メール info@toika.jp／QR= navi.toika.jp 確定。動機と配布戦略は memory の
-  agri-export-navi-mission に記録（恩返し×名刺配布×Toika宣伝×秋田横展開×SNSなし）。
-  その他の残り: todo 0.6章（柿ぶどう西洋なし×タイ、統計PDF表2の目視補完）／秋田横展開／
-  Firebase有効化（端末またぎ要望が出たら）。運用マニュアルは docs/運用マニュアル.md。
+- 2026-07-21: **公開まわりの整理**（配布開始にあたり「必要最低限だけ外に出す」方針で点検）。
+  ①点検結果は良好: 秘密情報の混入なし（.env* は追跡外）／ソースマップは403で配信されない／
+  todo.md・AGENTS.md・content/・ops/・package.json は本番から404／APIルート（route.ts）ゼロ／
+  /ops は本番404。②`public/` の create-next-app 残骸SVG5件を削除（未参照なのに誰でも
+  取得できていた）。③`.vercelignore` を新設し開発・運用ファイルをVercelへ送らない。
+  ④`next.config.ts` にセキュリティヘッダ4種を追加 — **X-Frame-Options: SAMEORIGIN**
+  （他サイトのiframeへの埋め込み＝なりすまし・無断転載を防ぐ）／nosniff／Referrer-Policy／
+  Permissions-Policy。本番で反映を実測確認済み。
+  **教訓（重要）: .vercelignore / .gitignore のパターンは先頭 "/" でルート限定にする。**
+  `docs/` `ops/` と書いたため `src/lib/docs/` `src/lib/ops/` `content/ops/` まで除外され、
+  Vercelのビルドが `Module not found: Can't resolve '@/lib/docs/mail'` で2回失敗した
+  （**ローカルの build/test は .vercelignore が効かないので気づけない**。本番は前の
+  成功デプロイが配信され続けるため障害にはならない）。
+  **失敗ログの読み方**: Vercel MCP はこのプロジェクトに権限がない（403）が、
+  `npx vercel@latest inspect <デプロイURL> --logs` は認証済みで読める。デプロイの
+  成否は `gh api repos/jsugawara00/agri-export-navi/commits/<sha>/status --jq .state` が速い。
+  ⑤READMEに「作者・お問い合わせ」節を追加（Toika（トイカ）＋理念＋info@toika.jp。
+  他のToika製アプリとREADMEの構成を揃えた）。⑥**企画書・指示書・運用マニュアル・backlog を
+  リポジトリから外し運用者の手元へ**（`.gitignore` に `/docs/*.md`。READMEが使う
+  docs/screenshots/ は維持）。
+  ※ライセンスファイルは意図的に置かない（＝全著作権留保。MIT等は商用の再配布を
+  許諾してしまい「模倣されて有料サービスにされたくない」という方針と矛盾する）。
+- 未完（次回）: todo 0.6章（柿ぶどう西洋なし×タイ、統計PDF表2の目視補完）／秋田横展開／
+  Firebase有効化（端末またぎ要望が出たら）。企画書・指示書・運用マニュアルは運用者の
+  手元（デスクトップ「agri-export-navi 資料」）にあるので必要なら提示を依頼する。
