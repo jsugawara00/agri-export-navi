@@ -1,20 +1,24 @@
 # Vercel へアップロードしないもの（サイトの動作には使わない開発・運用用ファイル）
+#
+# 重要: パターンは必ず先頭 "/" でルート直下に限定する。
+#   "docs/" と書くと src/lib/docs/ や content/ops/ にもマッチし、
+#   アプリ本体が欠けてビルドが失敗する（2026-07-21に実際に発生）。
 # 注意: content/ src/ public/ package.json next.config.ts はビルドに必須なので絶対に足さない。
 
 # 運用・開発ツール（手元でのみ実行する）
-scripts/
-ops/
-tests/
-vitest.config.ts
-.claude/
-.github/
+/scripts/
+/ops/
+/tests/
+/vitest.config.ts
+/.claude/
+/.github/
 
 # ドキュメント（サイトからは参照しない）
-docs/
-README.md
-AGENTS.md
-CLAUDE.md
-todo.md
+/docs/
+/README.md
+/AGENTS.md
+/CLAUDE.md
+/todo.md
 
 # 名刺の入稿データ（手元専用・リポジトリにも入れない）
-Toika名刺/
+/Toika名刺/
