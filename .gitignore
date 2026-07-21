@@ -41,3 +41,6 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
+
+# 企画書・指示書・運用マニュアル等の資料は運用者の手元に保管する（リポジトリには置かない）
+/docs/*.md

@@ -6,7 +6,8 @@ This version has breaking changes — APIs, conventions, and file structure may 
 
 # 農産物輸出ナビ（Toika Export Navigator）
 
-詳細は `docs/企画書_v1.0.md`・`docs/指示書_v1.0.md` を参照。判断に迷ったら企画書の設計原則へ。
+企画書・指示書・運用マニュアルは**運用者の手元**に保管（リポジトリには置かない方針）。
+必要なときは運用者に提示を依頼する。判断に迷ったら企画書の設計原則へ。
 
 ## 絶対原則（違反不可）
 
