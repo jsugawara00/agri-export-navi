@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import { Analytics } from "@vercel/analytics/next";
 import AuthProvider from "@/components/auth/AuthProvider";
 import "./globals.css";
 
@@ -59,6 +60,8 @@ export default function RootLayout({
             お気づきの点はぜひ教えてください — 2〜3日を目安に反映します。
           </p>
         </footer>
+        {/* アクセス計測（Vercel Web Analytics）。Cookieを使わず個人は特定しない */}
+        <Analytics />
       </body>
     </html>
   );
