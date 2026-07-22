@@ -333,6 +333,15 @@ This version has breaking changes — APIs, conventions, and file structure may 
   docs/screenshots/ は維持）。
   ※ライセンスファイルは意図的に置かない（＝全著作権留保。MIT等は商用の再配布を
   許諾してしまい「模倣されて有料サービスにされたくない」という方針と矛盾する）。
+- 2026-07-22: **アクセス計測を導入**（Vercel Web Analytics。commit 790a527）。配布した名刺・
+  URLが実際に開かれたかを数字で残すため（「使ってもらえた」を後から示せるようにする）。
+  `@vercel/analytics` ＋ layout.tsx に `<Analytics />` 1行のみ。**Cookieを使わず個人を
+  特定しないため同意バナー・プライバシーポリシーの追記は不要**（GA4を選ばなかった理由）。
+  Vercel側は Pro に含まれる無印プラン（12ヶ月履歴・月100万イベント超過分のみ従量、
+  Web Analytics Plus $10/月 は選ばない）。Speed Insights は目的（訪問の有無）に不要で未導入。
+  確認方法: 本番の `/_vercel/insights/script.js` が **200** なら有効（Enable前は404）。
+  **HTMLソースにscriptタグは出ない**（クライアント側で後から挿入する方式）ので、
+  ソースを見て「入っていない」と誤診しないこと。自分のアクセスも計上される点に注意。
 - 未完（次回）: todo 0.6章（柿ぶどう西洋なし×タイ、統計PDF表2の目視補完）／秋田横展開／
   Firebase有効化（端末またぎ要望が出たら）。企画書・指示書・運用マニュアルは運用者の
   手元（デスクトップ「agri-export-navi 資料」）にあるので必要なら提示を依頼する。
