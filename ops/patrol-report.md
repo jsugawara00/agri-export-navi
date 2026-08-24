@@ -1,18 +1,32 @@
 ---
-generated_at: 2026-08-09T22:09:19.852Z
+generated_at: 2026-08-23T22:08:14.529Z
 mode: online
 ---
 
-# 巡回レポート（2026-08-09 / オンライン）
+# 巡回レポート（2026-08-23 / オンライン）
 
 ## 鮮度チェック
 
-- すべて鮮度上限内です
+- ⚠ STALE content/criteria/geopolitical/canada.md — 区分A 取得から35日（上限30日）
+- ⚠ STALE content/criteria/geopolitical/china.md — 区分A 取得から35日（上限30日）
+- ⚠ STALE content/criteria/geopolitical/eu.md — 区分A 取得から35日（上限30日）
+- ⚠ STALE content/criteria/geopolitical/hongkong.md — 区分A 取得から37日（上限30日）
+- ⚠ STALE content/criteria/geopolitical/singapore.md — 区分A 取得から35日（上限30日）
+- ⚠ STALE content/criteria/geopolitical/taiwan.md — 区分A 取得から37日（上限30日）
+- ⚠ STALE content/criteria/geopolitical/thailand.md — 区分A 取得から35日（上限30日）
+- ⚠ STALE content/criteria/geopolitical/usa.md — 区分A 取得から37日（上限30日）
+- ⚠ STALE content/countries/canada.md — 区分A 取得から35日（上限30日）
+- ⚠ STALE content/countries/eu.md — 区分A 取得から35日（上限30日）
+- ⚠ STALE content/countries/hongkong.md — 区分A 取得から36日（上限30日）
+- ⚠ STALE content/countries/singapore.md — 区分A 取得から35日（上限30日）
+- ⚠ STALE content/countries/taiwan.md — 区分A 取得から36日（上限30日）
+- ⚠ STALE content/countries/thailand.md — 区分A 取得から35日（上限30日）
+- ⚠ STALE content/countries/usa.md — 区分A 取得から37日（上限30日）
 
 ## 差分検知
 
-- ⚠ CHANGED https://www.maff.go.jp/pps/ — 確認キューを起票: ops/review-queue/20260809_16d76602242f.md
-- ⚠ CHANGED https://www.anzen.mofa.go.jp/ — 確認キューを起票: ops/review-queue/20260809_50e0f2eec1ae.md
+- ⚠ CHANGED https://www.maff.go.jp/pps/ — 確認キューを起票: ops/review-queue/20260823_16d76602242f.md
+- ○ UNCHANGED https://www.anzen.mofa.go.jp/
 - ✗ ERROR https://www.mofa.go.jp/mofaj/area/canada/ — HTTP 403
 - ✗ ERROR https://www.mofa.go.jp/mofaj/area/eu/ — HTTP 403
 - ✗ ERROR https://www.mofa.go.jp/mofaj/area/hongkong/ — HTTP 403
@@ -21,12 +35,12 @@ mode: online
 - ✗ ERROR https://www.mofa.go.jp/mofaj/area/thailand/ — HTTP 403
 - ✗ ERROR https://www.mofa.go.jp/mofaj/area/usa/ — HTTP 403
 - ○ UNCHANGED https://www.pref.yamagata.jp/140031/export/thai.html
-- ○ UNCHANGED https://www.customs.go.jp/roo/index.htm
+- ⚠ CHANGED https://www.customs.go.jp/roo/index.htm — 確認キューを起票: ops/review-queue/20260823_0996f332eb1d.md
 - ○ UNCHANGED https://www.jetro.go.jp/world/asia/tw/trade_02.html
 - ○ UNCHANGED https://www.pref.yamagata.jp/140031/export/yusyutujisseki.html
 - ○ UNCHANGED https://n-wtt.jp/foreign_routes
 - ○ UNCHANGED https://www.port-of-sakata.jp/container.html
-- ⚠ CHANGED https://www.sendaicci.or.jp/minato/regular_route/ — 確認キューを起票: ops/review-queue/20260809_7d1bde5d09c4.md
+- ○ UNCHANGED https://www.sendaicci.or.jp/minato/regular_route/
 - ○ UNCHANGED https://www.portal-tokyoport.jp/
 - ○ UNCHANGED https://www.port.city.yokohama.lg.jp/APP/Pcom0010OpenMenu
 
