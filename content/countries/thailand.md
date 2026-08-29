@@ -2,7 +2,7 @@
 freshness: A
 source: 外務省 基礎データ／海外安全ホームページ
 source_url: https://www.mofa.go.jp/mofaj/area/thailand/
-retrieved_at: 2026-07-19
+retrieved_at: 2026-08-29
 name_ja: タイ
 route: southeast-asia
 population: 約6,600万人
