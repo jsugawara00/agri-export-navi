@@ -2,7 +2,7 @@
 freshness: A
 source: 外務省 海外安全ホームページ（危険情報）
 source_url: https://www.anzen.mofa.go.jp/
-retrieved_at: 2026-07-19
+retrieved_at: 2026-08-29
 ---
 
 ## 概要

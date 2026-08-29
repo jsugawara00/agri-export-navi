@@ -2,7 +2,7 @@
 freshness: A
 source: 外務省 基礎データ（欧州連合）／海外安全ホームページ
 source_url: https://www.mofa.go.jp/mofaj/area/eu/
-retrieved_at: 2026-07-19
+retrieved_at: 2026-08-29
 name_ja: 欧州（EU）
 route: europe
 population: 約4.5億人（EU27カ国）
