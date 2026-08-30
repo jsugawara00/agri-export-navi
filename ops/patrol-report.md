@@ -1,48 +1,47 @@
 ---
-generated_at: 2026-08-29T00:58:31.301Z
+generated_at: 2026-08-30T22:09:33.707Z
 mode: online
 ---
 
-# 巡回レポート（2026-08-29 / オンライン）
+# 巡回レポート（2026-08-30 / オンライン）
 
 ## 鮮度チェック
 
-- ⚠ STALE content/criteria/geopolitical/canada.md — 区分A 取得から41日（上限30日）
-- ⚠ STALE content/criteria/geopolitical/china.md — 区分A 取得から41日（上限30日）
-- ⚠ STALE content/criteria/geopolitical/eu.md — 区分A 取得から41日（上限30日）
-- ⚠ STALE content/criteria/geopolitical/hongkong.md — 区分A 取得から43日（上限30日）
-- ⚠ STALE content/criteria/geopolitical/singapore.md — 区分A 取得から41日（上限30日）
-- ⚠ STALE content/criteria/geopolitical/taiwan.md — 区分A 取得から43日（上限30日）
-- ⚠ STALE content/criteria/geopolitical/thailand.md — 区分A 取得から41日（上限30日）
-- ⚠ STALE content/criteria/geopolitical/usa.md — 区分A 取得から43日（上限30日）
-- ⚠ STALE content/countries/canada.md — 区分A 取得から41日（上限30日）
-- ⚠ STALE content/countries/eu.md — 区分A 取得から41日（上限30日）
-- ⚠ STALE content/countries/hongkong.md — 区分A 取得から42日（上限30日）
-- ⚠ STALE content/countries/singapore.md — 区分A 取得から41日（上限30日）
-- ⚠ STALE content/countries/taiwan.md — 区分A 取得から42日（上限30日）
-- ⚠ STALE content/countries/thailand.md — 区分A 取得から41日（上限30日）
-- ⚠ STALE content/countries/usa.md — 区分A 取得から43日（上限30日）
+- すべて鮮度上限内です
 
 ## 差分検知
 
-- ⚠ CHANGED https://www.maff.go.jp/pps/ — 既にpendingの確認キューがあるため起票をスキップ
+- ○ UNCHANGED https://www.maff.go.jp/pps/
 - ○ UNCHANGED https://www.anzen.mofa.go.jp/
-- ⚠ CHANGED https://www.mofa.go.jp/mofaj/area/canada/ — 確認キューを起票: ops/review-queue/20260829_5a6b7e08714a.md
-- ○ UNCHANGED https://www.mofa.go.jp/mofaj/area/eu/
-- ○ UNCHANGED https://www.mofa.go.jp/mofaj/area/hongkong/
-- ⚠ CHANGED https://www.mofa.go.jp/mofaj/area/singapore/ — 確認キューを起票: ops/review-queue/20260829_8b83fae08faa.md
-- ○ UNCHANGED https://www.mofa.go.jp/mofaj/area/taiwan/
-- ⚠ CHANGED https://www.mofa.go.jp/mofaj/area/thailand/ — 確認キューを起票: ops/review-queue/20260829_c0e5a491e6e3.md
-- ⚠ CHANGED https://www.mofa.go.jp/mofaj/area/usa/ — 確認キューを起票: ops/review-queue/20260829_532d7466a014.md
-- ⚠ CHANGED https://www.pref.yamagata.jp/140031/export/thai.html — 確認キューを起票: ops/review-queue/20260829_6478c6016106.md
+- ✗ ERROR https://www.mofa.go.jp/mofaj/area/canada/ — HTTP 403
+- ✗ ERROR https://www.mofa.go.jp/mofaj/area/eu/ — HTTP 403
+- ✗ ERROR https://www.mofa.go.jp/mofaj/area/hongkong/ — HTTP 403
+- ✗ ERROR https://www.mofa.go.jp/mofaj/area/singapore/ — HTTP 403
+- ✗ ERROR https://www.mofa.go.jp/mofaj/area/taiwan/ — HTTP 403
+- ✗ ERROR https://www.mofa.go.jp/mofaj/area/thailand/ — HTTP 403
+- ✗ ERROR https://www.mofa.go.jp/mofaj/area/usa/ — HTTP 403
+- ○ UNCHANGED https://www.pref.yamagata.jp/140031/export/thai.html
 - ○ UNCHANGED https://www.customs.go.jp/roo/index.htm
 - ○ UNCHANGED https://www.jetro.go.jp/world/asia/tw/trade_02.html
-- ⚠ CHANGED https://www.pref.yamagata.jp/140031/export/yusyutujisseki.html — 確認キューを起票: ops/review-queue/20260829_8a246b79aab7.md
+- ○ UNCHANGED https://www.pref.yamagata.jp/140031/export/yusyutujisseki.html
 - ○ UNCHANGED https://n-wtt.jp/foreign_routes
 - ○ UNCHANGED https://www.port-of-sakata.jp/container.html
 - ○ UNCHANGED https://www.sendaicci.or.jp/minato/regular_route/
 - ○ UNCHANGED https://www.portal-tokyoport.jp/
 - ○ UNCHANGED https://www.port.city.yokohama.lg.jp/APP/Pcom0010OpenMenu
+
+## 到達できなかった情報源（サイト閉鎖・移転の可能性／代替探索が必要）
+
+- 🔌 UNREACHABLE https://www.mofa.go.jp/mofaj/area/canada/ — HTTP 403（対象md: content/countries/canada.md）
+- 🔌 UNREACHABLE https://www.mofa.go.jp/mofaj/area/eu/ — HTTP 403（対象md: content/countries/eu.md）
+- 🔌 UNREACHABLE https://www.mofa.go.jp/mofaj/area/hongkong/ — HTTP 403（対象md: content/countries/hongkong.md）
+- 🔌 UNREACHABLE https://www.mofa.go.jp/mofaj/area/singapore/ — HTTP 403（対象md: content/countries/singapore.md）
+- 🔌 UNREACHABLE https://www.mofa.go.jp/mofaj/area/taiwan/ — HTTP 403（対象md: content/countries/taiwan.md）
+- 🔌 UNREACHABLE https://www.mofa.go.jp/mofaj/area/thailand/ — HTTP 403（対象md: content/countries/thailand.md）
+- 🔌 UNREACHABLE https://www.mofa.go.jp/mofaj/area/usa/ — HTTP 403（対象md: content/countries/usa.md）
+
+→ サイトが移転・閉鎖された可能性があります。同等の公的／公表情報の代替先を探し、
+  対象mdの source_url を更新する案をPRにしてください（この状況はメール通知に載ります）。
 
 ---
 反映手順: キューmdのチェックリストに従い、基準mdの更新は必ず運用者が行うこと。
