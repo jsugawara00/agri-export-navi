@@ -1,9 +1,9 @@
 ---
-generated_at: 2026-08-30T22:09:33.707Z
+generated_at: 2026-09-06T22:06:28.895Z
 mode: online
 ---
 
-# 巡回レポート（2026-08-30 / オンライン）
+# 巡回レポート（2026-09-06 / オンライン）
 
 ## 鮮度チェック
 
@@ -22,7 +22,7 @@ mode: online
 - ✗ ERROR https://www.mofa.go.jp/mofaj/area/usa/ — HTTP 403
 - ○ UNCHANGED https://www.pref.yamagata.jp/140031/export/thai.html
 - ○ UNCHANGED https://www.customs.go.jp/roo/index.htm
-- ○ UNCHANGED https://www.jetro.go.jp/world/asia/tw/trade_02.html
+- ⚠ CHANGED https://www.jetro.go.jp/world/asia/tw/trade_02.html — 確認キューを起票: ops/review-queue/20260906_f57be238b2a6.md
 - ○ UNCHANGED https://www.pref.yamagata.jp/140031/export/yusyutujisseki.html
 - ○ UNCHANGED https://n-wtt.jp/foreign_routes
 - ○ UNCHANGED https://www.port-of-sakata.jp/container.html
