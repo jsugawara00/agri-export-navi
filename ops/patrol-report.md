@@ -1,9 +1,9 @@
 ---
-generated_at: 2026-08-30T22:09:33.707Z
+generated_at: 2026-09-13T22:06:15.039Z
 mode: online
 ---
 
-# 巡回レポート（2026-08-30 / オンライン）
+# 巡回レポート（2026-09-13 / オンライン）
 
 ## 鮮度チェック
 
@@ -11,7 +11,7 @@ mode: online
 
 ## 差分検知
 
-- ○ UNCHANGED https://www.maff.go.jp/pps/
+- ⚠ CHANGED https://www.maff.go.jp/pps/ — 確認キューを起票: ops/review-queue/20260913_16d76602242f.md
 - ○ UNCHANGED https://www.anzen.mofa.go.jp/
 - ✗ ERROR https://www.mofa.go.jp/mofaj/area/canada/ — HTTP 403
 - ✗ ERROR https://www.mofa.go.jp/mofaj/area/eu/ — HTTP 403
@@ -22,7 +22,7 @@ mode: online
 - ✗ ERROR https://www.mofa.go.jp/mofaj/area/usa/ — HTTP 403
 - ○ UNCHANGED https://www.pref.yamagata.jp/140031/export/thai.html
 - ○ UNCHANGED https://www.customs.go.jp/roo/index.htm
-- ○ UNCHANGED https://www.jetro.go.jp/world/asia/tw/trade_02.html
+- ⚠ CHANGED https://www.jetro.go.jp/world/asia/tw/trade_02.html — 確認キューを起票: ops/review-queue/20260913_f57be238b2a6.md
 - ○ UNCHANGED https://www.pref.yamagata.jp/140031/export/yusyutujisseki.html
 - ○ UNCHANGED https://n-wtt.jp/foreign_routes
 - ○ UNCHANGED https://www.port-of-sakata.jp/container.html
