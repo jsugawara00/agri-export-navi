@@ -1,9 +1,9 @@
 ---
 freshness: C
-source: 山形県 農林水産部 農産物販路開拓・輸出推進課「令和6年度県産農産物の輸出実績について」（2025年10月6日公表）
+source: 山形県 農林水産部 農産物販路開拓・輸出推進課「令和7年度県産農産物の輸出実績について」（2026年10月5日公表）
 source_url: https://www.pref.yamagata.jp/140031/export/yusyutujisseki.html
-pdf_url: https://www.pref.yamagata.jp/documents/30205/r6_yusyutsuzisseki_upload.pdf
-retrieved_at: 2026-07-18
+pdf_url: https://www.pref.yamagata.jp/documents/30205/r7_yusyutujisseki_upload.pdf
+retrieved_at: 2026-10-11
 title: 山形県産農産物の輸出実績（参考データ）
 ---
 
@@ -28,130 +28,130 @@ title: 山形県産農産物の輸出実績（参考データ）
 
 ## 全体推移（単位: トン／百万円）
 
-| | H30 | R1 | R2 | R3 | R4 | R5 | R6 |
-|---|---|---|---|---|---|---|---|
-| 輸出量 | 1,507 | 1,650 | 1,319 | 1,742 | 1,908 | 2,474 | 3,041 |
-| 輸出額 | 899 | 828 | 818 | 867 | 1,051 | 1,148 | 1,371 |
+| | H30 | R1 | R2 | R3 | R4 | R5 | R6 | R7 |
+|---|---|---|---|---|---|---|---|---|
+| 輸出量 | 1,507 | 1,650 | 1,319 | 1,742 | 1,908 | 2,474 | 3,041 | 3,912 |
+| 輸出額 | 899 | 828 | 818 | 867 | 1,051 | 1,148 | 1,371 | 1,653 |
 
 ## 品目別（単位: トン／百万円）
 
 - id: rice
   label: 米
-  r5_qty: 2001
   r6_qty: 2451
-  r5_value: 366
+  r7_qty: 3209
   r6_value: 539
+  r7_value: 744
 - id: apple
   label: りんご
-  r5_qty: 221
   r6_qty: 306
-  r5_value: 124
+  r7_qty: 423
   r6_value: 177
+  r7_value: 257
 - id: peach
   label: もも
-  r5_qty: 124
   r6_qty: 137
-  r5_value: 113
+  r7_qty: 133
   r6_value: 151
+  r7_value: 150
 - id: persimmon
   label: 柿
-  r5_qty: 6
   r6_qty: 27
-  r5_value: 1
+  r7_qty: 19
   r6_value: 9
+  r7_value: 7
 - id: la-france
   label: 西洋なし（ラ・フランス）
-  r5_qty: 7
   r6_qty: 15
-  r5_value: 4
+  r7_qty: 19
   r6_value: 9
+  r7_value: 11
 - id: melon
   label: メロン
-  r5_qty: 12
   r6_qty: 12
-  r5_value: 6
+  r7_qty: 10
   r6_value: 7
+  r7_value: 6
 - id: grape
   label: ぶどう
-  r5_qty: 5
   r6_qty: 7
-  r5_value: 11
+  r7_qty: 8
   r6_value: 13
+  r7_value: 15
 - id: cherry
   label: さくらんぼ
-  r5_qty: 2
   r6_qty: 1
-  r5_value: 14
+  r7_qty: 2
   r6_value: 4
+  r7_value: 8
 - id: beef
   label: 牛肉（動物検疫対象・本サイト未対応）
-  r5_qty: 92
   r6_qty: 85
-  r5_value: 505
+  r7_qty: 88
   r6_value: 460
+  r7_value: 455
 
 ## 仕向地別（単位: トン／百万円）
 
 - id: hongkong
   label: 香港
-  r5_qty: 850
   r6_qty: 1665
-  r5_value: 314
+  r7_qty: 1465
   r6_value: 504
+  r7_value: 513
 - id: taiwan
   label: 台湾
-  r5_qty: 334
   r6_qty: 431
-  r5_value: 575
+  r7_qty: 767
   r6_value: 625
+  r7_value: 726
 - id: singapore
   label: シンガポール
-  r5_qty: 296
   r6_qty: 261
-  r5_value: 51
+  r7_qty: 178
   r6_value: 47
+  r7_value: 47
 - id: canada
   label: カナダ
-  r5_qty: 194
   r6_qty: 231
-  r5_value: 39
+  r7_qty: 287
   r6_value: 46
+  r7_value: 60
 - id: usa
   label: 米国
-  r5_qty: 96
   r6_qty: 101
-  r5_value: 26
+  r7_qty: 241
   r6_value: 31
+  r7_value: 67
 - id: eu
   label: 欧州
-  r5_qty: 55
   r6_qty: 100
-  r5_value: 14
+  r7_qty: 71
   r6_value: 27
+  r7_value: 29
 - id: malaysia
   label: マレーシア
-  r5_qty: 26
   r6_qty: 30
-  r5_value: 16
+  r7_qty: 28
   r6_value: 13
+  r7_value: 14
 - id: thailand
   label: タイ
-  r5_qty: 16
   r6_qty: 18
-  r5_value: 10
+  r7_qty: 135
   r6_value: 13
+  r7_value: 31
 - id: australia
   label: オーストラリア
-  r5_qty: 3
   r6_qty: 4
-  r5_value: 22
+  r7_qty: 8
   r6_value: 27
+  r7_value: 16
 - id: china
   label: 中国
-  r5_qty: 282
   r6_qty: 0
-  r5_value: 33
+  r7_qty: 0
   r6_value: 0
+  r7_value: 0
 
 ## 品目×仕向地の対応（令和5年度・確認できた範囲のみ）
 
@@ -175,9 +175,34 @@ title: 山形県産農産物の輸出実績（参考データ）
 - id: beef_australia
   note: オーストラリアは牛肉3tのみ
 
+## 品目×仕向地別の輸出量（令和7年度・表2全件・参考表示専用）
+
+**この表はコードから参照されていない（loadExportRecordは上の「令和5年度」節のみを読む）。
+令和7年度分のPDF表2は全行が明瞭に読み取れたため、参考情報として全件を記載する。
+今後この年度のデータをアプリ内の実績メモに反映する場合は、
+src/lib/content/loader.ts の loadExportRecord（抽出対象の見出し文字列が固定）も
+合わせて更新すること（見出し文字列だけを変えると抽出が空になり画面に出なくなる。
+2026-07-18の教訓）。**
+
+単位: トン。「－」は実績なし、「0」は実績はあるが四捨五入で1t未満。
+
+| 品目 | 香港 | 台湾 | カナダ | 米国 | シンガポール | タイ | 欧州 | マレーシア | 豪州 | 中国 | 計 |
+|---|---|---|---|---|---|---|---|---|---|---|---|
+| 米 | 1,368 | 236 | 287 | 240 | 160 | 118 | 71 | － | 6 | － | 3,209 |
+| りんご | 2 | 393 | － | － | 0 | 6 | － | 22 | － | － | 423 |
+| もも | 57 | 54 | － | － | 14 | 6 | － | 2 | － | － | 133 |
+| 柿 | 2 | 1 | － | － | 3 | 5 | － | － | － | － | 19 |
+| 西洋なし | 3 | 14 | － | － | 1 | － | － | 1 | － | － | 19 |
+| メロン | 8 | 0 | － | － | － | － | － | 1 | － | － | 10 |
+| ぶどう | 7 | 0 | － | － | 0 | 0 | 0 | 1 | － | － | 8 |
+| さくらんぼ | 1 | 0 | － | 0 | 0 | 0 | － | 0 | － | － | 2 |
+| 牛肉 | 18 | 67 | － | 0 | 0 | 0 | － | － | 2 | － | 88 |
+
+出典: 山形県「令和7年度県産農産物の輸出実績について」表２（2026年10月5日公表）
+
 ## 中国の実績変動について（事実のみ）
 
-中国はR5に282t（ほぼ全量が米）の実績があったが、R6は実績ゼロ。日本産食品に
-対する中国の輸入規制は短期間で変更された経緯がある（2023年8月の水産物輸入の
-全面停止、2025年6月の条件付き一部再開、2025年11月の再停止など）。最新状況は
-必ず公的機関で確認すること。
+中国はR5に282t（ほぼ全量が米）の実績があったが、R6・R7とも実績ゼロが継続。
+日本産食品に対する中国の輸入規制は短期間で変更された経緯がある（2023年8月の
+水産物輸入の全面停止、2025年6月の条件付き一部再開、2025年11月の再停止など）。
+最新状況は必ず公的機関で確認すること。

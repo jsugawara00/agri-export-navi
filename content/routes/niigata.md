@@ -2,7 +2,7 @@
 freshness: B
 source: 新潟西港湾・空港整備事務所ほか「新潟港 外航定期航路」（新潟港湾協会 n-wtt.jp）
 source_url: https://n-wtt.jp/foreign_routes
-retrieved_at: 2026-07-19
+retrieved_at: 2026-10-11
 reviewed_by: Jump
 name_ja: 新潟港
 mode: sea
@@ -11,7 +11,7 @@ status: ok
 port_type: 国際拠点港湾
 route_note: 韓国（釜山）・中国（上海・寧波・大連・青島・天津）方面の外航定期。釜山経由で台湾・香港・北米方面へ積替接続。合計週9便
 service_frequency: 外航定期 合計9便／週
-frequency_as_of: 2026-01-01
+frequency_as_of: 2026-10-01
 lead_time: 要確認（仕向地・積替により異なる）
 local_note: 置賜地域からの陸送でアクセスしやすい日本海側の港
 ---
@@ -28,7 +28,7 @@ local_note: 置賜地域からの陸送でアクセスしやすい日本海側�
     天津新港 週2便、寧波 週1便
   - 主な運航船社: 高麗海運・南星海運・汎州海運・神原汽船・シノコー・
     Xプレスフィーダーズ 等
-  - 出典: 新潟港 外航定期航路（n-wtt.jp・2026年1月1日現在）
-    https://n-wtt.jp/foreign_routes （取得日: 2026-07-19）
+  - 出典: 新潟港 外航定期航路（n-wtt.jp・2026年10月1日現在）
+    https://n-wtt.jp/foreign_routes （取得日: 2026-10-11）
 - ※台湾・香港・米国向けは直航ではなく釜山等での積替が前提。具体的な便・リード
   タイムは乙仲・船社にご確認ください。
