@@ -2,7 +2,7 @@
 freshness: B
 source: 仙台商工会議所「仙台塩釜港（仙台港区）定期航路一覧」
 source_url: https://www.sendaicci.or.jp/minato/regular_route/
-retrieved_at: 2026-07-19
+retrieved_at: 2026-10-25
 reviewed_by: Jump
 name_ja: 仙台塩釜港
 mode: sea
@@ -31,7 +31,9 @@ local_note: 山形市内・村山地域からの陸送でアクセスしやす�
     （航路表 ship-route260601＝2026年6月1日更新）
     https://www.sendaicci.or.jp/minato/regular_route/ （取得日: 2026-07-19）
 - 内航・国際フィーダーコンテナ航路: 東京経由（近海郵船・鈴与海運 週2便）、
-  横浜経由（横浜コンテナライン 週1便）、東京・横浜経由（井本商運 週6便）ほか
-  - 同上出典
+  横浜経由（横浜コンテナライン 週1便）、東京・横浜経由（井本商運 週7便）ほか
+  - 出典: 仙台商工会議所「仙台塩釜港（仙台港区）定期航路一覧」
+    https://www.sendaicci.or.jp/minato/regular_route/ （取得日: 2026-10-25。
+    ページ自体に更新日表記なし）
 - ※台湾・香港・米国向けは直航ではなく釜山等での積替が前提。具体的な便・リード
   タイムは乙仲・船社にご確認ください。
